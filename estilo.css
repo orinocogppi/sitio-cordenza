@@ -1,0 +1,2565 @@
+/* ===================================================================
+   Sitio público · Orinoco Global Partners con Cordenza Intelligence
+   Audiencia: contratistas que compran y proveedores que venden.
+
+   Un solo momento de movimiento: en la portada, un requerimiento se
+   convierte en ofertas comparables. Todo lo demás está quieto.
+   Las cifras nunca cuentan hacia arriba (invariante 7 del brandbook):
+   las filas aparecen enteras, el número ya escrito.
+
+   El contraste de la sección «frase» es semántico: la data vieja va
+   en gris, la viva en tinta.
+   =================================================================== */
+
+:root{
+  /* Paleta medida en andercore.com el 1-oct-2026 con getComputedStyle:
+     fondo rgb(11,4,5), panel calido rgb(56,46,48), acento rgb(47,111,222).
+     Son cinco valores y sostienen la pagina entera: el resto es jerarquia
+     de opacidad sobre el fondo, no colores nuevos. */
+  --papel:#0B0405;        /* el suelo de toda la pagina */
+  --fondo-2:#0B0405;      /* igual que el suelo: Andercore no hace bandas */
+  --panel:#120C0D;        /* superficie elevada: tarjetas, filas, cajas */
+  --realce:#100A0B;       /* casi el suelo. Antes era #382E30 y se veia marron */
+  --tinta:#F5F1F1;        /* texto principal */
+  --blanco:#FFFFFF;       /* blanco puro: solo titulares y texto sobre realce */
+  --indice:#2F6FDE; --indice-txt:#7FA6F2;       /* el azul cobalto del brandbook. Uno solo, y escaso */
+  --indice-osc:#1F55B8;
+  --acero:#B0B7BC;        /* texto secundario */
+  --niebla:#7C858C;       /* lo mas tenue que sigue siendo legible */
+  --linea:#2A2224;        /* medido en andercore.com: su hairline */
+  --linea-2:#382E30;      /* el trazo del conector, tambien medido */
+  --senal:#D9A441;
+
+  /* Archivo es la unica familia de Andercore, en peso 500 para titulares.
+     El monoespaciado se queda para los antetitulos, que alli van en
+     mayuscula pequena muy espaciada. */
+  --disp:"Archivo",system-ui,sans-serif;
+  --sans:"Archivo",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+
+  --ancho:1200px;
+  --lado:clamp(16px,4vw,48px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--fondo-2); color:var(--tinta);
+  font:400 17px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,p,dl,dd,ol,figure{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--indice); outline-offset:3px; border-radius:4px}
+.oculto{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.saltar{position:absolute; left:-999px; top:8px; background:var(--panel); padding:8px 12px; z-index:10}
+.saltar:focus{left:8px}
+
+/* ── botones ──────────────────────────────────────────────── */
+.boton{
+  display:inline-block; background:var(--indice); color:#fff;
+  font:600 1rem/1 var(--sans); text-decoration:none;
+  padding:13px 24px; border-radius:4px;
+  transition:background-color .16s;
+}
+.boton:hover{background:var(--indice-osc)}
+.boton-claro{background:transparent; color:var(--tinta); box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+.boton-claro:hover{background:rgba(255,255,255,.08)}
+.boton-chico{padding:9px 18px; font-size:.9rem}
+.enlace{font-weight:600; text-underline-offset:5px; text-decoration-thickness:1px}
+.enlace:hover{text-decoration-thickness:2px}
+.acciones{display:flex; flex-wrap:wrap; align-items:center; gap:18px 28px}
+
+/* ── cabecera ─────────────────────────────────────────────── */
+.cabecera{
+  position:sticky; top:0; z-index:5;
+  display:flex; align-items:center; gap:32px;
+  padding:14px var(--lado);
+  background:var(--realce); color:var(--blanco);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.marca{display:flex; align-items:center; gap:10px; text-decoration:none; font:400 1.05rem/1 var(--disp)}
+.marca b{font-weight:900}
+.signo{width:30px; height:30px; background:var(--panel); border-radius:0}
+/* El punto de la i es lo unico de color. Se marca por clase y no por tipo
+   de figura: en el signo viejo el color era un <path> y en el nuevo es
+   un <rect>, asi que la regla por tipo pintaba la C de color. */
+.signo .s-c,.signo .s-i{fill:var(--tinta)}
+.signo .s-pt{fill:var(--indice)}
+/* Con el conmutador Compro/Vendo al lado, el menu se estrecha y partia
+   cada enlace en dos lineas. Ni se parten ni se encogen. */
+.menu{display:flex; gap:clamp(14px,1.6vw,26px); margin-left:auto; font-size:.92rem; flex:none}
+.menu a{text-decoration:none; color:var(--acero); white-space:nowrap}
+.menu a:hover{color:var(--blanco)}
+.menu a.on{color:var(--blanco)}
+/* La pagina en la que estas lleva subrayado, no solo color: el color solo
+   no se ve si el visitante no distingue bien los grises. */
+.menu a.on::after{content:""; display:block; height:1px; margin-top:5px; background:var(--indice)}
+
+/* ── PORTADA · el mecanismo de adecore.tech ──────────────────────
+   Medido en su DOM a 1440x900: la seccion mide 2700px (3 pantallas),
+   dentro hay un bloque `position:sticky; top:0` de 900px (1 pantalla),
+   y el titular arranca con translateY(306px) y sube con el scroll.
+   Aqui es lo mismo en vh, para que no dependa de una altura fija.
+
+   El reposo es VISIBLE: si el navegador no soporta scroll-timeline,
+   el texto se ve desde el primer momento, solo que sin subir. Una
+   portada que arranca en opacity:0 esperando un observador es la que
+   aparece en blanco en una captura o en un enlace compartido. */
+.portada{position:relative; height:255vh; background:var(--papel)}
+
+.portada-fija{
+  position:sticky; top:0; height:100vh; min-height:560px;
+  overflow:hidden; isolation:isolate;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:clamp(80px,11vh,130px) var(--lado) clamp(26px,3.4vw,40px);
+}
+.escena-red{position:absolute; inset:0; width:100%; height:100%; z-index:-2; display:block}
+.portada-vel{
+  position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:
+    linear-gradient(95deg, var(--papel) 1%, rgba(11,4,5,.80) 24%, rgba(11,4,5,.12) 52%, rgba(11,4,5,0) 70%),
+    linear-gradient(to top, var(--papel) 2%, rgba(11,4,5,0) 26%);
+}
+
+.portada-texto{margin-bottom:auto; max-width:min(620px,52vw)}
+.tit{
+  max-width:16ch;
+  font:500 clamp(2rem,3.6vw,3.2rem)/1.08 var(--disp);
+  letter-spacing:-.03em; color:var(--blanco); text-wrap:balance;
+}
+.bajada{
+  margin-top:clamp(18px,2vw,26px); max-width:52ch;
+  color:var(--acero); font-size:clamp(.98rem,1.2vw,1.08rem); line-height:1.62;
+}
+/* El rotulo arrancaba invisible Y en el gris mas tenue: no se veia ni
+   cuando aparecia. Sube a --acero y se separa mas del titular. */
+.portada .ac-et{color:var(--acero); margin-bottom:clamp(20px,2.4vw,30px)}
+.portada .acciones{margin-top:clamp(26px,3vw,38px)}
+
+.portada-pie{margin-top:clamp(36px,5vh,70px)}
+.hechos{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:24px 44px; margin:0; max-width:900px;
+}
+.hechos dt{
+  font:500 .68rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--niebla); margin-bottom:8px;
+}
+.hechos dd{margin:0; color:var(--tinta); font-size:.93rem; line-height:1.45; max-width:30ch}
+
+/* el aviso de bajar, que se va cuando ya bajaste */
+.baja{
+  position:absolute; right:var(--lado); bottom:clamp(26px,3.4vw,40px);
+  display:flex; align-items:center; gap:11px;
+  font:500 .7rem/1 var(--mono); letter-spacing:.18em; text-transform:uppercase;
+  color:var(--acero); margin:0;
+}
+.baja-f{
+  width:24px; height:24px; flex:none; position:relative;
+  border:1px solid var(--linea-2); border-radius:3px;
+}
+.baja-f::before,.baja-f::after{content:""; position:absolute; background:var(--acero)}
+.baja-f::before{left:7px; top:6px; width:1px; height:10px}
+.baja-f::after{left:7px; top:15px; width:10px; height:1px}
+
+/* ── lo que el scroll mueve ──────────────────────────────────────
+   scroll(root) porque la portada arranca en lo alto del documento:
+   el recorrido 0 -> 200vh es exactamente lo que dura el clavado
+   (300vh de seccion menos 100vh de bloque fijo). */
+@supports (animation-timeline: scroll(root)){
+  [data-sube]{animation:sube linear both; animation-timeline:scroll(root)}
+  [data-sube="0"]{animation-range:4vh 42vh}
+  [data-sube="1"]{animation-range:16vh 58vh}
+  [data-sube="2"]{animation-range:30vh 74vh}
+  [data-sube="3"]{animation-range:44vh 92vh}
+  .baja{animation:seVa linear both; animation-timeline:scroll(root); animation-range:2vh 26vh}
+}
+/* nunca desde scale(0) ni desde arriba: solo sube unos pixeles */
+@keyframes sube{from{opacity:0; transform:translateY(34px)} to{opacity:1; transform:none}}
+@keyframes seVa{from{opacity:1} to{opacity:0}}
+
+@media (max-width:820px){
+  .portada{height:235vh}
+  .portada-vel{background:
+    linear-gradient(to bottom, rgba(11,4,5,.62) 0%, rgba(11,4,5,.30) 48%, rgba(11,4,5,.10) 70%),
+    linear-gradient(to top, var(--papel) 2%, rgba(11,4,5,0) 30%)}
+  .portada-fija{padding-top:clamp(70px,13vh,100px)}
+  .portada-texto{max-width:none}
+  .hechos{grid-template-columns:1fr; gap:16px}
+  .baja{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .portada{height:auto}
+  .portada-fija{position:static; height:auto; min-height:min(92vh,820px)}
+  [data-sube],.baja,.portada-texto,.portada-pie{animation:none !important; opacity:1 !important; transform:none !important}
+}
+
+/* ── la base ──────────────────────────────────────────────── */
+.base{padding:clamp(48px,7vw,88px) var(--lado); max-width:var(--ancho); margin:0 auto}
+.cifras{display:grid; grid-template-columns:repeat(3,1fr)}
+.cifras div{padding:0 clamp(12px,3vw,40px); border-left:2px solid var(--tinta)}
+.cifras div:first-child{padding-left:0; border-left:0}
+.cifras dd{font:500 clamp(2.6rem,7vw,5.2rem)/1 var(--mono); font-variant-numeric:tabular-nums; letter-spacing:-.04em}
+.cifras dt{margin-top:10px; font-weight:600; color:var(--acero)}
+.cifras div{display:flex; flex-direction:column-reverse; justify-content:flex-end}
+.corte{margin-top:28px; font-size:.95rem; color:var(--acero)}
+
+/* ── los dos lados ────────────────────────────────────────── */
+
+/* ── cómo funciona ────────────────────────────────────────── */
+.como{padding:clamp(56px,8vw,112px) var(--lado); max-width:var(--ancho); margin:0 auto}
+.como h2,.diferencia h2{font:500 clamp(2rem,4vw,3.2rem)/1.02 var(--disp); letter-spacing:-.03em; max-width:20ch}
+.pasos{list-style:none; padding:0; margin-top:48px; display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px,3vw,48px); counter-reset:paso}
+.pasos li{counter-increment:paso; border-top:2px solid var(--tinta); padding-top:22px}
+.pasos li::before{content:counter(paso); display:block; font:500 3.4rem/1 var(--disp); color:var(--indice); margin-bottom:18px}
+.pasos h3{font:600 1.3rem/1.2 var(--disp)}
+.pasos p{margin-top:10px; color:var(--acero)}
+.humano{margin-top:48px; font:600 1.25rem/1.35 var(--disp); max-width:40ch}
+
+/* ── la diferencia ────────────────────────────────────────── */
+.diferencia{padding:0 var(--lado) clamp(56px,8vw,112px); max-width:var(--ancho); margin:0 auto}
+.tabla-envoltura{margin-top:40px; overflow-x:auto}
+.comparar{width:100%; min-width:560px; border-collapse:collapse}
+.comparar th,.comparar td{text-align:left; padding:18px 20px; border-bottom:1px solid var(--linea); vertical-align:top}
+.comparar thead th{font-size:.9rem; color:var(--acero); font-weight:600}
+.comparar thead th:last-child{color:var(--tinta)}
+.comparar tbody th{font-weight:700; width:22%}
+.comparar td:nth-child(2){color:var(--acero); width:30%}
+.comparar td:last-child,.comparar thead th:last-child{background:var(--panel); box-shadow:inset 3px 0 0 var(--indice); font-weight:600}
+
+/* ── cierre ───────────────────────────────────────────────── */
+.cierre{padding:clamp(72px,11vw,140px) var(--lado); background:var(--realce); color:var(--blanco)}
+.cierre h2{font:500 clamp(2.4rem,6vw,5rem)/.98 var(--disp); letter-spacing:-.035em; max-width:16ch}
+.cierre-bajada{margin:28px 0 40px; max-width:48ch; font-size:1.15rem; color:#C8CFD3}
+.enlace-claro{color:var(--blanco)}
+
+/* ── pie ──────────────────────────────────────────────────── */
+.lema{margin-top:28px !important; font:500 1.1rem/1 var(--disp); color:var(--blanco)}
+
+/* ── móvil ────────────────────────────────────────────────── */
+@media (max-width:900px){
+  .cabecera .boton-chico{margin-left:12px}
+  .portada,.lados{grid-template-columns:1fr}
+  .portada{min-height:0}
+  .pasos{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  .cifras{grid-template-columns:1fr; gap:28px}
+  .cifras div{border-left:0; padding:0 0 22px; border-bottom:2px solid var(--tinta)}
+  .marca span{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .buscando .pulso{animation:none}
+}
+
+/* ===================================================================
+   LA RED · EL PROCESO · EL PUENTE A PROVEEDORES
+   -------------------------------------------------------------------
+   Aqui si hay movimiento, y tiene una razon: el sitio vende una red
+   que trabaja mientras el comprador duerme, y un proceso que se
+   recorre. Lo que se mueve son RUTAS y PASOS, nunca una cifra: el
+   invariante 7 del brandbook sigue en pie y por eso el panel de
+   actividad dice «ejemplo» en su propia cabecera.
+
+   Tecnica: animaciones guiadas por el scroll (`animation-timeline`,
+   soportadas por Chrome/Edge 115+, Firefox 132+ y Safari 18+). Donde
+   no existan, `@supports not` deja que movimiento.js haga lo mismo
+   con IntersectionObserver. Solo se animan transform y opacity, que
+   corren en el compositor y no provocan reflow.
+   =================================================================== */
+
+.ojo{
+  font:600 .74rem/1 var(--mono); letter-spacing:.17em; text-transform:uppercase;
+  color:var(--acero); margin-bottom:18px;
+}
+
+/* ── el puente a la pagina de proveedores ──────────────────────────── */
+.puente{
+  background:var(--tinta-2); color:var(--blanco);
+  padding:clamp(40px,6vw,72px) var(--lado);
+  display:flex; flex-wrap:wrap; align-items:center; gap:18px 40px;
+}
+.puente-t{font:500 clamp(1.5rem,2.6vw,2.2rem)/1.1 var(--disp); letter-spacing:-.02em; max-width:18ch}
+.puente-d{color:#C8CFD3; max-width:44ch; flex:1 1 340px}
+.puente .boton{flex:none}
+
+/* ── el panel de actividad ─────────────────────────────────────────── */
+.red-panel{
+  border:1px solid #232A2E; border-radius:10px; background:#0C1012;
+  display:flex; flex-direction:column; min-height:300px;
+}
+.panel-cab{
+  display:flex; align-items:center; gap:10px;
+  padding:14px 16px; border-bottom:1px solid #232A2E;
+}
+.panel-t{font:600 .95rem var(--disp); color:var(--blanco)}
+.panel-vivo{
+  margin-left:auto; display:flex; align-items:center; gap:7px;
+  font:500 .7rem var(--mono); letter-spacing:.12em; text-transform:uppercase; color:#A3ACB2;
+}
+.panel-vivo i{width:7px; height:7px; border-radius:50%; background:#4CBF86; animation:respirar 2.2s ease-in-out infinite}
+@keyframes respirar{0%,100%{opacity:1} 50%{opacity:.25}}
+
+.sucesos{list-style:none; margin:0; padding:8px 0; flex:1}
+.suceso{
+  display:grid; grid-template-columns:22px 1fr; gap:10px;
+  padding:11px 16px; border-bottom:1px solid #1A2024;
+  opacity:0; transform:translateY(-8px);
+  animation:caer .45s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes caer{to{opacity:1; transform:none}}
+.suceso:last-child{border-bottom:none}
+.suceso-i{width:18px; height:18px; margin-top:2px}
+.suceso-t{font-size:.92rem; color:var(--blanco); line-height:1.35}
+.suceso-d{font:500 .74rem var(--mono); color:#A3ACB2; margin-top:4px; letter-spacing:.04em}
+.suceso.ok .suceso-i{color:#4CBF86}
+.suceso.curso .suceso-i{color:#E0A63A}
+.suceso.nota .suceso-i{color:#A3ACB2}
+.panel-pie{padding:12px 16px; border-top:1px solid #232A2E; font-size:.78rem; color:#A3ACB2}
+
+/* ── el proceso ────────────────────────────────────────────────────── */
+.como{padding:clamp(56px,8vw,112px) var(--lado); max-width:var(--ancho); margin:0 auto}
+.como-cab h2{font:500 clamp(2rem,4vw,3.2rem)/1.02 var(--disp); letter-spacing:-.03em; max-width:20ch}
+.como-bajada{margin-top:18px; color:var(--acero); max-width:56ch}
+
+.proceso{position:relative; margin-top:clamp(36px,5vw,64px); padding-left:clamp(44px,6vw,86px)}
+.riel{position:absolute; left:clamp(15px,2.1vw,30px); top:8px; bottom:8px; width:2px; background:var(--linea)}
+.riel-lleno{display:block; width:100%; height:100%; background:var(--indice); transform:scaleY(0); transform-origin:top}
+
+.pasos-l{list-style:none; margin:0; padding:0}
+.paso{position:relative; padding:clamp(22px,3vw,34px) 0; border-top:1px solid var(--linea)}
+.paso:first-child{border-top:none; padding-top:0}
+.paso-n{
+  position:absolute; left:calc(-1 * clamp(44px,6vw,86px)); top:clamp(22px,3vw,34px);
+  width:clamp(32px,4.2vw,62px); text-align:center;
+  font:600 .85rem var(--mono); color:var(--acero);
+  background:var(--fondo-2); padding:4px 0;
+}
+.paso:first-child .paso-n{top:0}
+.paso h3{font:600 clamp(1.25rem,2vw,1.6rem)/1.22 var(--disp); letter-spacing:-.015em; max-width:26ch}
+.paso p{margin-top:12px; color:var(--acero); max-width:62ch}
+.paso-marcas{list-style:none; display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 0; padding:0}
+.paso-marcas li{
+  font:600 .72rem var(--mono); letter-spacing:.06em; text-transform:uppercase;
+  color:var(--acero); border:1px solid var(--linea); border-radius:99px; padding:5px 11px;
+  background:var(--panel);
+}
+.paso.activo .paso-n{color:var(--indice-txt)}
+
+.humano{margin-top:clamp(40px,5vw,64px); font:600 1.25rem/1.35 var(--disp); max-width:44ch}
+
+/* ── guiado por el scroll, donde el navegador lo soporte ───────────── */
+@supports (animation-timeline: view()){
+  .proceso{view-timeline:--proceso block}
+  .riel-lleno{
+    animation:llenar linear both;
+    animation-timeline:--proceso;
+    animation-range:entry 70% exit 30%;
+  }
+  @keyframes llenar{to{transform:scaleY(1)}}
+
+  .paso{
+    animation:acercar linear both;
+    animation-timeline:view();
+    animation-range:entry 8% entry 62%;
+  }
+  @keyframes acercar{
+    from{opacity:.32; transform:translateY(20px)}
+    to{opacity:1; transform:none}
+  }
+}
+/* Sin soporte, movimiento.js pone .dentro y esto hace lo mismo. */
+@supports not (animation-timeline: view()){
+  .paso{opacity:.32; transform:translateY(20px); transition:opacity .5s, transform .5s cubic-bezier(.2,.8,.2,1)}
+  .paso.dentro{opacity:1; transform:none}
+  .sin-js .paso{opacity:1; transform:none}
+  .riel-lleno{transition:transform 1.2s cubic-bezier(.3,.7,.3,1)}
+  .proceso.dentro .riel-lleno{transform:scaleY(1)}
+}
+
+/* ── responsivo ────────────────────────────────────────────────────── */
+@media (max-width:1040px){
+  .red-tablero{grid-template-columns:1fr}
+  .red-panel{min-height:0}
+}
+@media (max-width:620px){
+  .proceso{padding-left:0}
+  .riel{display:none}
+  .paso-n{position:static; display:block; width:auto; text-align:left; background:none; padding:0 0 8px}
+  .paso:first-child .paso-n{top:auto}
+  .puente{flex-direction:column; align-items:flex-start}
+}
+
+/* ── quien pidio que nada se mueva ─────────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  .red.dentro .ruta,.red.dentro .nodo,.red.dentro .destino-halo,.panel-vivo i,.suceso{animation:none}
+  .ruta{stroke-dashoffset:0}
+  .nodo{opacity:1}
+  .suceso{opacity:1; transform:none}
+  .paso{opacity:1 !important; transform:none !important; animation:none !important}
+  .riel-lleno{transform:scaleY(1); animation:none}
+}
+
+/* ===================================================================
+   PAGINA DE PROVEEDORES
+   La solicitud se escribe sola al entrar: es lo que el proveedor
+   recibe, y ver como se llena explica el producto mejor que un
+   parrafo. Son CAMPOS de un documento, no cifras: por eso se pueden
+   animar sin romper el invariante 7.
+   =================================================================== */
+
+.portada-prov .ojo{margin-bottom:14px}
+
+/* La portada es oscura y pinta su texto de blanco. Esta tarjeta es de
+   papel: tiene que reponer el color de tinta o el valor queda blanco
+   sobre blanco (paso exactamente eso). */
+.solicitud{
+  margin:0; background:var(--panel); color:var(--tinta);
+  border:1px solid var(--linea); border-radius:10px;
+  box-shadow:0 1px 0 var(--linea);
+}
+.sol-cab{
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  padding:16px 20px; border-bottom:1px solid var(--linea); background:var(--fondo-2);
+  border-radius:10px 10px 0 0;
+}
+.sol-de{font:600 1rem var(--disp)}
+.sol-ref{margin-left:auto; font:500 .8rem var(--mono); color:var(--acero); letter-spacing:.06em}
+.sol-campos{margin:0; padding:6px 0}
+.sol-l{
+  display:grid; grid-template-columns:130px 1fr; gap:14px;
+  padding:12px 20px; border-bottom:1px solid var(--papel);
+}
+.sol-l:last-child{border-bottom:none}
+.sol-l dt{font:600 .78rem var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--acero); padding-top:2px}
+.sol-l dd{margin:0; font-size:.98rem}
+.solicitud figcaption{padding:14px 20px; border-top:1px solid var(--linea); font-size:.82rem; color:var(--acero)}
+
+.animar-sol .sol-l{opacity:0; transform:translateX(-10px)}
+.animar-sol .sol-l.visible{opacity:1; transform:none; transition:opacity .4s, transform .4s cubic-bezier(.2,.8,.2,1)}
+
+/* ── tres tarjetas ─────────────────────────────────────────────────── */
+.porque,.rubros,.cuidado{padding:clamp(56px,8vw,104px) var(--lado); max-width:var(--ancho); margin:0 auto}
+.porque h2,.rubros h2,.cuidado h2{font:500 clamp(2rem,4vw,3.2rem)/1.02 var(--disp); letter-spacing:-.03em; max-width:20ch}
+.tarjetas{margin-top:clamp(32px,4vw,52px); display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(16px,2vw,26px)}
+.tarjeta{
+  background:var(--panel); border:1px solid var(--linea); border-radius:10px;
+  padding:clamp(22px,2.6vw,32px);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, border-color .35s;
+}
+.tarjeta:hover{transform:translateY(-6px); box-shadow:0 12px 0 -6px var(--linea); border-color:var(--acero)}
+.tarjeta h3{font:600 1.25rem/1.25 var(--disp); letter-spacing:-.015em; max-width:20ch}
+.tarjeta h3::before{
+  content:""; display:block; width:26px; height:3px; background:var(--indice); margin-bottom:16px;
+  transition:width .35s cubic-bezier(.2,.8,.2,1);
+}
+.tarjeta:hover h3::before{width:56px}
+.tarjeta p{margin-top:12px; color:var(--acero)}
+
+/* ── rubros ────────────────────────────────────────────────────────── */
+.rubros-l{list-style:none; margin:clamp(28px,3.5vw,44px) 0 0; padding:0; border-top:1px solid var(--linea)}
+.rubro{
+  display:flex; align-items:baseline; gap:20px;
+  padding:20px 8px; border-bottom:1px solid var(--linea);
+  font:600 clamp(1.05rem,1.9vw,1.45rem)/1.3 var(--disp); letter-spacing:-.015em;
+  transition:background .3s, padding-left .3s cubic-bezier(.2,.8,.2,1);
+}
+.rubro:hover{background:var(--panel); padding-left:20px}
+.rubro-n{font:500 .78rem var(--mono); color:var(--acero); letter-spacing:.08em; flex:none}
+.rubro:hover .rubro-n{color:var(--indice-txt)}
+.rubros-p{margin-top:28px; color:var(--acero); max-width:58ch}
+
+/* ── tus datos ─────────────────────────────────────────────────────── */
+.cuidado{background:var(--panel); max-width:none}
+.cuidado > *{max-width:var(--ancho); margin-inline:auto}
+.cuidado-l{list-style:none; margin:clamp(28px,3.5vw,44px) 0 0; padding:0; display:grid; gap:0}
+.cuidado-l li{
+  padding:20px 0 20px 34px; border-top:1px solid var(--linea); position:relative;
+  color:var(--acero); max-width:76ch;
+}
+.cuidado-l li::before{
+  content:""; position:absolute; left:0; top:27px;
+  width:14px; height:2px; background:var(--realce);
+}
+.cuidado-l b{color:var(--tinta)}
+
+@media (max-width:900px){ .tarjetas{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){
+  .animar-sol .sol-l{opacity:1; transform:none}
+  .tarjeta:hover,.rubro:hover{transform:none; padding-left:8px}
+}
+
+/* ===================================================================
+   v2 · 27-sep · LAMINAS DE CONTEXTO · «SI COMPRAS» · ESCENARIO
+   =================================================================== */
+
+/* ── «Si compras»: columna fija + cuatro dolores ───────────────────
+   Antes era media rejilla de dos columnas a la que le faltaba la otra
+   mitad, y se veia el hueco. Ahora el titulo se queda quieto mientras
+   pasan los cuatro. */
+.compras{
+  max-width:var(--ancho); margin:0 auto; padding:clamp(56px,8vw,112px) var(--lado);
+  display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr); gap:clamp(32px,5vw,72px);
+  align-items:start;
+}
+.compras-fijo{position:sticky; top:96px}
+.compras-fijo h2{font:500 clamp(1.9rem,3.4vw,2.9rem)/1.05 var(--disp); letter-spacing:-.03em; max-width:16ch}
+.compras-quien{margin-top:18px; color:var(--acero); max-width:34ch}
+.compras-fijo .boton{margin-top:28px}
+
+.dolores{margin:0; display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--linea); border:1px solid var(--linea); border-radius:10px; overflow:hidden}
+.dolor{background:var(--panel); padding:clamp(22px,2.6vw,30px); transition:background .3s}
+.dolor:hover{background:var(--fondo-2)}
+.dolor dt{font:600 1.12rem/1.3 var(--disp); letter-spacing:-.01em}
+.dolor dd{margin:10px 0 0; color:var(--acero); font-size:.97rem}
+
+/* ── responsivo ──────────────────────────────────────────────────── */
+@media (max-width:1040px){
+  .compras{grid-template-columns:1fr}
+  .compras-fijo{position:static}
+  .proceso{grid-template-columns:1fr}
+  /* En una sola columna el escenario iria siempre por detras del paso
+     que toca, asi que se esconde: los pasos ya se explican solos. */
+  .escenario{display:none}
+}
+@media (max-width:620px){
+  .dolores{grid-template-columns:1fr}
+  .lamina{grid-template-columns:1fr; gap:8px}
+  .lamina-n{padding-top:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .escena *{animation:none !important; opacity:1 !important; transform:none !important}
+  .escena{transition:none}
+  .traqueo-av{width:100%} .paquete{left:calc(100% - 22px)}
+  .redx-l path{stroke-dashoffset:0} .redx-p circle{opacity:1}
+}
+
+/* ===================================================================
+   LAS OCHO ESCENAS · v3
+   -------------------------------------------------------------------
+   Reglas que vienen de la skill `improve-animations` (Emil Kowalski):
+   · Curvas fuertes, no las de fabrica. Entrada = ease-out.
+   · Nada de UI por encima de 300 ms. Una escena entera cierra en 1,1 s,
+     porque antes tardaban 2,4 s y el lector ya habia pasado de largo.
+   · Solo `transform` y `opacity`. La version anterior animaba `left` y
+     `width`, que disparan calculo de disposicion en cada fotograma.
+   · Nunca `scale(0)`: nada aparece de la nada. Se entra desde 0,94.
+   =================================================================== */
+
+:root{
+  --sale:cubic-bezier(.23,1,.32,1);       /* entradas y salidas */
+  --entra-sale:cubic-bezier(.77,0,.175,1); /* movimiento en pantalla */
+}
+
+.escena{
+  position:absolute; inset:0; padding:clamp(18px,2.4vw,26px);
+  display:flex; flex-direction:column; gap:9px;
+  opacity:0; transform:scale(.985); pointer-events:none;
+  transition:opacity .22s var(--sale), transform .22s var(--sale);
+  overflow:hidden;
+}
+.escena.activa{opacity:1; transform:none}
+.esc-t{
+  font:600 .68rem var(--mono); letter-spacing:.15em; text-transform:uppercase;
+  color:#A3ACB2; flex:none;
+}
+.escena-pie{
+  margin-top:auto; padding-top:11px; font:500 .72rem var(--mono);
+  letter-spacing:.03em; color:#A3ACB2; border-top:1px solid #2A3238; flex:none;
+}
+
+/* Entrada comun: los hijos suben un poco y aparecen, escalonados 45 ms. */
+@keyframes surge{from{opacity:0; transform:translateY(9px)} to{opacity:1; transform:none}}
+@keyframes surgeX{from{opacity:0; transform:translateX(-12px)} to{opacity:1; transform:none}}
+@keyframes brota{from{opacity:0; transform:scale(.94)} to{opacity:1; transform:none}}
+
+/* ── piezas compartidas ──────────────────────────────────────────── */
+.lineas{display:flex; flex-direction:column; gap:5px}
+.lineas-j .lin{background:transparent; border-bottom:1px solid #262E33; border-radius:0}
+.lin{
+  display:flex; align-items:center; gap:10px;
+  background:#20262A; border-radius:6px; padding:9px 11px;
+  font-size:.82rem; color:#C3CACE; opacity:0;
+}
+.lin span{flex:1; min-width:0}
+.lin span b{font:600 .72rem var(--mono); color:#A3ACB2; margin-right:7px}
+.lin em{font:500 .84rem var(--mono); font-style:normal; font-variant-numeric:tabular-nums; color:var(--blanco)}
+.activa .lin{animation:surgeX .26s var(--sale) both}
+.activa .lin:nth-child(1){animation-delay:.14s} .activa .lin:nth-child(2){animation-delay:.2s}
+.activa .lin:nth-child(3){animation-delay:.26s} .activa .lin:nth-child(4){animation-delay:.32s}
+.activa .lin:nth-child(5){animation-delay:.38s} .activa .lin:nth-child(6){animation-delay:.44s}
+.l-duda{background:#3A2E12}
+.l-mal{background:#3A1D18}
+.l-hon{box-shadow:inset 3px 0 0 var(--indice); background:rgba(47,111,222,.14) !important; border-radius:6px !important; border-bottom:none !important}
+
+.tic{width:15px; height:15px; border-radius:50%; flex:none; background:#4CBF86; position:relative}
+.tic::after{content:""; position:absolute; left:4px; top:6.5px; width:6px; height:3px; border:solid #16181A; border-width:0 0 1.8px 1.8px; transform:rotate(-45deg)}
+.tic-g{width:22px; height:22px}
+.tic-g::after{left:6px; top:9.5px; width:9px; height:4.5px; border-width:0 0 2.4px 2.4px}
+.duda,.mal{
+  display:flex; align-items:center; justify-content:center; flex:none;
+  width:15px; height:15px; border-radius:50%; font:700 10px var(--sans);
+}
+.duda{background:#E0A63A; color:#16181A}
+.mal{background:#E8907E; color:#16181A}
+.et,.et-v,.et-g{
+  font:600 .6rem var(--mono); letter-spacing:.05em; text-transform:uppercase;
+  border-radius:3px; padding:3px 6px; flex:none;
+}
+.et{color:#4CBF86; border:1px solid #245A3F}
+.et-v{color:#F0D08A; border:1px solid #5A4720}
+.et-g{color:#4CBF86; border:1px solid #245A3F}
+.nota-roja{font-size:.78rem; color:#FFB3A6; opacity:0}
+.nota-verde{font-size:.78rem; color:#8FE0B4; opacity:0}
+.activa .nota-roja,.activa .nota-verde{animation:surge .26s var(--sale) .52s both}
+
+/* ── 01 · entrada ────────────────────────────────────────────────── */
+.zona{position:relative; height:104px; flex:none}
+.zona-caja{
+  position:absolute; inset:0; border:2px dashed #3A444B; border-radius:9px;
+  display:flex; align-items:flex-end; justify-content:center; padding-bottom:9px;
+}
+.zona-t{font:500 .68rem var(--mono); color:#818A90; letter-spacing:.03em}
+.ficha{
+  position:absolute; left:50%; top:6px; display:flex; align-items:center; gap:8px;
+  background:var(--panel); color:var(--tinta); border-radius:7px; padding:7px 11px;
+  box-shadow:0 8px 22px rgba(0,0,0,.5); white-space:nowrap; opacity:0;
+}
+.ficha-ext{font:600 .58rem var(--mono); letter-spacing:.07em; background:var(--indice); color:#fff; padding:2px 5px; border-radius:3px}
+.ficha-n{font:600 .76rem var(--sans)}
+.f-a{margin-left:-82px} .f-b{margin-left:-108px} .f-c{margin-left:-44px}
+.activa .ficha{animation:caeFicha .42s var(--sale) both}
+.activa .f-a{animation-delay:.02s} .activa .f-b{animation-delay:.1s} .activa .f-c{animation-delay:.18s}
+@keyframes caeFicha{
+  from{opacity:0; transform:translateY(-34px) scale(.94)}
+  to{opacity:1; transform:translateY(46px)}
+}
+.activa .f-b{--r:-6deg} .activa .f-c{--r:5deg}
+
+/* ── 02 · especificación ─────────────────────────────────────────── */
+.pregunta{background:#20262A; border-left:2px solid #E0A63A; border-radius:0 6px 6px 0; padding:10px 12px; opacity:0}
+.pregunta-t{font:600 .66rem var(--mono); letter-spacing:.1em; text-transform:uppercase; color:#E0A63A}
+.pregunta-c{margin-top:5px; font-size:.82rem; color:#C3CACE}
+.activa .pregunta{animation:surge .26s var(--sale) .5s both}
+
+/* ── 03 · la red ─────────────────────────────────────────────────── */
+.neuro{flex:1; min-height:0; display:flex}
+.neuro svg{width:100%; height:100%}
+.n-l path{stroke:#3B454D; stroke-dasharray:100; stroke-dashoffset:100}
+.activa .n-l path{animation:trazar .5s var(--sale) both}
+.activa .n-l path:nth-child(-n+4){animation-delay:.05s}
+.activa .n-l path:nth-child(n+5):nth-child(-n+8){animation-delay:.13s}
+.activa .n-l path:nth-child(n+9):nth-child(-n+12){animation-delay:.21s}
+.activa .n-l path:nth-child(n+13){animation-delay:.3s}
+.n-p circle{fill:#9AA3A9; opacity:0}
+.activa .n-p circle{animation:brota .24s var(--sale) both}
+.activa .n-p circle:nth-child(-n+4){animation-delay:.3s}
+.activa .n-p circle:nth-child(n+5):nth-child(-n+8){animation-delay:.38s}
+.activa .n-p circle:nth-child(n+9){animation-delay:.46s}
+.n-pulso circle{fill:#7FA6F2; opacity:0}
+.activa .n-pulso circle{animation:aparece .2s ease-out .6s both}
+@keyframes aparece{to{opacity:.95}}
+.n-c{fill:var(--indice)}
+.chat{display:flex; flex-wrap:wrap; gap:5px; justify-content:center; flex:none}
+.burb{
+  background:#20262A; color:#C3CACE; border-radius:11px 11px 11px 3px;
+  padding:5px 10px; font-size:.74rem; opacity:0;
+}
+.burb.b-r{background:var(--indice); color:#fff; border-radius:11px 11px 3px 11px}
+.activa .burb{animation:brota .24s var(--sale) both}
+.activa .burb:nth-child(1){animation-delay:.6s} .activa .burb:nth-child(2){animation-delay:.7s}
+.activa .burb:nth-child(3){animation-delay:.8s} .activa .burb:nth-child(4){animation-delay:.9s}
+
+/* ── 04 · a la misma base ────────────────────────────────────────── */
+.sueltos{display:flex; gap:6px; justify-content:center; flex:none; height:28px}
+.doc{
+  font:600 .6rem var(--mono); letter-spacing:.06em; text-transform:uppercase;
+  background:#20262A; color:#A3ACB2; padding:6px 9px; border-radius:4px;
+}
+.d1{transform:rotate(-9deg) translateY(-3px)} .d2{transform:rotate(6deg) translateY(3px)}
+.d3{transform:rotate(-4deg)} .d4{transform:rotate(10deg) translateY(-2px)} .d5{transform:rotate(-7deg) translateY(2px)}
+.activa .doc{animation:endereza .34s var(--entra-sale) both}
+.activa .d2{animation-delay:.04s} .activa .d3{animation-delay:.08s}
+.activa .d4{animation-delay:.12s} .activa .d5{animation-delay:.16s}
+@keyframes endereza{to{transform:none}}
+
+/* ── 05 · el cuadro ──────────────────────────────────────────────── */
+.total{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:10px 11px; background:#20262A; border-radius:6px; opacity:0;
+  font-weight:700; color:var(--blanco); font-size:.86rem;
+}
+.total em{font:600 1.05rem var(--mono); font-style:normal; font-variant-numeric:tabular-nums}
+.activa .total{animation:surge .26s var(--sale) .5s both}
+
+/* ── 06 · la muestra ─────────────────────────────────────────────── */
+.ruta-m{position:relative; height:62px; flex:none; margin-top:4px}
+.ruta-l{position:absolute; left:6%; right:6%; top:13px; height:2px; background:#2E373D; border-radius:2px; overflow:hidden}
+.ruta-av{
+  display:block; height:100%; background:#4CBF86; transform:scaleX(0); transform-origin:left;
+}
+.activa .ruta-av{animation:avanzaX .62s var(--entra-sale) .1s both}
+@keyframes avanzaX{to{transform:scaleX(1)}}
+.caja{
+  position:absolute; left:6%; top:6px; width:17px; height:17px; border-radius:3px;
+  background:var(--panel); box-shadow:0 3px 12px rgba(0,0,0,.55);
+}
+.activa .caja{animation:llevaCaja .62s var(--entra-sale) .1s both}
+@keyframes llevaCaja{to{transform:translateX(min(298px,78vw))}}
+.hito{position:absolute; top:0; text-align:center; width:74px}
+.hito i{display:block; width:9px; height:9px; border-radius:50%; background:#2E373D; margin:9px auto 7px}
+.hito span{font:500 .64rem var(--mono); color:#A3ACB2; letter-spacing:.03em}
+.h1{left:6%; margin-left:-37px} .h2{left:37%; margin-left:-37px}
+.h3{left:68%; margin-left:-37px} .h4{left:94%; margin-left:-37px}
+.activa .hito i{animation:prende .2s var(--sale) both}
+.activa .h1 i{animation-delay:.14s} .activa .h2 i{animation-delay:.32s}
+.activa .h3 i{animation-delay:.5s} .activa .h4 i{animation-delay:.68s}
+@keyframes prende{to{background:#4CBF86}}
+.sello{
+  border:1.5px solid #245A3F; border-radius:8px; padding:12px; text-align:center;
+  background:rgba(76,191,134,.08); opacity:0;
+}
+.sello-c{display:flex; align-items:center; justify-content:center; gap:9px}
+.sello-c span{font:600 .72rem var(--mono); letter-spacing:.12em; color:#8FE0B4}
+.sello-p{margin-top:7px; font-size:.76rem; color:#A3ACB2}
+.activa .sello{animation:sella .34s var(--sale) .76s both}
+@keyframes sella{from{opacity:0; transform:scale(1.08) rotate(-2deg)} to{opacity:1; transform:none}}
+.libera{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  background:#20262A; border-radius:6px; padding:9px 11px; font-size:.82rem; color:var(--blanco); opacity:0;
+}
+.activa .libera{animation:surge .26s var(--sale) 1s both}
+
+/* ── 07 · seguimiento ────────────────────────────────────────────── */
+.traq{flex:none}
+.traq-l{height:3px; background:#2A3238; border-radius:2px; margin-bottom:13px; overflow:hidden}
+.traq-av{display:block; height:100%; background:var(--indice); transform:scaleX(0); transform-origin:left}
+.activa .traq-av{animation:avanzaX .72s var(--entra-sale) .1s both}
+.paradas{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; text-align:center}
+.parada i{display:block; width:10px; height:10px; border-radius:50%; background:#2A3238; margin:0 auto 7px}
+.parada span{font:500 .64rem var(--mono); color:#A3ACB2; letter-spacing:.03em}
+.activa .parada i{animation:prendeR .2s var(--sale) both}
+.activa .parada:nth-child(1) i{animation-delay:.14s} .activa .parada:nth-child(2) i{animation-delay:.32s}
+.activa .parada:nth-child(3) i{animation-delay:.5s} .activa .parada:nth-child(4) i{animation-delay:.68s}
+@keyframes prendeR{to{background:var(--indice); box-shadow:0 0 0 3px rgba(47,111,222,.22)}}
+.eta{font-size:.82rem; color:#C3CACE; opacity:0}
+.eta b{color:var(--blanco)}
+.activa .eta{animation:surge .26s var(--sale) .78s both}
+.pedido{display:flex; flex-direction:column; gap:5px}
+.ped-f{
+  display:flex; align-items:center; gap:10px; background:#20262A; border-radius:6px;
+  padding:9px 11px; font-size:.79rem; color:#C3CACE; opacity:0;
+}
+.ped-f span:nth-child(2){flex:1; min-width:0}
+.ped-c{
+  font:600 .72rem var(--mono); color:var(--blanco); background:#2C343A;
+  border-radius:4px; padding:3px 7px; flex:none;
+}
+.activa .ped-f{animation:surgeX .26s var(--sale) both}
+.activa .ped-f:nth-child(1){animation-delay:.86s} .activa .ped-f:nth-child(2){animation-delay:.94s}
+.activa .ped-f:nth-child(3){animation-delay:1.02s}
+
+/* ── 08 · queda en la base ───────────────────────────────────────── */
+.deposito{
+  border:1.5px solid var(--indice); border-radius:8px; padding:12px; text-align:center; opacity:0;
+}
+.dep-t{display:block; font:600 .7rem var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--blanco)}
+.dep-c{display:block; margin-top:5px; font:500 .72rem var(--mono); color:#A3ACB2}
+.activa .deposito{animation:brota .3s var(--sale) .5s both}
+
+/* ── quien pidio que nada se mueva ───────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  .escena *{animation:none !important; opacity:1 !important}
+  .escena{transition:none}
+  .ficha{transform:translateY(46px)}
+  .ruta-av,.traq-av{transform:scaleX(1)}
+  .caja{transform:translateX(min(298px,78vw))}
+  .hito i,.parada i{background:#4CBF86}
+  .parada i{background:var(--indice)}
+  .n-l path{stroke-dashoffset:0}
+  .doc{transform:none}
+}
+
+/* ===================================================================
+   UN SITIO, DOS PAGINAS
+   El conmutador Compro/Vendo va en la cabecera de las dos, marcado el
+   lado en el que estas. Antes cada pagina tenia su propio menu y
+   parecian dos webs distintas; son la misma con dos entradas.
+   =================================================================== */
+.cambio{
+  display:flex; gap:2px; padding:3px; background:rgba(255,255,255,.07);
+  border-radius:99px; flex:none;
+}
+.cambio a{
+  font:600 .82rem var(--sans); color:var(--niebla); text-decoration:none;
+  padding:7px 16px; border-radius:99px; white-space:nowrap;
+  transition:background .18s var(--sale), color .18s var(--sale);
+}
+.cambio a:hover{color:var(--blanco)}
+.cambio a.on{background:var(--panel); color:var(--tinta)}
+
+/* ── pie de tres columnas ────────────────────────────────────────── */
+.pie{padding:clamp(44px,6vw,68px) var(--lado) 48px; background:#0F1113; color:var(--niebla); font-size:.93rem}
+.pie-r{
+  max-width:var(--ancho); margin:0 auto;
+  display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(24px,4vw,56px);
+}
+.pie-col p+p{margin-top:9px}
+.pie-marca b{color:var(--blanco)}
+.pie-t{font:600 .68rem var(--mono); letter-spacing:.14em; text-transform:uppercase; color:#818A90; margin-bottom:12px}
+.pie-col a{
+  display:block; color:var(--niebla); text-decoration:none; padding:5px 0;
+  border-bottom:1px solid transparent; width:fit-content;
+  transition:color .18s var(--sale), border-color .18s var(--sale);
+}
+.pie-col a:hover{color:var(--blanco); border-bottom-color:var(--indice)}
+.pie-chico{max-width:var(--ancho); margin:clamp(30px,4vw,44px) auto 0; padding-top:22px; border-top:1px solid #23272A; font-size:.82rem; color:#818A90}
+.lema{max-width:var(--ancho); margin:22px auto 0 !important; font:500 1.05rem/1 var(--disp); color:var(--blanco)}
+
+@media (max-width:900px){
+  .pie-r{grid-template-columns:1fr 1fr}
+  .pie-col:first-child{grid-column:1 / -1}
+}
+@media (max-width:700px){
+  .menu{gap:14px; font-size:.86rem}
+  .pie-r{grid-template-columns:1fr}
+}
+@media (max-width:430px){
+  /* Las tres paginas pesan mas que el boton: el boton se va, el menu se queda. */
+  .menu{gap:11px; font-size:.8rem}
+}
+
+/* El eyebrow: pildora, no etiqueta suelta. Lo usan las dos paginas. */
+.ojo{
+  display:inline-block; margin:0 0 22px;
+  font:600 .66rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--acero); border:1px solid var(--linea); border-radius:99px;
+  padding:7px 13px; background:var(--panel);
+}
+
+/* ===================================================================
+   EL PADRON · la pared que se escribe
+   -------------------------------------------------------------------
+   Una sola seccion para «que hacemos» y «somos los primeros». Aqui el
+   argumento es la ESCALA: 308 casillas que se van llenando en diagonal
+   al entrar en pantalla. Cada casilla es un dato con su documento, y al
+   lado se abre una para enseñar lo que hay dentro.
+
+   Ninguna otra parte de la pagina usa densidad: el mapa cuenta geografia
+   y las escenas cuentan proceso. Esta cuenta cuantos.
+   =================================================================== */
+
+.padron{
+  background:var(--realce); color:var(--blanco);
+  padding:clamp(72px,10vw,150px) var(--lado);
+  border-top:1px solid var(--linea);
+  display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:clamp(36px,5vw,76px); align-items:start;
+}
+.padron > *{min-width:0}
+.padron .ojo{color:var(--niebla); border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.04)}
+.padron h2{font:500 clamp(2rem,4.2vw,3.4rem)/1.03 var(--disp); letter-spacing:-.035em; max-width:16ch}
+.padron-p{margin-top:22px; color:#B9C1C6; max-width:46ch}
+
+.padron-leyenda{display:flex; flex-wrap:wrap; gap:16px; margin-top:26px}
+.padron-leyenda span{display:flex; align-items:center; gap:8px; font:500 .74rem var(--mono); color:#7C858C; letter-spacing:.04em}
+.k{width:11px; height:11px; border-radius:2px; border:1px solid rgba(255,255,255,.16)}
+.k.ti{background:rgba(255,255,255,.22); border-color:transparent}
+.k.ll{background:var(--indice); border-color:transparent}
+
+/* ── la pared ────────────────────────────────────────────────────── */
+.pared{
+  display:grid; grid-template-columns:repeat(22,1fr); gap:5px;
+}
+/* Reposo VISIBLE, no invisible: si el navegador no llega a disparar el
+   aviso de entrada, se ve la pared apagada y no un hueco en blanco. Es
+   la misma regla que con las cifras: nunca enseñar vacio lo que existe. */
+.pared i{
+  aspect-ratio:1; border-radius:2px;
+  border:1px solid rgba(255,255,255,.1); background:transparent;
+  opacity:.16; transform:scale(.72);
+  transition:opacity .34s var(--sale), transform .34s var(--sale);
+  transition-delay:calc(var(--o) * 11ms);
+}
+.pared i.ti{background:rgba(255,255,255,.22); border-color:transparent}
+.pared i.ll{background:var(--indice); border-color:transparent}
+.dentro .pared i{opacity:1; transform:none}
+.sin-js .pared i{opacity:1; transform:none}
+
+/* ── la casilla abierta ──────────────────────────────────────────── */
+.ficha-d{
+  margin:26px 0 0; background:#1D2226; border:1px solid #2A3238; border-radius:18px;
+  padding:20px 22px; max-width:440px;
+  opacity:.35; transform:translateY(16px);
+  transition:opacity .6s var(--sale) .5s, transform .6s var(--sale) .5s;
+}
+.dentro .ficha-d{opacity:1; transform:none}
+.ficha-d figcaption{
+  font:600 .62rem var(--mono); letter-spacing:.17em; text-transform:uppercase; color:#7C858C;
+}
+.fd-q{margin-top:14px; font:600 1.05rem var(--disp); letter-spacing:-.01em}
+.fd-v{
+  margin-top:3px; font:500 1.7rem var(--mono); letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums; color:var(--blanco);
+}
+.fd-l{margin:16px 0 0; display:grid; gap:9px}
+.fd-l > div{display:grid; grid-template-columns:76px 1fr; gap:12px; align-items:baseline}
+.fd-l dt{font:500 .68rem var(--mono); letter-spacing:.1em; text-transform:uppercase; color:#818A90}
+.fd-l dd{margin:0; font-size:.88rem; color:#C3CACE}
+.fd-f{
+  font:600 .64rem var(--mono); letter-spacing:.06em; text-transform:uppercase;
+  color:#8FE0B4; border:1px solid #245A3F; border-radius:3px; padding:3px 7px;
+}
+.padron-pie{margin-top:18px; font:500 .76rem var(--mono); color:#818A90; letter-spacing:.03em}
+
+/* ── la prueba de que nadie más ──────────────────────────────────── */
+.prueba{margin-top:30px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); border-radius:22px; padding:9px; max-width:460px}
+.prueba-c{font:600 .62rem var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--niebla); padding:13px 15px 0}
+.prueba-t{list-style:none; margin:0; padding:13px 15px 0; display:flex; flex-wrap:wrap; gap:6px}
+.prueba-t li{font:600 .74rem var(--sans); color:var(--blanco); background:rgba(255,255,255,.09); border-radius:99px; padding:6px 11px}
+.prueba-r{margin-top:14px; background:var(--tinta-2); border-radius:14px; padding:18px 15px; display:flex; align-items:center; gap:15px}
+.prueba-n{font:500 clamp(2.6rem,4.2vw,3.6rem)/1 var(--mono); color:var(--indice); letter-spacing:-.04em}
+.prueba-l{font-size:.84rem; color:#B9C1C6; line-height:1.35}
+.prueba-l b{color:#7C858C; font-weight:500; font-size:.76rem}
+
+@media (max-width:1000px){
+  .padron{grid-template-columns:1fr}
+  .pared{grid-template-columns:repeat(18,1fr); gap:4px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pared i,.ficha-d{opacity:1 !important; transform:none !important; transition:none}
+}
+
+/* ===================================================================
+   PORTADA VIVA · la corriente y el titular que entra
+   -------------------------------------------------------------------
+   La referencia que pidio Alfredo (legencymedia.com) tiene un campo de
+   particulas fluyendo detras del titular. Aqui las particulas no son
+   adorno abstracto: son CELDAS DE DATO, las mismas del padron, yendo
+   hacia la base. La portada y el padron hablan el mismo idioma visual.
+
+   Va en canvas y no en DOM: 420 celdas como nodos serian 420 reflujos
+   por fotograma. El bucle se detiene solo cuando la portada sale de
+   pantalla o si el visitante pidio menos movimiento.
+   =================================================================== */
+
+.portada-texto{position:relative}
+
+/* ── el titular entra palabra a palabra ──────────────────────────── */
+.tit .pal{display:inline-block; overflow:hidden; vertical-align:bottom; padding-bottom:.08em; margin-bottom:-.08em}
+.tit .pal i{
+  display:inline-block; font-style:normal;
+  transform:translateY(105%);
+  animation:subePal .72s cubic-bezier(.16,.84,.3,1) both;
+  animation-delay:calc(var(--p) * 65ms + 120ms);
+}
+@keyframes subePal{to{transform:none}}
+.sin-js .tit .pal i{transform:none; animation:none}
+
+@media (prefers-reduced-motion:reduce){
+  .tit .pal i{transform:none; animation:none}
+}
+
+/* La casilla recien escrita da un destello y se queda. Es lo unico de la
+   pared que se repite sin parar, y representa algo que de verdad ocurre:
+   entra una cotizacion y la base crece. */
+.pared i.recien{animation:reciente .9s cubic-bezier(.16,.84,.3,1) both}
+@keyframes reciente{
+  0%{transform:scale(.4); box-shadow:0 0 0 0 rgba(47,111,222,.55)}
+  45%{transform:scale(1.5); box-shadow:0 0 0 5px rgba(47,111,222,.18)}
+  100%{transform:none; box-shadow:0 0 0 0 rgba(47,111,222,0)}
+}
+@media (prefers-reduced-motion:reduce){ .pared i.recien{animation:none} }
+
+/* ===================================================================
+   EL PROBLEMA · formato indisea.com
+   Etiqueta en mono arriba, titular enorme que se revela LINEA A LINEA
+   con el scroll, regla de acento y el cuerpo debajo. Cada linea es una
+   ventana con `overflow:hidden` y la letra sube desde fuera.
+   =================================================================== */
+.problema{
+  background:var(--realce); color:var(--blanco);
+  padding:clamp(90px,15vh,190px) var(--lado);
+  border-top:1px solid var(--linea);
+}
+.pr-c{max-width:calc(var(--ancho) - 2 * var(--lado)); margin:0 auto}
+.pr-et{
+  font:500 .72rem var(--mono); letter-spacing:.22em; text-transform:uppercase;
+  color:#818A90; margin-bottom:clamp(36px,6vh,64px);
+}
+.pr-t{
+  font:500 clamp(2.4rem,7vw,6rem)/1.02 var(--disp); letter-spacing:-.04em;
+  display:flex; flex-direction:column; gap:.02em;
+}
+.ln{display:block; overflow:hidden; padding-bottom:.1em; margin-bottom:-.1em}
+.ln i{
+  display:block; font-style:normal;
+  transform:translateY(102%);
+  animation:subeLinea .9s cubic-bezier(.16,.84,.3,1) both;
+  animation-delay:calc(var(--l) * 110ms);
+}
+@keyframes subeLinea{to{transform:none}}
+.sin-js .ln i{transform:none; animation:none}
+
+/* Con scroll guiado la revelacion la manda la rueda, no un reloj. */
+@supports (animation-timeline: view()){
+  .pr-t{view-timeline:--pr block}
+  .ln i{animation-timeline:--pr; animation-duration:1s; animation-delay:0s; animation-timing-function:linear}
+  .ln:nth-child(1) i{animation-range:entry 22% entry 52%}
+  .ln:nth-child(2) i{animation-range:entry 30% entry 60%}
+  .ln:nth-child(3) i{animation-range:entry 38% entry 68%}
+}
+
+.pr-regla{
+  display:block; width:54px; height:3px; background:var(--indice);
+  margin-top:clamp(36px,6vh,60px); border-radius:2px;
+}
+.pr-cuerpo{margin-top:26px; display:grid; gap:16px; max-width:56ch}
+.pr-cuerpo p{color:#A9B2B7; font-size:1.02rem}
+.pr-cuerpo b{color:var(--blanco); font-weight:700}
+
+@media (prefers-reduced-motion:reduce){ .ln i{transform:none; animation:none} }
+
+/* ===================================================================
+   PANTALLA DE CARGA
+   -------------------------------------------------------------------
+   El signo de la marca SE ENSAMBLA: sus cinco bloques llegan cada uno
+   por una diagonal isometrica, encajan en la reja de 100x100, y cuando
+   estan todos una barrida de luz cobalto cruza el signo. El punto queda
+   latiendo mientras la pagina acaba de cargar; al abrir, el signo entero
+   crece y se va con la cortina.
+
+   No es un giro infinito de carga (el brandbook los prohibe): tiene
+   principio y fin. Se cierra sola a los 3,4 s como maximo aunque algo
+   falle --una web que no deja entrar es peor que una web sin
+   animacion-- y si el visitante pidio menos movimiento, no aparece.
+   =================================================================== */
+.carga{
+  position:fixed; inset:0; z-index:200;
+  background:var(--realce); color:var(--blanco);
+  display:grid; place-items:center;
+  transition:opacity .5s var(--sale), visibility .5s;
+}
+.carga-c{display:flex; flex-direction:column; align-items:center; text-align:center; padding:24px}
+
+/* ── EL PRELOADER ───────────────────────────────────────────────
+   Copiado de unitedcarriers.com con SUS medidas, leidas de su CSS
+   computado a 1024x768 el 8-oct-2026. Los numeros no son a ojo:
+
+     tipografia   Helvetica Neue 9,48px / 12,33px, peso 400
+     letter-spacing  normal (NO espaciado: eso lo puse yo de mas)
+     lista izq    68px de ancho, items de 10px, en x=86
+     lista der    140px de ancho, en x=798
+     contador     9,48px, blanco, al borde derecho (NO un numero grande)
+     mapa         359 x 184, centrado en la pantalla
+     color listas rgba(255,255,255,.24)
+
+   Todo va en `em` sobre un tamaño base que escala con la ventana, para
+   que a 1024px salgan exactamente esos pixeles y en otras pantallas
+   guarde la proporcion.
+   ------------------------------------------------------------------ */
+.carga{display:block; font:400 clamp(8px, 0.926vw, 11px)/1.3 var(--sans)}
+.cg-reja{
+  /* `inset:0` y no `height:100%`: `.carga` sigue siendo una reja que
+     centra, asi que el hijo se encogia a su contenido y todo acababa
+     amontonado en el centro con el mapa a 0x0. */
+  position:absolute; inset:0;
+  /* las tres piezas van colocadas, no en reja: en el original cada una
+     esta en su sitio exacto y centradas en vertical, no distribuidas. */
+}
+.cg-lista{
+  list-style:none; margin:0; padding:0;
+  font-size:1em; line-height:1.3;
+  color:rgba(255,255,255,.24);
+}
+.cg-lista li{
+  height:1.055em; opacity:0;
+  animation:cg-linea .28s linear calc(var(--k) * 60ms + 160ms) forwards;
+}
+@keyframes cg-linea{to{opacity:1}}
+
+.cg-izq{
+  position:absolute; left:8.4%; top:50%; transform:translateY(-50%);
+  width:7.18em;
+}
+.cg-der{
+  position:absolute; left:77.9%; top:50%; transform:translateY(-50%);
+  width:14.77em; display:flex; align-items:center; gap:1em;
+}
+.cg-contador{
+  margin:0; font-size:1em; color:#fff; white-space:nowrap;
+}
+
+/* ── el mapa · 359 x 184 centrado ─────────────────────────────── */
+.cg-centro{position:absolute; inset:0; display:grid; place-items:center}
+.cg-mapa{position:relative; width:min(35.06%, 620px); aspect-ratio:359 / 184}
+.cg-mapa canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+.cg-punto{
+  position:absolute; width:3px; height:3px; margin:-1.5px 0 0 -1.5px;
+  border-radius:50%; background:rgba(255,255,255,.72);
+  opacity:0; animation:cg-asoma .25s linear calc(var(--k) * 70ms + 460ms) forwards;
+}
+.cg-punto-ve{background:var(--indice-txt); width:4px; height:4px; margin:-2px 0 0 -2px}
+.cg-punto-ve::after{
+  content:""; position:absolute; left:50%; top:50%; width:4px; height:4px;
+  margin:-2px 0 0 -2px; border-radius:50%; border:1px solid rgba(127,166,242,.6);
+  animation:cg-onda 2.4s cubic-bezier(.2,.6,.3,1) 1s infinite;
+}
+@keyframes cg-asoma{to{opacity:1}}
+@keyframes cg-onda{0%{transform:scale(1); opacity:0} 14%{opacity:.75} 100%{transform:scale(9); opacity:0}}
+
+@media (max-width:760px){
+  .cg-izq{left:var(--lado); top:14%; transform:none}
+  .cg-der{left:auto; right:var(--lado); top:auto; bottom:14%; transform:none;
+          flex-direction:column; align-items:flex-end; width:auto; text-align:right}
+  .cg-mapa{width:84%}
+}
+
+@keyframes asomaCarga{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+.carga-n{margin-top:26px; font:600 1.05rem var(--disp); letter-spacing:-.01em; color:var(--niebla); opacity:0; animation:asomaCarga .45s var(--sale) .52s both}
+.carga-n b{color:var(--blanco); font-weight:900}
+.carga-p{margin-top:12px; font:500 .7rem var(--mono); letter-spacing:.2em; text-transform:uppercase; color:#818A90; opacity:0; animation:asomaCarga .45s var(--sale) .7s both}
+
+/* ── LA SALIDA · el signo crece y se va con la cortina ──────────── */
+
+.carga.fuera .carga-n,.carga.fuera .carga-p{
+  animation:cs-baja .3s ease-in forwards;
+}
+@keyframes cs-crece{to{transform:scale(2.4); opacity:0}}
+@keyframes cs-baja{to{opacity:0; transform:translateY(10px)}}
+
+.carga.fuera{opacity:0; visibility:hidden; transition:opacity .5s ease-in .1s, visibility 0s .6s}
+html.cargando body{overflow:hidden}
+/* Sin JavaScript no hay quien la quite: no se dibuja. */
+.sin-js .carga{display:none}
+@media (prefers-reduced-motion:reduce){ .carga{display:none} }
+
+/* ===================================================================
+   CÓMO FUNCIONA · la serpiente
+   -------------------------------------------------------------------
+   Formato de orchid.security: un hilo que baja en zigzag y va LLEGANDO
+   a cada paso mientras bajas, con una punta encendida en el frente. La
+   tarjeta a un lado y su dibujo al otro, alternando.
+
+   El hilo se llena con `animation-timeline` sobre la lista entera: el
+   avance lo manda la rueda. Las escenas son las mismas ocho de antes,
+   ahora cada una junto a su paso en vez de en un escenario pegado.
+   =================================================================== */
+.serpiente{position:relative; margin-top:clamp(40px,6vw,76px)}
+
+.hilo{
+  position:absolute; left:50%; top:0; bottom:0; width:2px; margin-left:-1px;
+  background:var(--linea); border-radius:2px;
+}
+.hilo-lleno{
+  display:block; width:100%; height:100%; background:var(--indice);
+  transform:scaleY(0); transform-origin:top;
+}
+.hilo-punta{
+  position:absolute; left:50%; top:0; width:11px; height:11px; margin-left:-5.5px; margin-top:-5.5px;
+  border-radius:50%; background:var(--indice);
+  box-shadow:0 0 0 5px rgba(47,111,222,.22);
+  transform:translateY(0); opacity:0;
+}
+@supports (animation-timeline: view()){
+  .serpiente{view-timeline:--srp block}
+  .hilo-lleno{animation:crece linear both; animation-timeline:--srp; animation-range:entry 62% exit 38%}
+  .hilo-punta{animation:baja linear both; animation-timeline:--srp; animation-range:entry 62% exit 38%}
+  @keyframes crece{to{transform:scaleY(1)}}
+  @keyframes baja{0%{opacity:1; transform:translateY(0)} 100%{opacity:1; transform:translateY(calc(var(--alto,1200px)))}}
+}
+@supports not (animation-timeline: view()){
+  .hilo-lleno{transition:transform 1.4s cubic-bezier(.3,.7,.3,1)}
+  .dentro .hilo-lleno{transform:scaleY(1)}
+  .hilo-punta{display:none}
+}
+
+.nodos-l{list-style:none; margin:0; padding:0; display:grid; gap:clamp(56px,8vw,120px)}
+.eslabon{
+  display:grid; grid-template-columns:1fr 1fr; gap:clamp(36px,6vw,96px); align-items:center;
+  position:relative;
+}
+/* El punto donde el hilo toca este paso. */
+.eslabon-p{
+  position:absolute; left:50%; top:50%; width:13px; height:13px; margin:-6.5px 0 0 -6.5px;
+  border-radius:50%; background:var(--fondo-2); border:2px solid var(--linea);
+  transition:border-color .4s var(--sale), background .4s var(--sale), transform .4s var(--sale);
+}
+.eslabon.tocado .pz-p{border-color:var(--indice); background:var(--indice); transform:scale(1.25)}
+
+.nodo-t{
+  background:var(--panel); border:1px solid var(--linea); border-radius:18px;
+  padding:clamp(22px,2.6vw,32px);
+  opacity:0; transform:translateY(26px);
+  transition:opacity .7s var(--sale), transform .7s var(--sale), box-shadow .4s var(--sale);
+}
+.eslabon.tocado .nodo-t{opacity:1; transform:none; box-shadow:0 18px 40px -26px rgba(0,0,0,.45)}
+.sin-js .nodo-t,.sin-js .nodo-e{opacity:1; transform:none}
+.nodo-n{font:500 .74rem var(--mono); letter-spacing:.14em; color:var(--indice-txt)}
+.nodo-t h3{font:600 clamp(1.2rem,1.9vw,1.55rem)/1.22 var(--disp); letter-spacing:-.015em; margin-top:12px; max-width:24ch}
+.nodo-t p{margin-top:12px; color:var(--acero); font-size:.97rem}
+
+.nodo-e{
+  opacity:0; transform:translateY(26px);
+  transition:opacity .7s var(--sale) .12s, transform .7s var(--sale) .12s;
+}
+.eslabon.tocado .nodo-e{opacity:1; transform:none}
+/* La escena deja de estar pegada: ahora vive en su propio recuadro. */
+.nodo-e .escena{
+  position:relative; inset:auto; aspect-ratio:1/.86;
+  background:var(--realce); border-radius:16px; opacity:1; transform:none;
+}
+.eslabon.izq .nodo-t{grid-column:1} .eslabon.izq .nodo-e{grid-column:2}
+.eslabon.der .nodo-t{grid-column:2; grid-row:1} .eslabon.der .nodo-e{grid-column:1; grid-row:1}
+
+@media (max-width:900px){
+  .hilo{left:9px}
+  .eslabon{grid-template-columns:1fr; gap:20px; padding-left:38px}
+  .eslabon-p{left:9px; top:28px}
+  .eslabon.der .nodo-t,.eslabon.der .nodo-e,.eslabon.izq .nodo-t,.eslabon.izq .nodo-e{grid-column:1; grid-row:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  .nodo-t,.nodo-e{opacity:1 !important; transform:none !important}
+  .hilo-lleno{transform:scaleY(1)}
+  .hilo-punta{display:none}
+}
+
+/* ===================================================================
+   LA RED · el globo
+   -------------------------------------------------------------------
+   Al estilo del hero de weevolveit.com: una esfera de puntos girando.
+   La tierra son 3.710 puntos sacados de `mundo.json`, el mismo archivo
+   del mapa de la aplicacion, llevados a la esfera y proyectados en
+   ortografica. Canvas 2D y sin librerias: para esto un WebGL seria
+   traer un martillo. Se puede arrastrar.
+   =================================================================== */
+.red{background:#101416; color:var(--blanco); padding:clamp(56px,8vw,110px) var(--lado)}
+.red-cab{max-width:var(--ancho); margin:0 auto}
+.red .ojo{color:var(--acero); border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.04)}
+.red h2{font:500 clamp(2rem,4vw,3.2rem)/1.03 var(--disp); letter-spacing:-.03em; max-width:19ch}
+.red-bajada{margin-top:20px; color:#C0C8CC; max-width:62ch}
+.red-tablero{
+  max-width:var(--ancho); margin:clamp(32px,4vw,52px) auto 0;
+  display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:20px; align-items:start;
+}
+.globo-caja{margin:0; border:1px solid #232A2E; border-radius:12px; overflow:hidden; background:#0C1012}
+.globo{
+  display:block; width:100%; aspect-ratio:1/.82;
+  cursor:grab; touch-action:pan-y;
+}
+.globo:active{cursor:grabbing}
+.globo-caja figcaption{padding:12px 16px; border-top:1px solid #232A2E; font-size:.82rem; color:#A3ACB2}
+
+@media (max-width:1040px){ .red-tablero{grid-template-columns:1fr} }
+
+/* ===================================================================
+   DEL DOCUMENTO DE ENMANUEL (28-sep)
+   Tres huecos reales que tenia la pagina: que esta hecha la red, que
+   recibe el cliente al final, y como se contrata.
+   =================================================================== */
+
+/* ── la red, por dentro ──────────────────────────────────────────── */
+.red-que{list-style:none; display:flex; flex-wrap:wrap; gap:7px; margin:24px 0 0; padding:0}
+.red-que li{
+  font:600 .74rem var(--mono); letter-spacing:.05em; text-transform:uppercase;
+  color:var(--blanco); background:rgba(255,255,255,.08); border-radius:99px; padding:7px 13px;
+}
+.red-pregunta{margin-top:20px; color:#C0C8CC; max-width:60ch}
+.red-pregunta b{color:var(--blanco)}
+
+/* ── qué recibes ─────────────────────────────────────────────────── */
+.recibes{max-width:var(--ancho); margin:0 auto; padding:clamp(64px,9vw,128px) var(--lado)}
+.rec-cab h2{font:500 clamp(1.9rem,3.8vw,3rem)/1.04 var(--disp); letter-spacing:-.035em; max-width:22ch}
+.rec-bajada{margin-top:20px; color:var(--acero); max-width:54ch}
+.rec-l{
+  list-style:none; margin:clamp(36px,5vw,60px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--linea); border:1px solid var(--linea); border-radius:14px; overflow:hidden;
+}
+.rec{
+  background:var(--panel); padding:clamp(20px,2.4vw,28px);
+  transition:background .3s var(--sale);
+}
+.rec:hover{background:var(--fondo-2)}
+.rec-n{font:500 .72rem var(--mono); letter-spacing:.14em; color:var(--indice-txt)}
+.rec h3{font:600 1.06rem/1.25 var(--disp); letter-spacing:-.012em; margin-top:10px; max-width:20ch}
+.rec p{margin-top:9px; color:var(--acero); font-size:.92rem}
+
+/* ── cómo se trabaja ─────────────────────────────────────────────── */
+.modos-s{
+  background:var(--tinta-2); color:var(--blanco);
+  padding:clamp(64px,9vw,128px) var(--lado);
+}
+.modos-s > *{max-width:calc(var(--ancho) - 2 * var(--lado)); margin-inline:auto}
+.modos-s .ojo{color:var(--niebla); border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.04)}
+.modos-s .rec-bajada{color:#B9C1C6}
+.modos{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:clamp(14px,1.8vw,24px);
+  margin-top:clamp(36px,5vw,60px);
+}
+.modo{
+  border-top:2px solid rgba(255,255,255,.18); padding-top:20px;
+  transition:border-color .35s var(--sale);
+}
+.modo:hover{border-top-color:var(--indice)}
+.modo h3{font:600 1.02rem/1.22 var(--disp); letter-spacing:-.012em; max-width:16ch}
+.modo p{margin-top:11px; color:#A9B2B7; font-size:.9rem}
+
+@media (max-width:1040px){
+  .rec-l{grid-template-columns:repeat(2,1fr)}
+  .modos{grid-template-columns:repeat(2,1fr); gap:24px}
+}
+@media (max-width:620px){
+  .rec-l{grid-template-columns:1fr}
+  .modos{grid-template-columns:1fr}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BLOQUES EN EL LENGUAJE DE ANDERCORE
+   Medido en andercore.com el 1-oct-2026. Lo que define su pagina no es
+   un truco: es una reja de hairlines de 1px sobre negro, antetitulos
+   monoespaciados minusculos, titulares en Archivo 500 con tracking
+   negativo, y un unico azul usado con cuentagotas.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.ac-et{
+  font:500 .68rem/1 var(--mono); letter-spacing:.22em; text-transform:uppercase;
+  color:var(--niebla); margin-bottom:22px;
+}
+.ac-h2{
+  font:500 clamp(1.9rem,3.6vw,3rem)/1.08 var(--disp);
+  letter-spacing:-.025em; max-width:22ch; color:var(--blanco);
+}
+
+/* ── el reto, en tres columnas ──────────────────────────────────── */
+.ac-reto{
+  list-style:none; margin:clamp(48px,6vw,76px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  /* La reja de Andercore es un borde comun, no tres cajas separadas:
+     el gap de 1px deja ver el fondo y hace la linea. */
+  gap:1px; background:var(--linea);
+  border-top:1px solid var(--linea); border-bottom:1px solid var(--linea);
+}
+.ac-cel{background:var(--papel); padding:clamp(24px,3vw,38px)}
+.ac-cel h3{
+  font:500 clamp(1.3rem,2.2vw,1.75rem)/1.15 var(--disp);
+  letter-spacing:-.02em; color:var(--blanco); margin:26px 0 12px;
+}
+.ac-cel p{color:var(--acero); font-size:.95rem; line-height:1.62; max-width:34ch}
+
+/* el chiquito trozo de interfaz que ellos ponen encima de cada columna */
+.ac-chip{
+  display:flex; flex-direction:column; gap:7px; align-items:flex-start;
+  min-height:76px; justify-content:center;
+  background:var(--realce); border-radius:4px; padding:12px 14px;
+  font:500 .64rem/1.3 var(--mono); letter-spacing:.04em;
+}
+.ac-chip-t{color:var(--acero)}
+.ac-chip-p{color:var(--indice-txt)}
+.ac-chip-b{display:flex; gap:4px}
+.ac-chip-b i{width:26px; height:5px; border-radius:2px; background:rgba(255,255,255,.16)}
+.ac-chip-f{display:flex; align-items:baseline; gap:8px; color:var(--tinta)}
+.ac-chip-f b{font-weight:500}
+.ac-chip-f em{font-style:normal; color:var(--acero); font-size:.9em}
+.ac-chip-g{display:flex; align-items:center; gap:7px; color:var(--acero)}
+.ac-chip-g i{width:7px; height:7px; border-radius:50%; background:var(--acero)}
+.ac-chip-g i.g1{background:#4E9A5F}
+.ac-chip-g i.g3{background:var(--senal)}
+.ac-chip-g i.g5{background:var(--indice)}
+.ac-chip-x{color:var(--indice-txt)}
+.ac-chip-x i{background:var(--indice) !important}
+
+/* ── el manifiesto, palabra por palabra ─────────────────────────── */
+.ac-manif{
+  --dormida:#3D5F99;   /* el azul apagado de las palabras sin revelar */
+  padding:clamp(70px,9vw,120px) var(--lado);
+  background:var(--papel); text-align:center;
+}
+.ac-manif-p{
+  max-width:770px; margin:0 auto;
+  font:500 clamp(1.6rem,3vw,2.5rem)/1.1 var(--disp); letter-spacing:-.02em;
+}
+.ac-manif-p + .ac-manif-p{margin-top:clamp(40px,5vw,72px)}
+/* ── EL MANIFIESTO SE ESCRIBE ────────────────────────────────────
+   Alfredo: «como si se fueran escribiendo las palabras y el degradado
+   fuese con cada letra».
+
+   Cada letra pasa por TRES estados, no dos: apagada, un destello claro
+   cuando le toca, y blanca al asentarse. Ese destello viajando letra a
+   letra es el degradado que pidio; con dos estados --apagado y blanco--
+   no hay luz que viaje, solo cosas que se encienden.
+
+   Antes TODAS las palabras compartian el mismo `animation-range`, asi
+   que se encendian a la vez y el `--i` no se usaba para nada. Ahora cada
+   letra recibe su propio tramo, corrido segun su indice: eso es lo que
+   hace que la luz recorra la frase en vez de aparecer de golpe.
+
+   Reposo VISIBLE, no invisible: si el observador nunca dispara, la
+   frase se lee igual. Ya paso una vez que una seccion quedo en blanco. */
+.ac-manif-p .pal{display:inline-block}
+.ac-manif-p .ch{
+  font-style:normal; color:var(--dormida);
+  transition:color .3s var(--sale), text-shadow .3s var(--sale);
+}
+.ac-manif-p .ch.on{color:var(--blanco)}
+
+@supports (animation-timeline: view()){
+  .ac-manif-p .ch{
+    animation:ac-escribe linear both;
+    animation-timeline:view();
+    /* El recorrido total va de 16% a 64% de la vista y se reparte entre
+       las `--n` letras del parrafo. Cada letra ocupa una ventana de 9
+       puntos, asi que varias estan encendiendose a la vez y la luz se
+       lee como una banda que avanza, no como un cursor saltando. */
+    animation-range:
+      cover calc(16% + (var(--i) / var(--n)) * 48%)
+      cover calc(25% + (var(--i) / var(--n)) * 48%);
+  }
+}
+@keyframes ac-escribe{
+  0%  {color:var(--dormida); text-shadow:none}
+  48% {color:#CFE0FF; text-shadow:0 0 12px rgba(127,166,242,.75)}
+  100%{color:var(--blanco); text-shadow:none}
+}
+
+/* ── la solucion, cuatro capacidades ────────────────────────────── */
+.ac-sol{padding:clamp(72px,9vw,128px) var(--lado); background:var(--fondo-2)}
+.ac-tar{
+  list-style:none; margin:clamp(44px,5vw,68px) auto 0; padding:0;
+  max-width:var(--ancho);
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--linea); border:1px solid var(--linea);
+}
+.ac-tar li{background:var(--fondo-2); padding:clamp(22px,2.4vw,30px); transition:background .3s var(--sale)}
+.ac-tar li:hover{background:var(--panel)}
+.ac-tar-n{
+  display:block; font:500 .68rem/1 var(--mono); letter-spacing:.2em;
+  color:var(--indice-txt); margin-bottom:34px;
+}
+.ac-tar h3{
+  font:500 1.22rem/1.2 var(--disp); letter-spacing:-.015em;
+  color:var(--blanco); margin-bottom:11px;
+}
+.ac-tar p{color:var(--acero); font-size:.92rem; line-height:1.6}
+
+/* ── alcance: los paises, como su lista de ciudades ─────────────── */
+.ac-alc{
+  max-width:var(--ancho); margin:clamp(56px,7vw,92px) auto 0;
+  padding-top:clamp(40px,5vw,64px); border-top:1px solid var(--linea);
+}
+.ac-alc-t{
+  font:500 clamp(1.5rem,2.8vw,2.2rem)/1.1 var(--disp);
+  letter-spacing:-.025em; color:var(--blanco);
+}
+.ac-alc-s{margin-top:12px; color:var(--acero); max-width:56ch; font-size:.95rem}
+.ac-reg{
+  margin-top:clamp(32px,4vw,52px);
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--linea); border:1px solid var(--linea);
+}
+.ac-reg section{background:var(--papel); padding:clamp(20px,2.4vw,28px)}
+.ac-reg h4{
+  font:500 .68rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--indice-txt); margin-bottom:18px;
+}
+.ac-reg ul{list-style:none; margin:0; padding:0; display:grid; gap:9px}
+.ac-reg li{
+  display:flex; justify-content:space-between; gap:16px;
+  font-size:.93rem; color:var(--tinta);
+  padding-bottom:9px; border-bottom:1px solid rgba(255,255,255,.06);
+}
+.ac-reg li:last-child{border-bottom:0; padding-bottom:0}
+.ac-reg span{font:500 .93rem var(--mono); color:var(--acero); font-variant-numeric:tabular-nums}
+.ac-alc-n{margin-top:22px; color:var(--niebla); font-size:.86rem; max-width:62ch}
+.ac-alc-n b{color:var(--acero); font-weight:500}
+
+/* ── movil ──────────────────────────────────────────────────────── */
+@media (max-width:860px){
+  .ac-reto,.ac-reg{grid-template-columns:1fr}
+  .ac-tar{grid-template-columns:repeat(2,1fr)}
+  .ac-tar-n{margin-bottom:20px}
+}
+@media (max-width:560px){
+  .ac-tar{grid-template-columns:1fr}
+  .ac-manif-p{max-width:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ac-manif-p .ch{color:var(--blanco) !important; animation:none !important; transition:none; text-shadow:none !important}
+  .ac-tar li{transition:none}
+}
+
+/* ── el cierre, centrado como la banda final de Andercore ───────── */
+.cierre{text-align:center}
+.cierre > *{margin-left:auto; margin-right:auto}
+.cierre h2{max-width:18ch}
+.cierre-bajada{max-width:54ch}
+.cierre .acciones{justify-content:center}
+
+/* ── telefono: la cabecera se desbordaba 27px a la derecha ──────────
+   Medido en el navegador: con el viewport en 371px el documento daba
+   398px de ancho y la pagina se iba de lado. El boton de la cabecera
+   repite lo que ya ofrece la portada dos dedos mas abajo, asi que a
+   partir de 520px se quita y se deja el conmutador Compro/Vendo. */
+@media (max-width:520px){
+  .cabecera{gap:12px; padding-left:14px; padding-right:14px}
+  .cabecera .boton-chico{display:none}
+  .marca span{font-size:.95rem}
+}
+@media (max-width:380px){
+  .marca span{display:none}          /* queda el signo solo */
+}
+
+/* ── LA LINEA · de los tres problemas al signo ────────────────────
+   Geometria medida en andercore.com a 1440px: las tarjetas van en
+   x=73/504/936 con 431 de ancho, o sea centros en 289/720/1151, y el
+   conector mide 147px de alto. En viewBox de 1294 eso es 216/647/1078.
+   Los ramales laterales bajan, doblan hacia dentro y se juntan con el
+   central, que sigue solo hasta el signo.
+
+   El trazo de ellos es rgb(56,46,48): casi invisible. Alfredo lo quiere
+   en color, asi que va en color pero con el MISMO peso visual —1px y apagado—
+   porque lo que hacia que el mio no se pareciera era el grosor y el
+   brillo, no el color. */
+.ac-linea{
+  --trazo:color-mix(in srgb, var(--indice) 52%, var(--papel));
+  position:relative; background:var(--papel);
+  padding:0 clamp(16px,5vw,72px) clamp(26px,3.4vw,44px);
+  display:flex; flex-direction:column; align-items:center;
+}
+.ac-linea-svg{display:block; width:100%; height:147px; overflow:visible}
+
+/* los tres cuadritos blancos que se paran sobre la linea de la rejilla */
+.ac-nodos{
+  position:absolute; top:-3px; left:clamp(16px,5vw,72px); right:clamp(16px,5vw,72px);
+  display:grid; grid-template-columns:repeat(3,1fr); pointer-events:none;
+}
+.ac-nodos i{width:6px; height:6px; background:var(--blanco); justify-self:center}
+
+/* el signo es el NUESTRO, con sus colores: cuadro oscuro, trazos
+   claros y la panza en color. No un cuadrado de color. */
+.ac-signo{
+  width:54px; height:54px; display:grid; place-items:center;
+  background:var(--panel); border:1px solid var(--linea-2); border-radius:4px;
+  margin-top:-10px; position:relative; z-index:1;
+}
+.ac-signo svg{width:62%; height:62%}
+.ac-signo rect{fill:var(--tinta)}
+.ac-signo path{fill:var(--indice)}
+
+@supports (animation-timeline: view()){
+  .ac-tr path{
+    stroke-dasharray:100; stroke-dashoffset:100;
+    animation:ac-trazo linear both;
+    animation-timeline:view(); animation-range:cover 14% cover 56%;
+  }
+  .ac-nodos i{
+    animation:ac-nodo linear both;
+    animation-timeline:view(); animation-range:cover 10% cover 26%;
+  }
+  .ac-signo{
+    animation:ac-caer linear both;
+    animation-timeline:view(); animation-range:cover 44% cover 68%;
+  }
+}
+@keyframes ac-trazo{to{stroke-dashoffset:0}}
+/* nunca scale(0): se parte el primer fotograma y se ve un salto */
+@keyframes ac-nodo{from{opacity:0; transform:scale(.5)} to{opacity:1; transform:scale(1)}}
+@keyframes ac-caer{from{opacity:.3} to{opacity:1}}
+
+.sin-scroll-css .ac-tr path{stroke-dasharray:100; stroke-dashoffset:100; transition:stroke-dashoffset 1.1s var(--sale)}
+.sin-scroll-css .ac-linea.on .ac-tr path{stroke-dashoffset:0}
+.sin-scroll-css .ac-tr path:nth-child(2){transition-delay:.08s}
+.sin-scroll-css .ac-tr path:nth-child(3){transition-delay:.16s}
+.sin-scroll-css .ac-tr path:nth-child(4){transition-delay:.5s}
+.sin-scroll-css .ac-signo{opacity:.3; transition:opacity .4s var(--sale) 1.1s}
+.sin-scroll-css .ac-linea.on .ac-signo{opacity:1}
+
+@media (max-width:860px){
+  .ac-linea-svg{height:96px}
+  .ac-tr path:nth-child(1),.ac-tr path:nth-child(3){display:none}
+  .ac-nodos{grid-template-columns:1fr}
+  .ac-nodos i:nth-child(1),.ac-nodos i:nth-child(3){display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .ac-tr path{stroke-dashoffset:0 !important; animation:none !important; transition:none !important}
+  .ac-nodos i,.ac-signo{opacity:1 !important; transform:none !important; animation:none !important; transition:none !important}
+}
+
+/* ── hacia donde va · lo que NO tenemos, dicho como tal ──────────
+   Andercore vende financiacion, seguros y distribucion porque los
+   tiene. Ponerlos aqui como oferta seria exactamente la afirmacion
+   sin respaldo que este sistema existe para impedir. Van declarados. */
+.ac-ruta{
+  max-width:var(--ancho); margin:clamp(40px,4.5vw,64px) auto 0;
+  padding-top:clamp(28px,3vw,40px); border-top:1px solid var(--linea);
+}
+.ac-ruta-t{
+  font:500 .68rem/1 var(--mono); letter-spacing:.22em; text-transform:uppercase;
+  color:var(--niebla); margin-bottom:20px;
+}
+.ac-ruta-l{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--linea); border:1px solid var(--linea);
+}
+.ac-ruta-l li{
+  background:var(--fondo-2); padding:16px 20px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px;
+}
+.ac-ruta-l span{color:var(--acero); font-size:1rem}
+.ac-ruta-l em{
+  font:500 .66rem/1 var(--mono); letter-spacing:.12em; text-transform:uppercase;
+  font-style:normal; color:var(--senal); white-space:nowrap;
+}
+.ac-ruta-n{margin-top:18px; color:var(--niebla); font-size:.88rem; max-width:66ch}
+.ac-ruta-n b{color:var(--acero); font-weight:500}
+@media (max-width:700px){ .ac-ruta-l{grid-template-columns:1fr} }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   EL CONTENIDO DEL DOCUMENTO CONSOLIDADO (5-oct-2026)
+   Secciones nuevas: el momento en cuatro, los dos lados del mercado,
+   el caso, conozcanos y la vision. Reutilizan la reja de hairlines que
+   ya existia para .ac-reto y .ac-tar: no hay lenguaje nuevo.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.ac-bajada{
+  max-width:62ch; margin-top:16px; color:var(--acero);
+  font-size:clamp(.98rem,1.15vw,1.08rem); line-height:1.62;
+}
+.ac-n{
+  display:block; font:500 .68rem/1 var(--mono); letter-spacing:.2em;
+  color:var(--indice-txt); margin-bottom:26px;
+}
+/* el reto ahora son CUATRO, no tres */
+.ac-reto-4{grid-template-columns:repeat(2,1fr)}
+.ac-reto-4 .ac-cel{padding:clamp(24px,3vw,38px)}
+
+/* la recomendacion, al cierre de los cuatro pasos */
+.ac-reco{
+  max-width:var(--ancho); margin:clamp(36px,4.5vw,60px) auto 0;
+  padding:clamp(26px,3vw,38px); background:var(--panel);
+  border:1px solid var(--linea); border-radius:4px;
+}
+.ac-reco h3{
+  font:500 clamp(1.3rem,2.2vw,1.75rem)/1.15 var(--disp);
+  letter-spacing:-.02em; color:var(--blanco);
+}
+.ac-reco p{margin-top:12px; color:var(--acero); max-width:76ch; font-size:.96rem; line-height:1.62}
+.ac-reco .boton{margin-top:22px}
+
+/* ── dos lados del mismo mercado ─────────────────────────────────── */
+.ac-lados{padding:clamp(72px,9vw,128px) var(--lado); background:var(--papel)}
+.ac-sol > *{max-width:var(--ancho); margin-left:auto; margin-right:auto}
+.ac-lados > *{max-width:var(--ancho); margin-left:auto; margin-right:auto}
+.ac-dos{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
+  background:var(--linea); border:1px solid var(--linea);
+  margin:clamp(36px,4.5vw,60px) auto 0; max-width:var(--ancho);
+}
+.ac-lado{background:var(--papel); padding:clamp(26px,3vw,40px); display:flex; flex-direction:column}
+.ac-q{
+  font:500 .68rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--indice-txt); margin-bottom:18px;
+}
+.ac-lado h3{
+  font:500 clamp(1.4rem,2.4vw,1.9rem)/1.12 var(--disp);
+  letter-spacing:-.02em; color:var(--blanco); max-width:16ch;
+}
+.ac-lado h4{
+  margin:26px 0 8px; font:500 .95rem/1 var(--disp); color:var(--tinta);
+}
+.ac-lado p{color:var(--acero); font-size:.95rem; line-height:1.6; margin-top:12px}
+.ac-lado .boton{margin-top:auto; align-self:flex-start; margin-top:28px}
+.ac-fortalece{
+  max-width:var(--ancho); margin:clamp(28px,3.4vw,44px) auto 0;
+  padding:20px 24px; border-left:2px solid var(--indice);
+  color:var(--acero); font-size:.96rem; line-height:1.62;
+}
+.ac-fortalece b{color:var(--blanco); font-weight:500}
+
+/* ── el caso ─────────────────────────────────────────────────────── */
+.ac-caso{padding:clamp(72px,9vw,128px) var(--lado); background:var(--fondo-2)}
+.ac-caso > *{max-width:var(--ancho); margin-left:auto; margin-right:auto}
+.ac-pasos{
+  list-style:none; margin:clamp(34px,4vw,54px) auto 0; padding:0;
+  max-width:var(--ancho); border-top:1px solid var(--linea);
+}
+.ac-pasos li{
+  display:flex; gap:clamp(18px,2.6vw,38px); align-items:baseline;
+  padding:16px 2px; border-bottom:1px solid var(--linea);
+  color:var(--tinta); font-size:.98rem;
+}
+.ac-pasos span{
+  flex:none; font:500 .7rem/1 var(--mono); letter-spacing:.16em; color:var(--indice-txt);
+}
+.ac-resultado{
+  max-width:var(--ancho); margin:clamp(30px,3.6vw,46px) auto 0;
+  padding:clamp(24px,2.8vw,34px); border:1px solid var(--indice); border-radius:4px;
+  background:color-mix(in srgb, var(--indice) 7%, var(--papel));
+}
+.ac-resultado p:last-child{
+  margin-top:10px; color:var(--blanco);
+  font:500 clamp(1.05rem,1.7vw,1.35rem)/1.4 var(--disp); letter-spacing:-.015em;
+}
+
+/* ── conózcanos ──────────────────────────────────────────────────── */
+.ac-quienes{padding:clamp(72px,9vw,128px) var(--lado); background:var(--papel)}
+.ac-quienes > *{max-width:var(--ancho); margin-left:auto; margin-right:auto}
+.ac-rejilla{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--linea); border:1px solid var(--linea);
+  margin:clamp(36px,4.5vw,60px) auto 0; max-width:var(--ancho);
+}
+.ac-rejilla article{background:var(--papel); padding:clamp(22px,2.6vw,32px)}
+.ac-rejilla h3{
+  font:500 1.12rem/1.2 var(--disp); letter-spacing:-.015em; color:var(--blanco);
+}
+.ac-rejilla p{margin-top:11px; color:var(--acero); font-size:.92rem; line-height:1.6}
+
+/* ── la visión y la familia de marcas ────────────────────────────── */
+.ac-vision{padding:clamp(72px,9vw,128px) var(--lado); background:var(--fondo-2)}
+.ac-vision > *{max-width:var(--ancho); margin-left:auto; margin-right:auto}
+.ac-familia{
+  margin:clamp(34px,4vw,54px) auto 0; max-width:var(--ancho);
+  border-top:1px solid var(--linea);
+}
+.ac-familia > div{
+  display:grid; grid-template-columns:minmax(0,15rem) 1fr auto; gap:14px clamp(16px,2.4vw,34px);
+  align-items:baseline; padding:17px 2px; border-bottom:1px solid var(--linea);
+}
+.ac-familia dt{font:500 1rem/1.2 var(--disp); color:var(--niebla); letter-spacing:-.01em}
+.ac-familia .on dt{color:var(--blanco)}
+.ac-familia dd{margin:0; color:var(--niebla); font-size:.93rem}
+.ac-familia .on dd{color:var(--acero)}
+/* lo que todavia no existe se dice, no se insinua */
+.ac-familia em{
+  font:500 .64rem/1 var(--mono); letter-spacing:.14em; text-transform:uppercase;
+  font-style:normal; color:var(--senal); white-space:nowrap;
+}
+.ac-familia .on em{color:#4E9A5F}
+
+@media (max-width:860px){
+  .ac-reto-4,.ac-dos,.ac-rejilla{grid-template-columns:1fr}
+  .ac-familia > div{grid-template-columns:1fr auto; gap:6px 14px}
+  .ac-familia dd{grid-column:1 / -1}
+}
+
+/* ===================================================================
+   PORTADA DE PAGINA INTERIOR  ·  .ac-cabeza
+   -------------------------------------------------------------------
+   Existe porque las paginas de dentro NO pueden usar `.portada`: esa
+   mide 3 pantallas a proposito, para que la escena de la red se quede
+   clavada mientras el texto sube. Sin escena que la llene, esas 3
+   pantallas son hueco negro. Medido en proveedores.html antes de este
+   arreglo: caja de 2304 px con 890 px de contenido = 1414 px de nada.
+
+   Esta se mide por lo que tiene dentro. Nada mas.
+   =================================================================== */
+/* La via de 1200 px va en el PADDING de la seccion, no en `margin:auto`
+   de cada hijo. Con margenes automaticos, cualquier hijo que declare su
+   propia medida --el h1 con 19ch, la bajada con 62ch-- se queda CENTRADO
+   dentro de la via en vez de alinearse a la izquierda con los demas. Ese
+   fue el defecto que Alfredo vio el 7-oct en «De la necesidad a una
+   operacion ejecutable», y lo repeti aqui al escribir esta clase.
+   Con padding, el hijo hereda el borde izquierdo y conserva su medida. */
+.ac-cabeza{
+  padding-block:clamp(86px,11vw,150px) clamp(60px,7vw,96px);
+  padding-inline:max(var(--lado), (100% - var(--ancho))/2);
+  background:var(--papel); border-bottom:1px solid var(--linea);
+}
+.ac-cabeza h1{
+  font:500 clamp(2.1rem,4.4vw,3.5rem)/1.06 var(--disp);
+  letter-spacing:-.03em; color:var(--blanco); max-width:19ch; text-wrap:balance;
+}
+.ac-cabeza .ac-bajada{margin-top:22px}
+.ac-cabeza .acciones{margin-top:34px; display:flex; flex-wrap:wrap; gap:14px; align-items:center}
+
+/* Seccion generica con la misma via de 1200 px que las demas. Se usa en
+   las paginas de dentro, donde no hay una clase por seccion. */
+.ac-sec{
+  padding-block:clamp(72px,9vw,128px);
+  padding-inline:max(var(--lado), (100% - var(--ancho))/2);
+  background:var(--papel);
+}
+.ac-sec-alt{background:var(--fondo-2)}
+
+
+
+
+
+/* ===================================================================
+   PORTADA CON FOTO  ·  .ac-cabeza-foto
+   -------------------------------------------------------------------
+   El patron medido en andercore.com el 7-oct-2026: medio a sangre
+   completa detras, velo encima, titular y botones sobre el velo abajo
+   a la izquierda. Su portada es un VIDEO en bucle, mudo, de 1280x720;
+   sus otras imagenes grandes son capturas de su propio producto. En
+   «About us» no tienen ni una foto, y las caras estan solo en «Careers».
+
+   La foto va en <img> y no en `background-image` a proposito: asi lleva
+   `alt`, el navegador puede elegir tamaño y la carga es prioritaria de
+   verdad. Un fondo CSS no es contenido para quien usa lector de pantalla.
+   =================================================================== */
+/* Apilado SIN z-index negativo: foto 0, velo 1, contenido 2. Con la foto
+   en -2 no se veia nada --salia un rectangulo negro-- porque un hijo con
+   z negativo queda por debajo del fondo opaco que `.ac-cabeza` ya trae.
+   Es la trampa clasica de los contextos de apilamiento, y se evita
+   entera no usando numeros negativos: tres capas, tres numeros positivos. */
+.ac-cabeza-foto{
+  position:relative; overflow:hidden;
+  min-height:min(78vh,660px); display:flex; flex-direction:column; justify-content:flex-end;
+  padding-block:clamp(90px,12vw,150px) clamp(44px,6vw,72px);
+}
+.ac-cabeza-foto .foto{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  z-index:0; user-select:none;
+}
+.ac-cabeza-foto > *:not(.foto):not(.foto-fuente){position:relative; z-index:2}
+/* Dos velos y no uno: el vertical asienta el texto contra el pie de la
+   seccion, el horizontal protege la columna de lectura. Con uno solo,
+   o la foto se apaga entera o el texto se pierde sobre las zonas claras. */
+.ac-cabeza-foto::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    linear-gradient(to top, var(--papel) 4%, rgba(11,4,5,.72) 34%, rgba(11,4,5,.18) 72%),
+    linear-gradient(100deg, rgba(11,4,5,.9) 0%, rgba(11,4,5,.52) 42%, rgba(11,4,5,.08) 78%);
+}
+/* Una foto clara (hormigon, cielo) aguanta el velo de arriba; una ya
+   oscura se apaga entera y deja un rectangulo negro. Medido en la de los
+   operarios: con el velo normal no se veia a nadie, que era justo lo que
+   la foto venia a aportar. */
+.ac-cabeza-foto.velo-suave::before{
+  background:
+    linear-gradient(to top, var(--papel) 2%, rgba(11,4,5,.58) 30%, rgba(11,4,5,.04) 68%),
+    linear-gradient(100deg, rgba(11,4,5,.86) 0%, rgba(11,4,5,.34) 46%, rgba(11,4,5,0) 80%);
+}
+/* Foto CLARA (un almacen bien iluminado, luminancia 157 donde cae el
+   titular). Un solo degradado, no dos: apilados se multiplican --0,62 y
+   0,72 dan 0,89-- y borran la foto entera, que es lo que paso.
+   Cuenta: para que el blanco llegue a 4,5:1 el fondo compuesto tiene que
+   quedar por debajo de 119 en sRGB. Con la foto en 157 y el velo en
+   #0B0405, basta alpha 0,26. Se usa 0,55 en la banda del texto --margen
+   de sobra-- y 0,25 arriba, donde no hay letras y la foto se ve. */
+.ac-cabeza-foto.velo-medio::before{
+  background:linear-gradient(to top,
+    var(--papel) 2%, rgba(11,4,5,.80) 20%, rgba(11,4,5,.55) 48%, rgba(11,4,5,.25) 100%);
+}
+.ac-cabeza-foto h1,.ac-cabeza-foto .ac-bajada,.ac-cabeza-foto .ac-et{text-shadow:0 1px 20px rgba(0,0,0,.5)}
+/* La procedencia de la foto, como la de cualquier otro dato del sistema. */
+.foto-fuente{
+  position:absolute; right:var(--lado); bottom:12px; z-index:2;
+  font:500 .58rem/1 var(--mono); letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(245,241,241,.72);
+}
+.foto-fuente a{color:inherit; text-decoration:none}
+.foto-fuente a:hover{color:var(--tinta)}
+@media (max-width:760px){
+  .ac-cabeza-foto{min-height:0}
+  .ac-cabeza-foto::before{background:linear-gradient(to top, var(--papel) 2%, rgba(11,4,5,.86) 40%, rgba(11,4,5,.66) 100%)}
+  .foto-fuente{position:static; margin-top:22px; text-align:left}
+}
+
+/* ===================================================================
+   SELECTOR DE CONTACTO  ·  <dialog class="elegir">
+   -------------------------------------------------------------------
+   Un <dialog> y no un div montado a mano. El navegador ya da el cierre
+   con Escape, el foco atrapado dentro mientras esta abierto y el
+   devolver el foco al boton al cerrar. Reescribir eso a mano siempre
+   sale peor y es justo lo que deja fuera a quien navega con teclado.
+   =================================================================== */
+.elegir{
+  border:1px solid var(--linea-2); border-radius:6px; padding:clamp(26px,4vw,38px);
+  background:var(--panel); color:var(--tinta); max-width:min(420px,calc(100vw - 32px));
+  box-shadow:0 24px 70px rgba(0,0,0,.6);
+}
+.elegir::backdrop{background:rgba(4,2,2,.72); backdrop-filter:blur(2px)}
+.elegir-d{margin-top:12px; color:var(--acero); font-size:.95rem; line-height:1.55}
+.elegir-o{margin-top:24px; display:flex; flex-wrap:wrap; gap:12px}
+.elegir-o .boton{flex:1 1 140px; text-align:center; justify-content:center}
+.elegir-p{
+  margin-top:20px; padding-top:16px; border-top:1px solid var(--linea);
+  font:500 .68rem/1.6 var(--mono); letter-spacing:.06em; color:var(--niebla);
+}
+.elegir-x{position:absolute; top:10px; right:10px}
+.elegir-x button{
+  background:none; border:0; color:var(--niebla); font:400 22px/1 var(--disp);
+  cursor:pointer; padding:4px 8px; border-radius:3px;
+}
+.elegir-x button:hover{color:var(--blanco)}
+.elegir-x button:focus-visible{outline:2px solid var(--indice); outline-offset:2px}
+/* Entra creciendo un poco: sin esto aparece de golpe y se siente un error. */
+.elegir[open]{animation:elegirEntra .2s cubic-bezier(.2,.9,.3,1)}
+@keyframes elegirEntra{from{opacity:0; transform:translateY(8px) scale(.97)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){ .elegir[open]{animation:none} }
+
+.cierre-pie{margin-top:22px; font-size:.88rem; color:var(--niebla)}
+.cierre-pie a{color:var(--acero)}
+
+/* ===================================================================
+   FOCO DE TECLADO  ·  WCAG 2.4.7
+   -------------------------------------------------------------------
+   Medido el 7-oct-2026: 14 de 24 elementos interactivos no enseñaban
+   NADA al recibir el foco. Quien navega con teclado --por costumbre, por
+   una mano escayolada o porque no puede usar raton-- iba a ciegas por el
+   sitio. Las reglas de foco que habia vivian en el CSS de los
+   formularios y se fueron con ellos.
+
+   `:focus-visible` y no `:focus`: el navegador decide, y asi el anillo
+   sale al tabular pero NO al pulsar con el raton, que es lo que hacia
+   que la gente lo quitara a manotazos y dejara el sitio sin foco.
+   =================================================================== */
+:focus-visible{
+  outline:2px solid var(--indice-txt);
+  outline-offset:3px;
+  border-radius:2px;
+}
+/* Sobre el azul del boton, un anillo azul no se ve: ahi va claro. */
+.boton:focus-visible{outline-color:var(--blanco); outline-offset:3px}
+/* El enlace de saltar al contenido solo existe para el teclado: cuando
+   recibe el foco tiene que VERSE, no seguir escondido fuera de pantalla. */
+.saltar:focus-visible{outline-color:var(--blanco)}
+@media (prefers-reduced-motion:no-preference){
+  :focus-visible{transition:outline-offset .12s ease}
+}
+
+/* ===================================================================
+   RESPLANDOR  ·  el degradado de malla azul
+   -------------------------------------------------------------------
+   La referencia que paso Alfredo: un halo azul grande y muy suave que
+   nace arriba y se apaga hacia abajo, sobre casi negro.
+
+   Tres radiales superpuestos y no uno: con uno solo se ve el circulo:
+   el ojo le encuentra el borde. Tres de tamaños y posiciones distintas,
+   con alfas bajas, no tienen centro reconocible y leen como niebla.
+
+   Va en un ::after con `pointer-events:none` y z-index bajo, para no
+   tocar el apilado de lo que ya hay dentro de la seccion.
+   =================================================================== */
+.resplandor{position:relative; isolation:isolate}
+.resplandor > *{position:relative; z-index:1}
+.resplandor::after{
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 46% at 28% 8%,  rgba(47,111,222,.26), transparent 70%),
+    radial-gradient(42% 38% at 72% 0%,  rgba(127,166,242,.16), transparent 72%),
+    radial-gradient(90% 60% at 50% -8%, rgba(22,63,138,.30),  transparent 76%);
+}
+/* En el cierre, que va centrado, el halo nace detras del titular. */
+.cierre.resplandor::after{
+  background:
+    radial-gradient(52% 44% at 50% 2%,  rgba(47,111,222,.28), transparent 70%),
+    radial-gradient(34% 30% at 22% 14%, rgba(127,166,242,.14), transparent 74%),
+    radial-gradient(80% 56% at 50% -10%, rgba(22,63,138,.34), transparent 78%);
+}
+/* El halo se APAGA hacia abajo. Sin esto, en su punto mas claro el fondo
+   sube a rgb(40,67,121) y ahi el texto tenue cae a 2,57:1 y el azul a
+   3,97:1 --medido--, cuando la norma pide 4,5. Con la mascara el halo
+   vive en el tercio de arriba, donde solo hay titular (9,64:1), y la
+   letra pequeña de abajo se lee sobre el fondo limpio de siempre. */
+.resplandor::after{
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 34%, transparent 72%);
+          mask-image:linear-gradient(to bottom, #000 0%, #000 34%, transparent 72%);
+}
+@media (prefers-reduced-motion:reduce){ .resplandor::after{opacity:.75} }
+
+
+/* ===================================================================
+   EL AMANECER  ·  negro -> blanco -> negro
+   -------------------------------------------------------------------
+   Al salir del hero el fondo pasa de negro a azul y de azul a blanco,
+   como un amanecer visto desde fuera, y «El momento» vive en claro. Al
+   acabar, vuelve a negro.
+
+   Son bandas propias y no un degradado dentro de la seccion: asi el
+   claro de `.problema` es un color PLANO de verdad --sus contrastes se
+   calculan contra el, no contra un degradado que cambia a cada pixel--
+   y la transicion se alarga o acorta sin tocar la seccion.
+
+   Los tonos claros salen del brandbook (pi.color.paper / ink /
+   graphite), no son blancos inventados: el sistema de diseño ya vive en
+   claro y esta es la unica parte del sitio que lo enseña.
+   =================================================================== */
+:root{
+  --claro-papel:#F5F4F0;
+  --claro-papel-2:#FFFFFF;
+  --claro-tinta:#16181A;
+  --claro-grafito:#41474D;
+  --claro-tenue:#5E666D;
+  --claro-linea:#DFDCD5;
+}
+/* `border:0` explicito: heredaban un borde superior de 1px de una
+   regla general y dejaban una raya negra justo en la costura. */
+.paso{height:clamp(220px,34vh,420px); pointer-events:none; border:0 !important}
+.paso-claro{
+  background:linear-gradient(to bottom,
+    var(--papel) 0%, #0A1230 22%, #15306E 44%, #2F6FDE 64%, #86B2F5 80%,
+    #D3E2FB 91%, var(--claro-papel) 100%);
+}
+.paso-oscuro{
+  background:linear-gradient(to bottom,
+    var(--claro-papel) 0%, #D3E2FB 10%, #86B2F5 22%, #2F6FDE 40%,
+    #15306E 60%, #0A1230 80%, var(--papel) 100%);
+}
+
+.problema.claro{background:var(--claro-papel); color:var(--claro-tinta); border-top:0}
+.problema.claro .pr-et{color:var(--claro-tenue)}
+.problema.claro .pr-cuerpo p{color:var(--claro-grafito)}
+.problema.claro .pr-cuerpo b{color:var(--claro-tinta)}
+
+/* ── LAS TARJETAS LLEGAN ─────────────────────────────────────────
+   El patron de abatable.com, que por dentro se llama `tilt-cards`: el
+   titular se queda CLAVADO mientras las tarjetas suben, se enderezan y
+   se van apilando debajo.
+
+   Cada tarjeta entra inclinada y un poco baja, y el scroll la endereza.
+   No entra con opacidad: lo que la trae es el movimiento. Y no para en
+   seco --se pasa un pelo de la vertical y vuelve-- porque sin ese
+   rebote se lee robotico.
+   ------------------------------------------------------------------ */
+/* DOS COLUMNAS. Con el titular clavado y las tarjetas a todo lo ancho,
+   las tarjetas pasaban POR DEBAJO del titular y se leia texto sobre
+   texto. En la referencia el titular ocupa una columna y las tarjetas
+   otra, y por eso puede quedarse quieto mientras ellas suben. */
+.problema.claro{
+  display:grid; grid-template-columns:minmax(0,38fr) minmax(0,62fr);
+  gap:clamp(28px,5vw,80px); align-items:start;
+  /* La via de 1200 va en el PADDING, no en `max-width`: con max-width el
+     FONDO se cortaba a 1200 y a los lados asomaba el negro del body.
+     Esto ya lo aprendimos el 7-oct con `.ac-cabeza` y lo repeti aqui. */
+  padding-block:clamp(80px,12vh,150px);
+  padding-inline:max(var(--lado), (100% - var(--ancho)) / 2);
+}
+.problema.claro .pr-c{max-width:none}
+.problema.claro .pr-t{font-size:clamp(2.1rem,4.4vw,3.6rem)}
+.problema.claro .ac-reto{
+  margin:0; gap:clamp(16px,2vw,22px); background:none; border:0;
+  grid-template-columns:1fr; perspective:1400px;
+}
+.problema.claro .ac-cel{
+  background:var(--claro-papel-2); border:1px solid var(--claro-linea);
+  border-radius:10px; padding:clamp(26px,3vw,40px);
+  box-shadow:0 1px 2px rgba(22,24,26,.04), 0 12px 30px rgba(22,24,26,.05);
+  transform-origin:50% 100%;
+}
+.problema.claro .ac-cel h3{color:var(--claro-tinta)}
+.problema.claro .ac-cel p{color:var(--claro-grafito)}
+.problema.claro .ac-n{color:var(--indice)}
+
+@supports (animation-timeline: view()){
+  .problema.claro .pr-c{position:sticky; top:clamp(80px,12vh,120px); z-index:2}
+  .problema.claro .ac-cel{
+    animation:llega linear both;
+    animation-timeline:view();
+    animation-range:entry 4% entry 58%;
+  }
+  @keyframes llega{
+    0%  {transform:translateY(64px) rotateX(9deg) scale(.965)}
+    76% {transform:translateY(-6px) rotateX(-1.2deg) scale(1.004)}
+    100%{transform:none}
+  }
+}
+/* Sin scroll guiado llegan igual, pero por observador (bloque 15 del JS). */
+.sin-scroll-css .problema.claro .ac-cel{transform:translateY(64px) rotateX(9deg) scale(.965);
+  transition:transform .62s cubic-bezier(.23,1,.32,1)}
+.sin-scroll-css .problema.claro .ac-cel.puesta{transform:none}
+
+@media (max-width:860px){
+  .problema.claro{grid-template-columns:1fr; gap:clamp(30px,6vw,48px)}
+  .problema.claro .pr-c{position:static}
+  .paso{height:clamp(150px,24vh,260px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .problema.claro .ac-cel{animation:none !important; transform:none !important}
+  .problema.claro .pr-c{position:static}
+}
+
+/* ===================================================================
+   OPERACION DOCUMENTADA  ·  la estructura de heronaiapp.com
+   -------------------------------------------------------------------
+   Medida en su DOM el 8-oct-2026, a 1015px de ancho:
+     .home-usecase-img         508 x 759   mitad izquierda, altura completa
+     .home-usecase-title-wrap  507 x 283   derecha arriba
+     .home-usecase-content     507 x 353   derecha abajo, acordeon
+     hairline de 1px arriba y abajo de la seccion
+
+   Lo esencial, que es lo que yo no habia visto: NO son tarjetas. Es UN
+   panel de imagen que cambia segun el item abierto. Yo habia puesto
+   siete tarjetitas con foto cada una, que es otra cosa.
+   =================================================================== */
+.ac-caso{padding-inline:0; border-top:1px solid var(--linea); border-bottom:1px solid var(--linea)}
+.uc{
+  display:grid; grid-template-columns:1fr 1fr; align-items:stretch;
+  min-height:min(86vh,760px);
+}
+.uc-panel{position:relative; overflow:hidden; border-right:1px solid var(--linea); background:var(--realce)}
+.uc-pila{position:absolute; inset:0}
+/* ── LAS LAMINAS ─────────────────────────────────────────────────
+   Dibujadas, no de banco. El lenguaje es el de un plano tecnico --reja
+   de fondo, trazo fino, cotas-- porque es exactamente lo que vende el
+   sistema: medidas con su procedencia. Y al ser SVG en linea toman los
+   tokens de marca, asi que si el azul vuelve a cambiar, cambian solas.
+
+   `object-fit` ya no hace falta: el viewBox encaja por si mismo. */
+.uc-img{
+  position:absolute; inset:0; width:100%; height:100%;
+  opacity:0; transition:opacity .45s var(--sale), transform 1s var(--sale);
+  transform:scale(1.02);
+  overflow:visible;
+}
+.uc-img.on{opacity:1; transform:scale(1)}
+
+.uc-img .lm-reja line{stroke:rgba(146,160,180,.12); stroke-width:1}
+.uc-img .lm-tr{fill:none; stroke:var(--acero); stroke-width:1.4; stroke-linecap:square}
+.uc-img .lm-tr .lm-pun{stroke-dasharray:5 4}
+/* las cotas, mas tenues que la pieza: son anotacion, no el objeto */
+.uc-img .lm-cota{fill:none; stroke:var(--niebla); stroke-width:1}
+.uc-img .lm-base{fill:none; stroke:var(--tinta); stroke-width:1.6}
+/* el azul marca SIEMPRE lo que la frase senala: la cantidad, el origen
+   de la busqueda, la ficha de arriba, la cota, la opcion elegida. */
+.uc-img .lm-eje{fill:var(--indice); stroke:var(--indice); stroke-width:1.4}
+.uc-img .lm-eje path{fill:none}
+.uc-img .lm-onda{fill:none; stroke:var(--indice-txt); stroke-width:1; opacity:.5}
+.uc-img .lm-tx{
+  fill:var(--papel); font:500 11px var(--mono); letter-spacing:.06em;
+}
+.uc-panel{display:grid; align-items:center; justify-items:stretch; padding:clamp(22px,3vw,48px)}
+.uc-pila{position:relative; inset:auto; width:100%; max-width:520px; margin:0 auto; aspect-ratio:380 / 260}
+.uc-lado{
+  padding:clamp(34px,5vw,64px) clamp(22px,4vw,56px);
+  display:flex; flex-direction:column; justify-content:center;
+}
+.uc-lado .ac-h2{max-width:18ch}
+.uc-lado .ac-bajada{max-width:46ch}
+
+/* ── el acordeon ─────────────────────────────────────────────── */
+.uc-lista{list-style:none; margin:clamp(26px,3.4vw,44px) 0 0; padding:0}
+.uc-item{border-top:1px solid var(--linea)}
+.uc-item:last-child{border-bottom:1px solid var(--linea)}
+.uc-cab{
+  width:100%; display:flex; align-items:baseline; gap:14px;
+  background:none; border:0; cursor:pointer; text-align:left;
+  padding:15px 0; font-family:inherit;
+  /* `color:inherit` explicito: un <button> toma `buttontext` del sistema
+     si no se le dice otra cosa, y eso medía 1,03:1 contra el fondo. El
+     texto que se ve va en los <span>, pero el valor heredado era real. */
+  color:inherit;
+}
+.uc-n{font:500 .64rem/1 var(--mono); letter-spacing:.18em; color:var(--indice-txt); flex:none}
+.uc-t{
+  font:500 clamp(1rem,1.5vw,1.2rem)/1.25 var(--disp); letter-spacing:-.015em;
+  color:var(--acero); transition:color .25s var(--sale);
+}
+.uc-item.on .uc-t{color:var(--blanco)}
+.uc-cab:focus-visible{outline:2px solid var(--indice-txt); outline-offset:2px}
+@media (hover:hover) and (pointer:fine){ .uc-cab:hover .uc-t{color:var(--blanco)} }
+/* `grid-template-rows` de 0fr a 1fr: abre a la altura que el contenido
+   necesite sin que haya que medirla en JS ni poner un max-height a ojo. */
+.uc-cuerpo{display:grid; grid-template-rows:0fr; transition:grid-template-rows .36s var(--sale)}
+.uc-item.on .uc-cuerpo{grid-template-rows:1fr}
+.uc-cuerpo > p{
+  overflow:hidden; margin:0; color:var(--acero);
+  font-size:.93rem; line-height:1.6; max-width:42ch;
+}
+.uc-item.on .uc-cuerpo > p{padding-bottom:16px}
+
+@media (max-width:860px){
+  .uc{grid-template-columns:1fr}
+  .uc-panel{min-height:46vh; border-right:0; border-bottom:1px solid var(--linea)}
+}
+@media (prefers-reduced-motion:reduce){
+  .uc-img{transition:opacity .2s linear; transform:none}
+  .uc-cuerpo{transition:none}
+}
+
+/* ── SEGUNDA SECCION CLARA · «De la necesidad a una operacion» ───
+   Alfredo pidio que la transicion azul->blanco se repita y que haya al
+   menos dos secciones claras. Esta es la pareja natural de «El momento»:
+   las dos son rejillas de tarjetas numeradas.
+
+   Mismo criterio que alli: el fondo va a SANGRE y la via de 1200 se hace
+   con padding, no con `max-width`, que es lo que dejaba los lados negros. */
+.ac-sol.claro{
+  background:var(--claro-papel); color:var(--claro-tinta);
+  padding-block:clamp(80px,12vh,150px);
+  padding-inline:max(var(--lado), (100% - var(--ancho)) / 2);
+}
+.ac-sol.claro > *{max-width:none; margin-left:0; margin-right:0}
+.ac-sol.claro .ac-et{color:var(--claro-tenue)}
+.ac-sol.claro .ac-h2{color:var(--claro-tinta)}
+.ac-sol.claro .ac-bajada{color:var(--claro-grafito)}
+.ac-sol.claro .ac-tar{background:none; border:0; gap:clamp(14px,1.6vw,20px)}
+.ac-sol.claro .ac-tar li{
+  background:var(--claro-papel-2); border:1px solid var(--claro-linea);
+  border-radius:10px; box-shadow:0 1px 2px rgba(22,24,26,.04), 0 10px 26px rgba(22,24,26,.05);
+}
+.ac-sol.claro .ac-tar h3{color:var(--claro-tinta)}
+.ac-sol.claro .ac-tar p{color:var(--claro-grafito)}
+.ac-sol.claro .ac-tar-n{color:var(--indice)}
+.ac-sol.claro .ac-reco{
+  background:var(--claro-papel-2); border:1px solid var(--claro-linea); border-radius:10px;
+}
+.ac-sol.claro .ac-reco h3{color:var(--claro-tinta)}
+.ac-sol.claro .ac-reco p{color:var(--claro-grafito)}
+@supports (animation-timeline: view()){
+  .ac-sol.claro .ac-tar li{animation:llega linear both; animation-timeline:view(); animation-range:entry 4% entry 52%}
+}
+@media (prefers-reduced-motion:reduce){ .ac-sol.claro .ac-tar li{animation:none !important; transform:none !important} }
+
+/* ===================================================================
+   LAMINAS DE PORTADA  ·  proveedores y conocenos
+   -------------------------------------------------------------------
+   Mismo lenguaje que las de «Operacion documentada»: plano tecnico,
+   trazo fino, el azul solo sobre lo que la frase senala. Sustituyen a
+   las fotos de banco, que eran de otro y no decian nada nuestro.
+   =================================================================== */
+/* Con lamina en vez de foto el velo casi no hace falta: el dibujo ya es
+   trazo fino sobre negro. Solo se protege la columna de lectura. */
+.ac-cabeza-foto:has(.lamina)::before{
+  background:linear-gradient(100deg, var(--papel) 0%, rgba(11,4,5,.92) 34%,
+             rgba(11,4,5,.5) 54%, rgba(11,4,5,.08) 78%);
+}
+.ac-cabeza-foto .lamina{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:0; overflow:visible;
+}
+.lamina .lm-reja line{stroke:rgba(146,160,180,.10); stroke-width:1}
+.lamina .lm-tr{fill:none; stroke:var(--acero); stroke-width:1.3; stroke-linecap:square}
+.lamina .lm-cota{fill:none; stroke:var(--niebla); stroke-width:1}
+.lamina .lm-eje{fill:var(--indice); stroke:var(--indice); stroke-width:1.3}
+.lamina .lm-eje path{fill:none}
+.lamina .lm-hueco{fill:none; stroke:var(--linea-2); stroke-width:1}
+.lamina .lm-onda{fill:none; stroke:var(--indice-txt); stroke-width:1; opacity:.45}
+.lamina .lm-cod{fill:var(--niebla); font:500 11px var(--mono); letter-spacing:.14em}
+.lamina .lm-der{fill:var(--acero)}
+.lamina .lm-grados .lm-tr{fill:var(--acero); stroke:none}
+.lamina .lm-grados .lm-eje{fill:var(--indice); stroke:none}
+
+/* ── las rutas se dibujan al asomar ──────────────────────────────
+   `pathLength` no hace falta aqui: `stroke-dasharray` en porcentaje de
+   la propia longitud hace lo mismo y no obliga a medir cada curva. */
+.lamina .lm-ruta path{
+  fill:none; stroke:var(--indice-txt); stroke-width:1.2; opacity:.55;
+  stroke-dasharray:1000; stroke-dashoffset:1000;
+  animation:lm-traza 1.6s cubic-bezier(.23,1,.32,1) .5s forwards;
+}
+.lamina .lm-ruta path:nth-child(2){animation-delay:.72s}
+.lamina .lm-ruta path:nth-child(3){animation-delay:.94s}
+@keyframes lm-traza{to{stroke-dashoffset:0}}
+/* las ondas del punto laten mientras se esta en la portada */
+.lamina .lm-onda circle{animation:lm-pulso 3.2s cubic-bezier(.2,.6,.3,1) infinite; transform-origin:470px 150px}
+.lamina .lm-onda circle:nth-child(2){animation-delay:1.05s}
+.lamina .lm-onda circle:nth-child(3){animation-delay:2.1s}
+@keyframes lm-pulso{0%{transform:scale(.4); opacity:0} 18%{opacity:.5} 100%{transform:scale(1.9); opacity:0}}
+
+@media (prefers-reduced-motion:reduce){
+  .lamina .lm-ruta path{animation:none; stroke-dashoffset:0}
+  .lamina .lm-onda circle{animation:none}
+}
+
+/* ===================================================================
+   SECCIONES NUEVAS DE PROVEEDORES Y CONOCENOS
+   -------------------------------------------------------------------
+   `.ac-sec.claro` reusa el mismo criterio que las claras de la home: el
+   fondo va a SANGRE y la via de 1200 se hace con padding, nunca con
+   `max-width` en la seccion --eso es lo que dejaba los lados negros.
+   =================================================================== */
+.ac-sec.claro{
+  background:var(--claro-papel); color:var(--claro-tinta);
+  padding-inline:max(var(--lado), (100% - var(--ancho)) / 2);
+}
+.ac-sec.claro .ac-et{color:var(--claro-tenue)}
+.ac-sec.claro .ac-h2{color:var(--claro-tinta)}
+.ac-sec.claro .ac-bajada{color:var(--claro-grafito)}
+
+/* ── cifras sobre claro ─────────────────────────────────────────── */
+.cifras-claro{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:clamp(20px,3vw,44px); margin:clamp(34px,4vw,56px) 0 0;
+}
+.cifras-claro div{border-left:2px solid var(--indice); padding-left:18px}
+.cifras-claro dt{
+  order:2; font:500 .72rem/1.4 var(--mono); letter-spacing:.14em;
+  text-transform:uppercase; color:var(--claro-tenue); margin-top:8px;
+}
+.cifras-claro dd{
+  order:1; margin:0; font:500 clamp(2.2rem,4.4vw,3.4rem)/1 var(--disp);
+  letter-spacing:-.04em; color:var(--claro-tinta); font-variant-numeric:tabular-nums;
+}
+.cifras-claro > div{display:flex; flex-direction:column}
+.corte-claro{margin-top:26px; font-size:.86rem; color:var(--claro-tenue)}
+
+/* ── garantias · tres filas que se abren al asomar ──────────────── */
+.ac-garantias{list-style:none; margin:clamp(34px,4vw,54px) 0 0; padding:0; display:grid; gap:1px;
+  background:var(--linea); border-block:1px solid var(--linea)}
+.ac-garantias li{background:var(--fondo-2); padding:clamp(22px,2.6vw,32px); display:grid;
+  grid-template-columns:auto 1fr; gap:4px 20px; align-items:baseline}
+.gr-n{font:500 .68rem/1 var(--mono); letter-spacing:.2em; color:var(--indice-txt)}
+.ac-garantias h3{margin:0; font:500 clamp(1.1rem,1.8vw,1.35rem)/1.2 var(--disp);
+  letter-spacing:-.02em; color:var(--blanco)}
+.ac-garantias p{grid-column:2; margin:8px 0 0; color:var(--acero); font-size:.94rem;
+  line-height:1.6; max-width:56ch}
+@media (hover:hover) and (pointer:fine){
+  .ac-garantias li{transition:background .3s var(--sale)}
+  .ac-garantias li:hover{background:var(--panel)}
+}
+
+/* ── los cinco grados ───────────────────────────────────────────── */
+.grados{list-style:none; margin:clamp(34px,4vw,54px) 0 0; padding:0; display:grid; gap:1px;
+  background:var(--claro-linea); border:1px solid var(--claro-linea); border-radius:10px; overflow:hidden}
+.grados li{background:var(--claro-papel-2); padding:clamp(18px,2.2vw,26px);
+  display:grid; grid-template-columns:auto 1fr; gap:4px 22px; align-items:center}
+.g-b{display:flex; gap:4px}
+.g-b i{width:9px; height:22px; background:var(--indice); border-radius:1px; display:block}
+.g-b i.off{background:var(--claro-linea)}
+.g-3 .g-b i:not(.off),.g-2 .g-b i:not(.off),.g-1 .g-b i:not(.off){background:#8A939B}
+.grados h3{margin:0; font:500 1.08rem/1.2 var(--disp); color:var(--claro-tinta)}
+.grados p{grid-column:2; margin:5px 0 0; color:var(--claro-grafito); font-size:.92rem; line-height:1.55}
+@media (hover:hover) and (pointer:fine){
+  .grados li{transition:background .25s var(--sale)}
+  .grados li:hover{background:#FBFAF8}
+}
+
+/* ── las plazas ─────────────────────────────────────────────────── */
+.plazas{list-style:none; margin:clamp(34px,4vw,54px) 0 0; padding:0;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(142px,1fr)); gap:1px;
+  background:var(--linea); border:1px solid var(--linea)}
+.plazas li{background:var(--fondo-2); padding:clamp(18px,2vw,26px); display:flex;
+  flex-direction:column; gap:6px}
+.pz-n{font:500 clamp(1.5rem,2.6vw,2.1rem)/1 var(--disp); letter-spacing:-.03em;
+  color:var(--blanco); font-variant-numeric:tabular-nums}
+.pz-l{font:500 .68rem/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--niebla)}
+.pz-ve{background:var(--panel)}
+.pz-ve .pz-n{color:var(--indice-txt)}
+@media (hover:hover) and (pointer:fine){
+  .plazas li{transition:background .25s var(--sale)}
+  .plazas li:hover{background:var(--panel)}
+}
+
+/* ── entradas al asomar · vale para todas las piezas nuevas ─────── */
+@supports (animation-timeline: view()){
+  .ac-garantias li,.grados li,.plazas li,.cifras-claro > div{
+    animation:llega linear both; animation-timeline:view(); animation-range:entry 3% entry 46%;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .ac-garantias li,.grados li,.plazas li,.cifras-claro > div{animation:none !important; transform:none !important}
+}
+
+/* ===================================================================
+   HOVER  ·  cuatro patrones
+   -------------------------------------------------------------------
+   Reflejo que sigue al cursor, subrayado que barre, y fila que desliza
+   su marca. El cuarto era el boton magnetico y esta fuera desde el
+   8-oct por decision de Alfredo.
+
+   Todo detras de `hover:hover` y `pointer:fine`: en una pantalla tactil
+   un toque dispara un hover que luego no hay forma de quitar.
+   =================================================================== */
+@media (hover: hover) and (pointer: fine){
+
+  /* a · RELIEVE AL ACERCARSE. Aqui vivio el boton magnetico --el boton
+     seguia al cursor-- y lo quito Alfredo el 8-oct. Queda solo la
+     sombra, que no mueve nada de sitio. */
+  .boton:hover{box-shadow:0 10px 30px rgba(47,111,222,.3)}
+  .boton-claro:hover{box-shadow:0 10px 30px rgba(0,0,0,.35)}
+
+  /* b · EL REFLEJO SIGUE AL CURSOR dentro de la tarjeta. Es el patron de
+     «cursor follow background reveal»: no se ilumina la tarjeta entera,
+     se ilumina DONDE esta el cursor. */
+  .reflejo{position:relative; isolation:isolate}
+  .reflejo::after{
+    content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    opacity:0; transition:opacity .3s var(--sale);
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),
+               rgba(47,111,222,.16), transparent 68%);
+  }
+  .reflejo:hover::after{opacity:1}
+  /* sobre claro el mismo reflejo, mas tenue: un azul al 16% sobre papel
+     se ve sucio, sobre negro no. */
+  .claro .reflejo::after{
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),
+               rgba(47,111,222,.09), transparent 68%);
+  }
+
+  /* c · SUBRAYADO QUE BARRE. Entra desde la izquierda y sale por la
+     derecha: con un solo origen el trazo parece que rebota. */
+  .menu a,.enlace,.pie-col a,.cierre-pie a,.caso-f,.foto-fuente a{
+    position:relative; text-decoration:none;
+  }
+  .menu a::before,.enlace::before,.pie-col a::before,.cierre-pie a::before{
+    content:""; position:absolute; left:0; right:0; bottom:-3px; height:1px;
+    background:currentColor; transform:scaleX(0); transform-origin:right;
+    transition:transform .34s var(--sale);
+  }
+  .menu a:hover::before,.enlace:hover::before,.pie-col a:hover::before,
+  .cierre-pie a:hover::before{transform:scaleX(1); transform-origin:left}
+  /* la pagina en la que estas ya lleva su propia raya: no se le pone otra */
+  .menu a.on::before{display:none}
+
+  /* d · LA FILA DESLIZA SU MARCA. En listas, el numero se adelanta y
+     aparece una guia: dice «esta es la que estas mirando» sin repintar
+     el fondo entero. */
+  .ac-garantias li,.grados li,.plazas li{position:relative}
+  .ac-garantias li::before,.grados li::before,.plazas li::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background:var(--indice); transform:scaleY(0); transform-origin:bottom;
+    transition:transform .3s var(--sale);
+  }
+  .ac-garantias li:hover::before,.grados li:hover::before,
+  .plazas li:hover::before{transform:scaleY(1); transform-origin:top}
+  .gr-n,.pz-l,.ac-tar-n{transition:transform .3s var(--sale)}
+  .ac-garantias li:hover .gr-n,.plazas li:hover .pz-l,
+  .ac-tar li:hover .ac-tar-n{transform:translateX(5px)}
+
+  /* el acordeon de casos: la fila abierta se adelanta un pelo */
+  .uc-item .uc-cab{transition:padding-left .3s var(--sale)}
+  .uc-item:hover .uc-cab{padding-left:7px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .reflejo::after{display:none}
+}
+
+/* ===================================================================
+   PISTA HORIZONTAL  ·  se scrollea vertical y el tren corre de lado
+   -------------------------------------------------------------------
+   El patron es el de la pieza que awwwards publica como «on scroll
+   sticky section» (schoolofstyle.com). Lo que medi alli, con
+   `getComputedStyle`, es la RAZON entre el hijo pineado y su padre:
+
+     hijo 768px (=100vh)  padre 1152px  -> 1,50x
+     hijo 768px (=100vh)  padre 2268px  -> 2,95x
+
+   Esa razon es el presupuesto de scroll del pin, y aqui no se inventa:
+   la altura del contenedor es `100vh + recorrido`, donde el recorrido
+   es `scrollWidth - clientWidth` MEDIDO por el JS. Asi el tren avanza
+   exactamente lo que avanza el dedo --1:1-- y la razon sale del
+   contenido en vez de un numero a dedo. Con cuatro tarjetas da 1,4x;
+   con seis, 1,9x. Las dos caen dentro de lo medido.
+
+   Por que no `animation-timeline`: el desplazamiento depende del ancho
+   real del tren, que CSS no sabe. Y un hijo `sticky` congela su propia
+   `view()`, porque deja de moverse respecto al viewport.
+   =================================================================== */
+.pista{position:relative; padding-block:0; padding-inline:0}
+.pista-fijo{
+  position:sticky; top:0; height:100vh; overflow:hidden;
+  display:flex; flex-direction:column; justify-content:center;
+  gap:clamp(20px,3vh,38px);
+}
+.pista-cab{padding-inline:max(var(--lado), (100% - var(--ancho))/2)}
+.pista-cab .ac-h2{margin-bottom:0}
+.pista-cab .ac-bajada{margin-top:10px}
+
+.pista-tren{
+  display:flex; align-items:stretch; gap:clamp(14px,1.8vw,26px);
+  list-style:none; margin:0; width:max-content;
+  padding-inline:max(var(--lado), (100% - var(--ancho))/2);
+  transform:translate3d(calc(var(--p,0) * var(--recorrido,0px) * -1),0,0);
+  will-change:transform;
+}
+.pista-t{
+  flex:0 0 clamp(282px,36vw,460px);
+  display:flex; flex-direction:column; gap:9px;
+  padding:clamp(20px,2vw,30px);
+  background:var(--realce); border:1px solid var(--linea); border-radius:4px;
+  /* `--c` es la cercania al centro del viewport (0 en el borde, 1 en el
+     medio) y la escribe el JS. Sin esto el tren es una tira plana: lo
+     que hace que se lea como tarjetas es que la del medio pesa mas. */
+  opacity:calc(.42 + var(--c,1) * .58);
+  transform:translateY(calc((1 - var(--c,1)) * 16px));
+  transition:opacity .18s linear, transform .18s linear, border-color .3s var(--sale);
+}
+.pista-t h3{margin:0; font:500 clamp(1.02rem,1.5vw,1.2rem)/1.25 var(--disp); color:var(--blanco)}
+.pista-t p{margin:0; color:var(--acero); font-size:.95rem}
+.pista-t .ac-tar-n{
+  font:500 .72rem/1 var(--mono); letter-spacing:.16em; color:var(--indice-txt);
+}
+.claro .pista-t{background:var(--claro-papel-2); border-color:var(--claro-linea)}
+.claro .pista-t h3{color:var(--claro-tinta)}
+.claro .pista-t p{color:var(--claro-grafito)}
+
+/* la barra de avance: dice cuanto queda de pista, que es la queja
+   clasica de estas secciones --no sabes si te vas a quedar atrapado */
+.pista-barra{
+  margin-inline:max(var(--lado), (100% - var(--ancho))/2);
+  height:2px; background:var(--linea); position:relative; overflow:hidden;
+}
+.pista-barra::after{
+  content:""; position:absolute; inset:0; background:var(--indice);
+  transform:scaleX(var(--p,0)); transform-origin:left;
+}
+.claro .pista-barra{background:var(--claro-linea)}
+
+/* Sin JS, o en un navegador sin `transform` util: la pista se convierte
+   en una tira que se arrastra con el dedo. Nunca queda inaccesible. */
+.pista:not(.lista) .pista-fijo{position:static; height:auto; padding-block:clamp(54px,7vw,96px)}
+.pista:not(.lista) .pista-tren{overflow-x:auto; width:auto; scroll-snap-type:x mandatory}
+.pista:not(.lista) .pista-t{opacity:1; transform:none; scroll-snap-align:center}
+.pista:not(.lista) .pista-barra{display:none}
+
+/* ===================================================================
+   TARJETAS QUE SE APILAN  ·  patron «sticky cards»
+   -------------------------------------------------------------------
+   Cada tarjeta se pega y la siguiente la tapa. Lo que da la sensacion
+   de baraja es que la de abajo SE ENCOGE cuando la cubren: `--z` es
+   cuantas la tapan, y lo cuenta el JS en el mismo rAF que la pista.
+   Con `view()` no se puede: una tarjeta pegada no se mueve respecto al
+   viewport, asi que su propia timeline se queda congelada.
+   =================================================================== */
+.apila{display:grid; gap:clamp(14px,2vh,22px); margin-top:clamp(26px,4vh,44px)}
+.apila-t{
+  position:sticky; top:clamp(76px,12vh,120px);
+  padding:clamp(22px,2.4vw,34px);
+  background:var(--realce); border:1px solid var(--linea); border-radius:5px;
+  transform-origin:top center;
+  scale:calc(1 - var(--z,0) * .035);
+  filter:brightness(calc(1 - var(--z,0) * .14));
+  transition:scale .22s linear, filter .22s linear, border-color .3s var(--sale);
+}
+.apila-t h3{margin:0 0 9px; font:500 clamp(1.08rem,1.7vw,1.34rem)/1.22 var(--disp); color:var(--blanco)}
+.apila-t p{margin:0; color:var(--acero)}
+.apila-t .gr-n{font:500 .72rem/1 var(--mono); letter-spacing:.16em; color:var(--indice-txt); display:block; margin-bottom:8px}
+.claro .apila-t{background:var(--claro-papel-2); border-color:var(--claro-linea)}
+.claro .apila-t h3{color:var(--claro-tinta)}
+.claro .apila-t p{color:var(--claro-grafito)}
+.claro .apila-t{filter:brightness(calc(1 + var(--z,0) * .0001))}
+.claro .apila-t{box-shadow:0 calc(var(--z,0) * 2px) calc(var(--z,0) * 14px) rgba(0,0,0,.07)}
+
+@media (max-width:760px){
+  .pista-t{flex-basis:76vw}
+  .apila-t{position:static; scale:1; filter:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .pista-fijo{position:static; height:auto; padding-block:clamp(54px,7vw,96px)}
+  .pista-tren{transform:none !important; overflow-x:auto; width:auto}
+  .pista-t{opacity:1 !important; transform:none !important}
+  .pista-barra{display:none}
+  .apila-t{position:static; scale:1 !important; filter:none !important}
+}
+
+/* las barritas de grado heredaban de `.grados li`; en la baraja la
+   tarjeta es la que tiene el padding, asi que solo hay que recolocarlas */
+.grados-apila{list-style:none; padding:0}
+.grados-apila .g-b{display:flex; gap:4px; margin-bottom:11px}
+.grados-apila .g-b i{width:22px; height:3px; border-radius:2px; background:var(--indice)}
+.grados-apila .g-b i.off{background:var(--linea)}
+.claro .grados-apila .g-b i.off{background:var(--claro-linea)}
+.grados-apila h3{margin:0 0 7px}
+
+/* el chip con la etiqueta tecnica del grado: va debajo del titulo claro,
+   no encima, porque lo que se lee primero es lo que pasa */
+.grados-apila .gr-et{
+  margin:0 0 8px; font:400 .74rem/1.2 var(--mono); letter-spacing:.06em;
+  color:var(--niebla);
+}
+.grados-apila .gr-et b{font-weight:500; color:var(--indice-txt)}
+.claro .grados-apila .gr-et{color:var(--claro-tenue)}
+.claro .grados-apila .gr-et b{color:var(--indice-osc)}
