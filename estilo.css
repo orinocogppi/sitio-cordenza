@@ -817,12 +817,6 @@ a{color:inherit}
   transition:color .18s var(--sale), border-color .18s var(--sale);
 }
 .pie-col a:hover{color:var(--blanco); border-bottom-color:var(--indice)}
-/* El enlace va dentro de una frase: .pie-col a es display:block y la partiría. */
-.pie-marca a{
-  display:inline; width:auto; padding:0; color:var(--blanco);
-  border-bottom:1px solid #4A5257;
-}
-.pie-marca a:hover{border-bottom-color:var(--indice)}
 .pie-chico{max-width:var(--ancho); margin:clamp(30px,4vw,44px) auto 0; padding-top:22px; border-top:1px solid #23272A; font-size:.82rem; color:#818A90}
 .lema{max-width:var(--ancho); margin:22px auto 0 !important; font:500 1.05rem/1 var(--disp); color:var(--blanco)}
 
@@ -1341,13 +1335,6 @@ html.cargando body{overflow:hidden}
   font:500 clamp(1.9rem,3.6vw,3rem)/1.08 var(--disp);
   letter-spacing:-.025em; max-width:22ch; color:var(--blanco);
 }
-/* Mismo gesto que .enlace: el grosor del subrayado crece al pasar por encima. */
-.ac-h2 a{
-  color:inherit; text-decoration:underline;
-  text-decoration-thickness:1px; text-underline-offset:6px;
-  transition:text-decoration-thickness .18s var(--sale);
-}
-.ac-h2 a:hover{text-decoration-thickness:2px}
 
 /* ── el reto, en tres columnas ──────────────────────────────────── */
 .ac-reto{

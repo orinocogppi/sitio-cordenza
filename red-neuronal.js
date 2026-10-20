@@ -31,15 +31,33 @@
   const ACERO = "#A79FA0", NIEBLA = "#6E6364";
   const MONO = (p) => `500 ${p}px "IBM Plex Mono", ui-monospace, monospace`;
 
-  const VE_TOTAL = 1209, PADRON = 1863;
-  const CIUDADES = [
-    { n: "MATURÍN", c: 17 }, { n: "CIUDAD OJEDA", c: 7 },
-    { n: "CABIMAS", c: 2 }, { n: "CARACAS", c: 1 },
+  /* PAISES, NO CIUDADES, Y SIN CIFRAS EN EL MAPA.
+     Alfredo, 19-oct-2026: «solo pon varios paises, es representativo ese mapa
+     en el hero. no pongas cuantas empresas ahi ni nada».
+
+     Tenia cuatro ciudades venezolanas --Maturin, Ciudad Ojeda, Cabimas,
+     Caracas-- y los carteles pintaban «N empresas». Dos problemas que se
+     arreglan con la misma decision:
+
+       · solo 27 de las 1.204 entidades venezolanas tienen ciudad registrada,
+         asi que cuatro carteles de ciudad daban una precision que la base no
+         sostiene;
+       · un numero pintado en un lienzo hay que mantenerlo al dia a mano, y
+         no se mantuvo: decia 1.209 y 1.863 cuando la base ya iba por 1.204 y
+         1.989. Las cifras exactas viven en el bloque de `.cifras`, que se
+         mide con psql y lo comprueba el porton. Aqui no.
+
+     `peso` NO se pinta: solo decide cuantos puntos lleva el racimo y cuanto
+     ocupa, para que el mapa se lea como un mapa y no como una nube uniforme.
+     Es forma, no afirmacion. */
+  const CERCA = [
+    { n: "COLOMBIA", peso: 604 }, { n: "EE. UU.", peso: 10 },
+    { n: "CHINA", peso: 15 }, { n: "EUROPA", peso: 8 },
   ];
   const PAISES = [
-    { n: "COLOMBIA", c: 604 }, { n: "SINGAPUR", c: 22 }, { n: "CHINA", c: 15 },
-    { n: "EE. UU.", c: 9 }, { n: "TURQUÍA", c: 5 }, { n: "MÉXICO", c: 4 },
-    { n: "EUROPA", c: 3 },
+    { n: "TURQUÍA", peso: 5 }, { n: "MÉXICO", peso: 4 },
+    { n: "SINGAPUR", peso: 2 }, { n: "BRASIL", peso: 1 },
+    { n: "COSTA RICA", peso: 1 },
   ];
 
   /* ── el grafo ─────────────────────────────────────────────────── */
@@ -71,13 +89,16 @@
   const nucleo = sembrar(V(0, 0, 0), 165, 2.4, -1);
 
   // las ciudades: pegadas a Venezuela, en abanico corto hacia la izquierda
-  CIUDADES.forEach((cd, k) => {
-    const a = Math.PI * (0.62 + (k / (CIUDADES.length - 1)) * 0.76);   // de arriba-izq a abajo-izq
+  // el anillo de cerca: los paises de mas peso, alrededor del centro
+  CERCA.forEach((cd, k) => {
+    const a = Math.PI * (0.62 + (k / (CERCA.length - 1)) * 0.76);   // de arriba-izq a abajo-izq
     const d = 4.2 + (k % 2) * 0.9;
     const c = V(Math.cos(a) * d, Math.sin(a) * d * 0.72, (k % 2 ? 1 : -1) * 1.1);
-    const n = Math.max(5, Math.round(4.6 * Math.sqrt(cd.c)));
+    const n = Math.max(5, Math.round(4.6 * Math.sqrt(cd.peso)));
     const [ini, fin] = sembrar(c, n, 0.55 + Math.sqrt(n) * 0.13, racimos.length);
-    racimos.push({ ...cd, dentro: true, cx: c.x, cy: c.y, cz: c.z, ini, fin, hl: 0, objetivo: 0 });
+    // `dentro` se queda en false: el unico azul es Venezuela, que es el
+    // centro. Pintar Colombia de azul diria que es red venezolana.
+    racimos.push({ ...cd, dentro: false, cx: c.x, cy: c.y, cz: c.z, ini, fin, hl: 0, objetivo: 0 });
   });
 
   // los paises: un campo suelto a la izquierda que ocupa toda la seccion
@@ -89,7 +110,7 @@
   PAISES.forEach((p, k) => {
     const [x, y, z] = REJA[k];
     const c = V(x, y, z);
-    const n = Math.max(6, Math.min(40, Math.round(3.4 * Math.sqrt(p.c))));
+    const n = Math.max(6, Math.min(40, Math.round(3.4 * Math.sqrt(p.peso))));
     const [ini, fin] = sembrar(c, n, 0.6 + Math.sqrt(n) * 0.15, racimos.length);
     racimos.push({ ...p, dentro: false, cx: c.x, cy: c.y, cz: c.z, ini, fin, hl: 0, objetivo: 0 });
   });
@@ -316,9 +337,9 @@
     racimos.forEach((r, k) => {
       // en pantalla angosta no caben nueve carteles sin montarse: se
       // quedan los que pesan, y los chicos solo cuando los señalas
-      if (apretado && r.c < 15 && r.hl < 0.2) return;
+      if (apretado && r.peso < 8 && r.hl < 0.2) return;
       const p = proyectarUno({ x: r.cx, y: r.cy, z: r.cz });
-      carteles.push({ p, n: r.n, c: r.c, dentro: r.dentro, hl: r.hl });
+      carteles.push({ p, n: r.n, dentro: r.dentro, hl: r.hl });
     });
     carteles.sort((a, b) => a.p.z - b.p.z);
     for (const q of carteles) {
@@ -332,10 +353,9 @@
       ctx.textAlign = "left"; ctx.textBaseline = "middle";
       ctx.font = MONO((q.hl > 0.5 ? 14.5 : 12.5) * tipo);
       ctx.fillStyle = `rgba(255,255,255,${a})`;
-      ctx.fillText(q.n, q.p.x + dx, q.p.y + dy - 7);
-      ctx.font = MONO(11.5 * tipo);
-      ctx.fillStyle = `rgba(47,111,222,${a})`;
-      ctx.fillText(q.c + (q.dentro ? "" : " empresas"), q.p.x + dx, q.p.y + dy + 8);
+      // solo el nombre: el cartel ya no lleva «N empresas». Las cifras
+      // exactas viven en el bloque de `.cifras`, medido con psql.
+      ctx.fillText(q.n, q.p.x + dx, q.p.y + dy);
     }
     // el del centro, siempre encendido
     const izq = apretado;                       // en movil, el cartel va a la izquierda
@@ -344,8 +364,7 @@
     ctx.font = MONO(18 * tipo); ctx.fillStyle = BLANCO;
     ctx.fillText("VENEZUELA", lxC, C.y - 9 * tipo);
     ctx.font = MONO(13 * tipo); ctx.fillStyle = AZUL;
-    ctx.fillText(apretado ? VE_TOTAL + " empresas"
-                          : VE_TOTAL + " empresas · el centro de la red", lxC, C.y + 8 * tipo);
+    ctx.fillText("el centro de la red", lxC, C.y + 8 * tipo);
 
     /* 7 · LA LEYENDA. Sin esto, los colores son decoracion. */
     const lx = 18, ly = al - 18;
@@ -358,10 +377,12 @@
     ctx.beginPath(); ctx.arc(lx + 124, ly - 26, 3.4, 0, 6.283); ctx.fill();
     ctx.fillStyle = ACERO; ctx.fillText("oportunidad saliendo", lx + 134, ly - 22);
     ctx.fillStyle = NIEBLA;
+    // Sin cifra ni fecha: un numero pintado en un lienzo hay que mantenerlo
+    // a mano, y este se quedo seis meses diciendo 1.863.
     ctx.fillText(apretado
-      ? PADRON + " empresas · 1-oct-2026"
-      : "Azul: red venezolana · Gris: el resto del mundo · " + PADRON
-        + " empresas en el padrón, 1-oct-2026", lx, ly);
+      ? "Representativo · no es un mapa de rutas"
+      : "Venezuela en el centro · alrededor, los países de origen · "
+        + "representativo, no es un mapa de rutas", lx, ly);
   }
 
   let vivo = false, lazo = 0;
