@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于我们 · Cordenza Intelligence</title>
+<meta name="description" content="Cordenza Intelligence surge de una necesidad que conocimos trabajando con contratistas. Qué somos, con qué trabajamos y hacia dónde va la empresa. Operado y respaldado por Orinoco Global Partners.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../estilo.css?v=20261021a">
+<script>document.documentElement.classList.remove("sin-js")</script>
+<link rel="alternate" hreflang="es" href="../conocenos.html"><link rel="alternate" hreflang="en" href="../en/conocenos.html"><link rel="alternate" hreflang="fr" href="../fr/conocenos.html"><link rel="alternate" hreflang="pt" href="../pt/conocenos.html"><link rel="alternate" hreflang="zh" href="../zh/conocenos.html"><link rel="alternate" hreflang="ru" href="../ru/conocenos.html"><link rel="alternate" hreflang="ar" href="../ar/conocenos.html"></head>
+<body><nav class="idiomas" aria-label="Idioma"><select onchange="location.href=this.value" aria-label="Idioma"><option value="../conocenos.html">Español</option><option value="../en/conocenos.html">English</option><option value="../fr/conocenos.html">Français</option><option value="../pt/conocenos.html">Português</option><option value="../zh/conocenos.html" selected>中文</option><option value="../ru/conocenos.html">Русский</option><option value="../ar/conocenos.html">العربية</option></select><noscript><ul><li><a href="../conocenos.html" hreflang="es">Español</a></li><li><a href="../en/conocenos.html" hreflang="en">English</a></li><li><a href="../fr/conocenos.html" hreflang="fr">Français</a></li><li><a href="../pt/conocenos.html" hreflang="pt">Português</a></li><li><a href="../zh/conocenos.html" hreflang="zh">中文</a></li><li><a href="../ru/conocenos.html" hreflang="ru">Русский</a></li><li><a href="../ar/conocenos.html" hreflang="ar">العربية</a></li></ul></noscript></nav><script>(function(){try{var G="cordenza.idioma";var s=document.querySelector(".idiomas select");if(s)s.addEventListener("change",function(){try{localStorage.setItem(G,s.options[s.selectedIndex].text)}catch(e){}});if(document.documentElement.lang!=="es")return;if(localStorage.getItem(G))return;var l=(navigator.languages||[navigator.language||""]);var c=["en","fr","pt","zh","ru","ar"];for(var i=0;i<l.length;i++){var t=String(l[i]).toLowerCase();if(t.indexOf("es")===0)return;for(var j=0;j<c.length;j++)if(t.indexOf(c[j])===0){location.replace(c[j]+"/conocenos.html");return}}}catch(e){}})();</script>
+
+<!-- PANTALLA DE CARGA · el signo se arma solo -->
+<div class="carga" id="carga" role="status" aria-label="Cargando">
+  <!-- PRELOADER · copiado de unitedcarriers.com con SUS medidas, leidas
+       de su CSS computado a 1024x768 el 8-oct-2026:
+         tipografia  Helvetica Neue 9,48px / 12,33px, sin letter-spacing
+         lista izq   68px de ancho, items de 10px, blanco al 24 por ciento
+         mapa        359 x 184, centrado en la pantalla
+         lista der   140px de ancho, arrancando en x=798
+         contador    9,48px, blanco, pegado al borde derecho
+       Sin logo. Lo unico que cambia es el CONTENIDO: sus plazas por las
+       nuestras y sus servicios por nuestros pasos. -->
+  <div class="cg-reja">
+    <ul class="cg-lista cg-izq" aria-hidden="true">
+        <li style="--k:0">委内瑞拉</li>
+        <li style="--k:1">哥伦比亚</li>
+        <li style="--k:2">墨西哥</li>
+        <li style="--k:3">美国</li>
+        <li style="--k:4">欧洲</li>
+        <li style="--k:5">土耳其</li>
+        <li style="--k:6">中国</li>
+        <li style="--k:7">新加坡</li>
+    </ul>
+
+    <div class="cg-centro">
+      <div class="cg-mapa">
+        <canvas id="cg-tierra" aria-hidden="true"></canvas>
+        <i class="cg-punto cg-punto-ve" style="left:32.03%; top:50.65%; --k:0"></i>
+        <i class="cg-punto" style="left:29.42%; top:54.70%; --k:1"></i>
+        <i class="cg-punto" style="left:22.47%; top:43.47%; --k:2"></i>
+        <i class="cg-punto" style="left:27.72%; top:38.58%; --k:3"></i>
+        <i class="cg-punto" style="left:52.78%; top:17.42%; --k:4"></i>
+        <i class="cg-punto" style="left:58.05%; top:26.97%; --k:5"></i>
+        <i class="cg-punto" style="left:83.75%; top:35.45%; --k:6"></i>
+        <i class="cg-punto" style="left:78.83%; top:57.26%; --k:7"></i>
+      </div>
+    </div>
+
+    <div class="cg-der">
+      <ul class="cg-lista" aria-hidden="true">
+        <li style="--k:0">需求</li>
+        <li style="--k:1">规格</li>
+        <li style="--k:2">寻源</li>
+        <li style="--k:3">可比对照表</li>
+        <li style="--k:4">样品</li>
+        <li style="--k:5">下单与交付</li>
+      </ul>
+      <p class="cg-contador"><span id="cg-n">00</span></p>
+    </div>
+  </div>
+</div>
+
+<a class="saltar" href="#contenido">跳至正文</a>
+
+<header class="cabecera">
+  <a class="marca" href="index.html" aria-label="Cordenza Intelligence, inicio">
+    <svg class="signo" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="s-c" d="M20 20H63V34H34V66H63V80H20Z"></path>
+      <rect class="s-pt" x="66" y="20" width="14" height="14"></rect>
+      <rect class="s-i" x="66" y="37" width="14" height="43"></rect>
+    </svg>
+    <span>Cordenza <b>Intelligence</b></span>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html">我要采购</a>
+    <a href="proveedores.html">我要供货</a>
+    <a href="conocenos.html" class="on" aria-current="page">关于我们</a>
+  </nav>
+  <a class="boton boton-chico" href="#hablar" data-contactar>联系我们</a>
+</header>
+
+<main id="contenido">
+
+<section class="ac-cabeza ac-cabeza-foto velo-medio">
+  <img class="foto" src="../medios/almacen.jpg" alt="Dos trabajadoras conversan mientras caminan por un pasillo de almacén entre estanterías azules." fetchpriority="high" decoding="async" width="1600" height="1000">
+  <p class="ac-et">了解我们</p>
+  <h1>从真实业务中建起来的。</h1>
+  <p class="ac-bajada">Cordenza 源于我们与承包商合作时遇到的一个需求：找到供应只是开头。之后还要核对、比较条件、协调各方，并把流程一路带到合同执行。</p>
+  <div class="acciones">
+    <a class="boton" href="#hablar" data-contactar>联系我们</a>
+    <a class="enlace" href="index.html#como">看看如何运作</a>
+  </div>
+  <p class="foto-fuente"><a href="https://unsplash.com/photos/women-walking-through-warehouse-aisle-ZlOlRnWk8zU" rel="noopener">图片：Centre for Ageing Better · Unsplash</a></p>
+</section>
+
+<!-- CON QUE TRABAJAMOS · las seis tarjetas del documento.
+     La sexta del documento original nombraba entidades del Estado
+     venezolano, que `marketing/02` §2 veta y el generador de la
+     presentacion bloquea con un assert, por la exposicion OFAC de
+     Nex AI. Va la misma idea sin nombrarlas. -->
+<!-- PISTA HORIZONTAL · seis tarjetas que corren de lado mientras se
+     scrollea vertical. La altura la mide el JS: depende del ancho real
+     del tren, que CSS no conoce. -->
+<section class="ac-sec ac-sec-alt pista" id="capacidades">
+  <div class="pista-fijo">
+    <div class="pista-cab">
+      <p class="ac-et">我们凭什么做事</p>
+      <h2 class="ac-h2">做成一笔业务需要的六样东西。</h2>
+      <p class="ac-bajada">每一样都解决一个在下单与签约之间真会出现的问题。少了它们，就得有人闭着眼睛去信。</p>
+    </div>
+    <ol class="pista-tren">
+      <li class="pista-t">
+        <span class="ac-tar-n">01</span>
+        <h3>技术与商业数据</h3>
+        <p>系统把需求和报价整理起来，保留每个数字的来源，并不断扩充一个随每笔业务增长的商业库。</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">02</span>
+        <h3>战略关系</h3>
+        <p>我们通过具有国际覆盖的合作关系，与制造商、供应商、代理商、承包商和专业运营方合作。</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">03</span>
+        <h3>正式流程的经验</h3>
+        <p>我们参与过对单据、技术验收和问责均有要求的采购流程。</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">04</span>
+        <h3>保密</h3>
+        <p>我们保护身份、需求、预算、供应商与合同条件。结果的对外说明须经授权，或以匿名方式进行。</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">05</span>
+        <h3>金融架构</h3>
+        <p>我们拥有银行与金融关系，可为符合相应条件的业务搭建适用的方案。</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">06</span>
+        <h3>保险与风险管理</h3>
+        <p>当一笔业务需要保险、合规或风险缓释时，我们与专业伙伴合作。</p>
+      </li>
+    </ol>
+    <div class="pista-barra" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- LA VISION · la familia de marcas. Tres de las cinco TODAVIA NO
+     EXISTEN, y van marcadas como tales: publicarlas como si operaran
+     seria exactamente la afirmacion sin respaldo que este sistema
+     existe para impedir. -->
+<section class="ac-sec" id="vision">
+  <p class="ac-et">走向哪里</p>
+  <h2 class="ac-h2">每笔业务都留下数据。数据让下一笔更好。</h2>
+  <p class="ac-bajada">我们的愿景是：由真实业务产生的数据，为委内瑞拉形成一套越来越有用的基础设施——需求与供应井然有序，采购决策更明智，商业关系足以支撑新的业务。</p>
+  <dl class="ac-familia">
+    <div class="on"><dt>Cordenza Intelligence</dt><dd>数据、市场与决策。</dd><em>当前</em></div>
+    <div class="on"><dt>Cordenza Network</dt><dd>企业与商业生态。</dd><em>当前</em></div>
+    <div><dt>Cordenza Trade</dt><dd>业务与合同。</dd><em>进行中</em></div>
+    <div><dt>Cordenza Distribution</dt><dd>供应与物流。</dd><em>进行中</em></div>
+    <div><dt>Cordenza Capital</dt><dd>为选定合同提供融资架构。</dd><em>进行中</em></div>
+  </dl>
+  <p class="ac-alc-n">标注「进行中」的三项是公司的去向，
+     <b>目前还无法签约</b>。哪天其中一项可以了，这行字就会改。</p>
+</section>
+
+<!-- QUIEN RESPONDE · la titularidad, que no es un detalle legal: es
+     quien queda del otro lado si algo sale mal. -->
+<section class="ac-sec ac-sec-alt">
+  <p class="ac-et">由谁负责</p>
+  <h2 class="ac-h2">Orinoco Global Partners。</h2>
+  <p class="ac-bajada">Cordenza Intelligence 由 Orinoco Global Partners 运营并提供支持，该公司在委内瑞拉注册，是系统的所有者。它是签约的一方，也是对每笔业务负责的一方。</p>
+</section>
+
+<div class="paso paso-claro" aria-hidden="true"></div>
+
+<!-- COMO SE MIDE UN DATO · los cinco grados del sistema. Es el nucleo
+     de lo que hace Cordenza y no estaba contado en ninguna pagina. -->
+<section class="ac-sec claro" id="grados">
+  <p class="ac-et">每个数字从哪来</p>
+  <h2 class="ac-h2">每个数字都说明它从哪来。</h2>
+  <p class="ac-bajada">每个数字旁边有一条五格的标尺。五格：文件存在，可以打开。一格：有人这么说，但没人核过。如果凑一个总数时缺了某项数据，我们不会给您总数：我们会告诉您缺什么。</p>
+  <!-- BARAJA · se apilan y la de abajo se encoge. `--z` lo cuenta el
+       JS porque una tarjeta pegada no mueve su propia `view()`. -->
+  <!-- BARAJA · se apilan y la de abajo se encoge. `--z` lo cuenta el
+       JS porque una tarjeta pegada no mueve su propia `view()`.
+       El titulo es lo que PASA; la etiqueta tecnica --Verificado,
+       Autoreportado...-- va de chip porque es la que el lector vera
+       luego en su cotizacion y tiene que reconocerla. Antes la etiqueta
+       era el titulo y no se entendia nada. -->
+  <ol class="apila grados-apila">
+    <li class="apila-t g-5">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <h3>有文件</h3>
+      <p class="gr-et">5/5 · <b>已核验</b></p>
+      <p>发票、提单或报关单。纸面材料在，可以打开。</p>
+    </li>
+    <li class="apila-t g-4">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="off"></i></span>
+      <h3>由我们核过</h3>
+      <p class="gr-et">4/5 · <b>实测</b></p>
+      <p>没有供应商的纸面材料，但我们回到源头做了对照。我们会说明对照的是什么。</p>
+    </li>
+    <li class="apila-t g-3">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span>
+      <h3>这是算出来的</h3>
+      <p class="gr-et">3/5 · <b>估算</b></p>
+      <p>不是随手写的数字：算式明示，供您查验。</p>
+    </li>
+    <li class="apila-t g-2">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i></span>
+      <h3>供应商这么说</h3>
+      <p class="gr-et">2/5 · <b>自报</b></p>
+      <p>他给了我们，我们还没核。可用于判断大概，不足以据此签约。</p>
+    </li>
+    <li class="apila-t g-1">
+      <span class="g-b" aria-hidden="true"><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i></span>
+      <h3>无依据</h3>
+      <p class="gr-et">1/5 · <b>未核验</b></p>
+      <p>进来时后面什么都没有。会被如此标注，不用于任何决策。</p>
+    </li>
+  </ol>
+</section>
+
+<div class="paso paso-oscuro" aria-hidden="true"></div>
+
+<!-- DONDE OPERAMOS · las plazas del padron, las mismas del preloader y
+     de la red de la home. Medidas en pi.entidad el 1-oct-2026. -->
+<section class="ac-sec ac-sec-alt" id="plazas">
+  <p class="ac-et">我们在哪里找</p>
+  <h2 class="ac-h2">订单进来时，我们就在这里找。</h2>
+  <p class="ac-bajada">库中已登记的企业，每家都有自己的档案。寻源从这里出发，而不是从零开始。它们是已登记的企业，并非全都报过价。</p>
+  <ul class="plazas">
+    <li class="pz-ve"><span class="pz-n">1.204</span><span class="pz-l">委内瑞拉</span></li>
+    <li><span class="pz-n">604</span><span class="pz-l">哥伦比亚</span></li>
+    <li><span class="pz-n">15</span><span class="pz-l">中国</span></li>
+    <li><span class="pz-n">10</span><span class="pz-l">美国</span></li>
+    <li><span class="pz-n">8</span><span class="pz-l">欧洲</span></li>
+    <li><span class="pz-n">5</span><span class="pz-l">土耳其</span></li>
+    <li><span class="pz-n">4</span><span class="pz-l">墨西哥</span></li>
+    <li><span class="pz-n">2</span><span class="pz-l">新加坡</span></li>
+  </ul>
+  <p class="corte">于 2026 年 10 月 21 日在数据库中实测，重名已剔除。另有 135 家企业未申报司法辖区，不计入此项分布。</p>
+</section>
+
+<!-- CIERRE -->
+<section id="hablar" class="cierre resplandor">
+  <h2>协调。实力。执行。</h2>
+  <p class="cierre-bajada">把一个真实需求发给我们，或者告诉我们您制造什么。两种对话的开头都一样：另一头有人在读您写下的东西。</p>
+  <div class="acciones">
+    <a class="boton boton-claro" href="mailto:Orinocogp.pi@gmail.com?subject=Contacto%20desde%20el%20sitio">发邮件</a>
+    <a class="enlace enlace-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20hablar%20con%20Cordenza">用 WhatsApp 联系</a>
+  </div>
+  <p class="cierre-pie">或者，如果您已经清楚需要什么：
+    <a href="index.html#enviar">索取报价</a> ·
+    <a href="proveedores.html#alta">介绍您的企业</a></p>
+</section>
+
+</main>
+
+<!-- SELECTOR DE CONTACTO · se abre desde cualquier enlace `data-contactar`.
+     Es un <dialog> nativo y no un div: trae gratis el cierre con Escape, el
+     foco atrapado dentro y el fondo que apaga lo de detras. Si el
+     JavaScript no corre, el enlace sigue valiendo y lleva al cierre de la
+     pagina, que ofrece lo mismo. -->
+<dialog class="elegir" id="elegir" aria-labelledby="elegir-t">
+  <form method="dialog" class="elegir-x"><button aria-label="Cerrar">&times;</button></form>
+  <p class="ac-et" id="elegir-t">联系我们</p>
+  <p class="elegir-d">您更想用哪一种？两种都会到同一个人手里。</p>
+  <div class="elegir-o">
+    <a class="boton" href="mailto:Orinocogp.pi@gmail.com?subject=Contacto%20desde%20el%20sitio">邮件</a>
+    <a class="boton boton-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20hablar%20con%20Cordenza">WhatsApp</a>
+  </div>
+  <p class="elegir-p">Orinocogp.pi@gmail.com · +58 414 444 3327</p>
+</dialog>
+
+<footer class="pie">
+  <div class="pie-r">
+    <div class="pie-col">
+      <p class="pie-marca"><b>Cordenza Intelligence</b> · 由 Orinoco Global Partners 运营并提供支持。</p>
+      <p>我们正在建立委内瑞拉工业采购的价格库，一份报价接一份报价，每个数字都带着它的出处。</p>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">如果您是采购方</p>
+      <a href="index.html">运作方式</a>
+      <a href="index.html#red">供应商网络</a>
+      <a href="index.html#solucion">解决方式</a>
+      <a href="index.html#enviar">提交需求</a>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">如果您是供货方</p>
+      <a href="proveedores.html#participar">如何参与</a>
+      <a href="proveedores.html#evaluamos">我们评估什么</a>
+      <a href="proveedores.html#alta">介绍我的企业</a>
+      <a href="conocenos.html">关于我们</a>
+    </div>
+  </div>
+  <p class="pie-chico">我们收取的费用在每份报价上都明示。若您希望从我们的库中移除，请写信至 Orinocogp.pi@gmail.com，我们会照办。</p>
+  <p class="lema">协调。实力。执行。</p>
+</footer>
+
+<script src="../mundo-puntos.js" defer></script>
+<script src="../movimiento.js?v=20261021a" defer></script>
+</body>
+</html>

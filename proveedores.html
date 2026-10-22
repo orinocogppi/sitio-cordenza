@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css?v=20261008B">
+<link rel="stylesheet" href="estilo.css?v=20261021a">
 <script>document.documentElement.classList.remove("sin-js")</script>
-</head>
-<body>
+<link rel="alternate" hreflang="es" href="proveedores.html"><link rel="alternate" hreflang="en" href="en/proveedores.html"><link rel="alternate" hreflang="fr" href="fr/proveedores.html"><link rel="alternate" hreflang="pt" href="pt/proveedores.html"><link rel="alternate" hreflang="zh" href="zh/proveedores.html"><link rel="alternate" hreflang="ru" href="ru/proveedores.html"><link rel="alternate" hreflang="ar" href="ar/proveedores.html"></head>
+<body><nav class="idiomas" aria-label="Idioma"><select onchange="location.href=this.value" aria-label="Idioma"><option value="proveedores.html" selected>Español</option><option value="en/proveedores.html">English</option><option value="fr/proveedores.html">Français</option><option value="pt/proveedores.html">Português</option><option value="zh/proveedores.html">中文</option><option value="ru/proveedores.html">Русский</option><option value="ar/proveedores.html">العربية</option></select><noscript><ul><li><a href="proveedores.html" hreflang="es">Español</a></li><li><a href="en/proveedores.html" hreflang="en">English</a></li><li><a href="fr/proveedores.html" hreflang="fr">Français</a></li><li><a href="pt/proveedores.html" hreflang="pt">Português</a></li><li><a href="zh/proveedores.html" hreflang="zh">中文</a></li><li><a href="ru/proveedores.html" hreflang="ru">Русский</a></li><li><a href="ar/proveedores.html" hreflang="ar">العربية</a></li></ul></noscript></nav><script>(function(){try{var G="cordenza.idioma";var s=document.querySelector(".idiomas select");if(s)s.addEventListener("change",function(){try{localStorage.setItem(G,s.options[s.selectedIndex].text)}catch(e){}});if(document.documentElement.lang!=="es")return;if(localStorage.getItem(G))return;var l=(navigator.languages||[navigator.language||""]);var c=["en","fr","pt","zh","ru","ar"];for(var i=0;i<l.length;i++){var t=String(l[i]).toLowerCase();if(t.indexOf("es")===0)return;for(var j=0;j<c.length;j++)if(t.indexOf(c[j])===0){location.replace(c[j]+"/proveedores.html");return}}}catch(e){}})();</script>
 
 <!-- PANTALLA DE CARGA · el signo se arma solo -->
 <div class="carga" id="carga" role="status" aria-label="Cargando">
@@ -239,11 +239,11 @@
      que permite decirle a un comprador si lo que usted ofrece está dentro de mercado, y
      lo que hace que su propuesta se lea con contexto en vez de sola.</p>
   <dl class="cifras-claro">
-    <div><dt>empresas en la base</dt><dd data-cifra="1989">1.989</dd></div>
+    <div><dt>empresas registradas en el sistema</dt><dd data-cifra="1989">1.989</dd></div>
     <div><dt>jurisdicciones en el padrón</dt><dd data-cifra="16">16</dd></div>
-    <div><dt>datos con su fuente</dt><dd data-cifra="3010">3.010</dd></div>
+    <div><dt>registros comerciales trazables</dt><dd data-cifra="3010">3.010</dd></div>
   </dl>
-  <p class="corte-claro">Medido en la base el 1 de octubre de 2026. Crece con cada cotización que entra.</p>
+  <p class="corte-claro">Medido en la base el 21 de octubre de 2026. Crece con cada cotización que entra.</p>
 </section>
 
 <div class="paso paso-oscuro" aria-hidden="true"></div>
@@ -325,6 +325,6 @@
 </footer>
 
 <script src="mundo-puntos.js" defer></script>
-<script src="movimiento.js?v=20261008B" defer></script>
+<script src="movimiento.js?v=20261021a" defer></script>
 </body>
 </html>

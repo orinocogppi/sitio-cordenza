@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css?v=20261008B">
+<link rel="stylesheet" href="estilo.css?v=20261021a">
 <script>document.documentElement.classList.remove("sin-js")</script>
-</head>
-<body>
+<link rel="alternate" hreflang="es" href="conocenos.html"><link rel="alternate" hreflang="en" href="en/conocenos.html"><link rel="alternate" hreflang="fr" href="fr/conocenos.html"><link rel="alternate" hreflang="pt" href="pt/conocenos.html"><link rel="alternate" hreflang="zh" href="zh/conocenos.html"><link rel="alternate" hreflang="ru" href="ru/conocenos.html"><link rel="alternate" hreflang="ar" href="ar/conocenos.html"></head>
+<body><nav class="idiomas" aria-label="Idioma"><select onchange="location.href=this.value" aria-label="Idioma"><option value="conocenos.html" selected>Español</option><option value="en/conocenos.html">English</option><option value="fr/conocenos.html">Français</option><option value="pt/conocenos.html">Português</option><option value="zh/conocenos.html">中文</option><option value="ru/conocenos.html">Русский</option><option value="ar/conocenos.html">العربية</option></select><noscript><ul><li><a href="conocenos.html" hreflang="es">Español</a></li><li><a href="en/conocenos.html" hreflang="en">English</a></li><li><a href="fr/conocenos.html" hreflang="fr">Français</a></li><li><a href="pt/conocenos.html" hreflang="pt">Português</a></li><li><a href="zh/conocenos.html" hreflang="zh">中文</a></li><li><a href="ru/conocenos.html" hreflang="ru">Русский</a></li><li><a href="ar/conocenos.html" hreflang="ar">العربية</a></li></ul></noscript></nav><script>(function(){try{var G="cordenza.idioma";var s=document.querySelector(".idiomas select");if(s)s.addEventListener("change",function(){try{localStorage.setItem(G,s.options[s.selectedIndex].text)}catch(e){}});if(document.documentElement.lang!=="es")return;if(localStorage.getItem(G))return;var l=(navigator.languages||[navigator.language||""]);var c=["en","fr","pt","zh","ru","ar"];for(var i=0;i<l.length;i++){var t=String(l[i]).toLowerCase();if(t.indexOf("es")===0)return;for(var j=0;j<c.length;j++)if(t.indexOf(c[j])===0){location.replace(c[j]+"/conocenos.html");return}}}catch(e){}})();</script>
 
 <!-- PANTALLA DE CARGA · el signo se arma solo -->
 <div class="carga" id="carga" role="status" aria-label="Cargando">
@@ -247,16 +247,16 @@
      arranca por aquí y no desde cero. Son empresas registradas, no todas han cotizado
      todavía.</p>
   <ul class="plazas">
-    <li class="pz-ve"><span class="pz-n">1.209</span><span class="pz-l">Venezuela</span></li>
+    <li class="pz-ve"><span class="pz-n">1.204</span><span class="pz-l">Venezuela</span></li>
     <li><span class="pz-n">604</span><span class="pz-l">Colombia</span></li>
-    <li><span class="pz-n">22</span><span class="pz-l">Singapur</span></li>
     <li><span class="pz-n">15</span><span class="pz-l">China</span></li>
-    <li><span class="pz-n">9</span><span class="pz-l">EE. UU.</span></li>
+    <li><span class="pz-n">10</span><span class="pz-l">EE. UU.</span></li>
+    <li><span class="pz-n">8</span><span class="pz-l">Europa</span></li>
     <li><span class="pz-n">5</span><span class="pz-l">Turquía</span></li>
     <li><span class="pz-n">4</span><span class="pz-l">México</span></li>
-    <li><span class="pz-n">3</span><span class="pz-l">Europa</span></li>
+    <li><span class="pz-n">2</span><span class="pz-l">Singapur</span></li>
   </ul>
-  <p class="corte">Medido en la base el 1 de octubre de 2026.</p>
+  <p class="corte">Medido en la base el 21 de octubre de 2026, ya sin nombres duplicados. Otras 135 empresas no tienen jurisdicción declarada y no entran en este desglose.</p>
 </section>
 
 <!-- CIERRE -->
@@ -317,6 +317,6 @@
 </footer>
 
 <script src="mundo-puntos.js" defer></script>
-<script src="movimiento.js?v=20261008B" defer></script>
+<script src="movimiento.js?v=20261021a" defer></script>
 </body>
 </html>

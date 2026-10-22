@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Поставщики · Cordenza Intelligence</title>
+<meta name="description" content="Acceso a demanda empresarial real en Venezuela. Presente su empresa, reciba oportunidades aplicables a lo que fabrica o distribuye y avance hacia la venta. Registro y participación sin costo hasta concretar la primera venta.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../estilo.css?v=20261021a">
+<script>document.documentElement.classList.remove("sin-js")</script>
+<link rel="alternate" hreflang="es" href="../proveedores.html"><link rel="alternate" hreflang="en" href="../en/proveedores.html"><link rel="alternate" hreflang="fr" href="../fr/proveedores.html"><link rel="alternate" hreflang="pt" href="../pt/proveedores.html"><link rel="alternate" hreflang="zh" href="../zh/proveedores.html"><link rel="alternate" hreflang="ru" href="../ru/proveedores.html"><link rel="alternate" hreflang="ar" href="../ar/proveedores.html"></head>
+<body><nav class="idiomas" aria-label="Idioma"><select onchange="location.href=this.value" aria-label="Idioma"><option value="../proveedores.html">Español</option><option value="../en/proveedores.html">English</option><option value="../fr/proveedores.html">Français</option><option value="../pt/proveedores.html">Português</option><option value="../zh/proveedores.html">中文</option><option value="../ru/proveedores.html" selected>Русский</option><option value="../ar/proveedores.html">العربية</option></select><noscript><ul><li><a href="../proveedores.html" hreflang="es">Español</a></li><li><a href="../en/proveedores.html" hreflang="en">English</a></li><li><a href="../fr/proveedores.html" hreflang="fr">Français</a></li><li><a href="../pt/proveedores.html" hreflang="pt">Português</a></li><li><a href="../zh/proveedores.html" hreflang="zh">中文</a></li><li><a href="../ru/proveedores.html" hreflang="ru">Русский</a></li><li><a href="../ar/proveedores.html" hreflang="ar">العربية</a></li></ul></noscript></nav><script>(function(){try{var G="cordenza.idioma";var s=document.querySelector(".idiomas select");if(s)s.addEventListener("change",function(){try{localStorage.setItem(G,s.options[s.selectedIndex].text)}catch(e){}});if(document.documentElement.lang!=="es")return;if(localStorage.getItem(G))return;var l=(navigator.languages||[navigator.language||""]);var c=["en","fr","pt","zh","ru","ar"];for(var i=0;i<l.length;i++){var t=String(l[i]).toLowerCase();if(t.indexOf("es")===0)return;for(var j=0;j<c.length;j++)if(t.indexOf(c[j])===0){location.replace(c[j]+"/proveedores.html");return}}}catch(e){}})();</script>
+
+<!-- PANTALLA DE CARGA · el signo se arma solo -->
+<div class="carga" id="carga" role="status" aria-label="Cargando">
+  <!-- PRELOADER · copiado de unitedcarriers.com con SUS medidas, leidas
+       de su CSS computado a 1024x768 el 8-oct-2026:
+         tipografia  Helvetica Neue 9,48px / 12,33px, sin letter-spacing
+         lista izq   68px de ancho, items de 10px, blanco al 24 por ciento
+         mapa        359 x 184, centrado en la pantalla
+         lista der   140px de ancho, arrancando en x=798
+         contador    9,48px, blanco, pegado al borde derecho
+       Sin logo. Lo unico que cambia es el CONTENIDO: sus plazas por las
+       nuestras y sus servicios por nuestros pasos. -->
+  <div class="cg-reja">
+    <ul class="cg-lista cg-izq" aria-hidden="true">
+        <li style="--k:0">ВЕНЕСУЭЛА</li>
+        <li style="--k:1">КОЛУМБИЯ</li>
+        <li style="--k:2">МЕКСИКА</li>
+        <li style="--k:3">США</li>
+        <li style="--k:4">ЕВРОПА</li>
+        <li style="--k:5">ТУРЦИЯ</li>
+        <li style="--k:6">КИТАЙ</li>
+        <li style="--k:7">СИНГАПУР</li>
+    </ul>
+
+    <div class="cg-centro">
+      <div class="cg-mapa">
+        <canvas id="cg-tierra" aria-hidden="true"></canvas>
+        <i class="cg-punto cg-punto-ve" style="left:32.03%; top:50.65%; --k:0"></i>
+        <i class="cg-punto" style="left:29.42%; top:54.70%; --k:1"></i>
+        <i class="cg-punto" style="left:22.47%; top:43.47%; --k:2"></i>
+        <i class="cg-punto" style="left:27.72%; top:38.58%; --k:3"></i>
+        <i class="cg-punto" style="left:52.78%; top:17.42%; --k:4"></i>
+        <i class="cg-punto" style="left:58.05%; top:26.97%; --k:5"></i>
+        <i class="cg-punto" style="left:83.75%; top:35.45%; --k:6"></i>
+        <i class="cg-punto" style="left:78.83%; top:57.26%; --k:7"></i>
+      </div>
+    </div>
+
+    <div class="cg-der">
+      <ul class="cg-lista" aria-hidden="true">
+        <li style="--k:0">ЗАПРОС</li>
+        <li style="--k:1">СПЕЦИФИКАЦИЯ</li>
+        <li style="--k:2">ПОИСК</li>
+        <li style="--k:3">СВОДНАЯ ТАБЛИЦА</li>
+        <li style="--k:4">ОБРАЗЦЫ</li>
+        <li style="--k:5">ЗАКАЗ И ПОСТАВКА</li>
+      </ul>
+      <p class="cg-contador"><span id="cg-n">00</span></p>
+    </div>
+  </div>
+</div>
+
+<a class="saltar" href="#contenido">Перейти к содержимому</a>
+
+<header class="cabecera">
+  <a class="marca" href="index.html" aria-label="Cordenza Intelligence, inicio">
+    <svg class="signo" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="s-c" d="M20 20H63V34H34V66H63V80H20Z"></path>
+      <rect class="s-pt" x="66" y="20" width="14" height="14"></rect>
+      <rect class="s-i" x="66" y="37" width="14" height="43"></rect>
+    </svg>
+    <span>Cordenza <b>Intelligence</b></span>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html">Я покупаю</a>
+    <a href="proveedores.html" class="on" aria-current="page">Я продаю</a>
+    <a href="conocenos.html">О нас</a>
+  </nav>
+  <a class="boton boton-chico" href="#alta" data-contactar>Представить мою компанию</a>
+</header>
+
+<main id="contenido">
+
+<section class="ac-cabeza ac-cabeza-foto velo-suave">
+  <img class="foto" src="../medios/puerto.jpg" alt="Grúas portacontenedores en silueta sobre un puerto al anochecer, en tonos azules." fetchpriority="high" decoding="async" width="1600" height="1000">
+  <p class="ac-et">Для поставщиков</p>
+  <h1>Доступ к реальному корпоративному спросу.</h1>
+  <p class="ac-bajada">Мы узнаём продукты, услуги, мощности, расположение и условия работы, чтобы предлагать возможности, связанные с каждым предложением.</p>
+  <div class="acciones">
+    <a class="boton" href="#alta" data-contactar>Представить мою компанию</a>
+    <a class="enlace" href="#participar">Как участвовать</a>
+  </div>
+  <p class="foto-fuente"><a href="https://unsplash.com/photos/bridge-silhouette-with-industrial-cranes-fl4OL3Hqisw" rel="noopener">Фото: Christian Lue · Unsplash</a></p>
+</section>
+
+<!-- POR QUE · es el problema 03 del documento, visto desde el lado de
+     quien vende. No se inventa nada: es la misma frase. -->
+<section class="ac-sec ac-sec-alt">
+  <p class="ac-et">Зачем это нужно</p>
+  <h2 class="ac-h2">Товар у вас. Тот, кому он нужен, вас не находит.</h2>
+  <p class="ac-bajada">Прямо сейчас есть покупатели, которые ищут то, что вы продаёте. Они не знают о вас, а вы не знаете, что они ищут. Мы сажаем обе стороны за один стол — с запросом, изложенным на бумаге, и с указанием, кто за что отвечает.</p>
+</section>
+
+<!-- COMO PARTICIPAR · los cuatro verbos del documento, uno por paso -->
+<!-- PISTA HORIZONTAL · se scrollea vertical y el tren corre de lado.
+     La altura de la seccion la calcula `movimiento.js` midiendo el
+     ancho real del tren: CSS no puede saberlo. -->
+<section class="ac-sec pista" id="participar">
+  <div class="pista-fijo">
+    <div class="pista-cab">
+      <p class="ac-et">Как участвовать</p>
+      <h2 class="ac-h2">От представления компании до оплаты — четыре шага.</h2>
+      <p class="ac-bajada">Именно эти четыре. Без мелкого шрифта и без скрытых шагов посередине.</p>
+    </div>
+    <ol class="pista-tren">
+      <li class="pista-t">
+        <span class="ac-tar-n">01</span>
+        <h3>Представьте свою компанию</h3>
+        <p>Вы говорите нам, что производите, что распространяете или что представляете, где находитесь и на каких условиях работаете. Именно это позволяет связать ваше предложение с конкретным запросом.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">02</span>
+        <h3>Получайте подходящие возможности</h3>
+        <p>Когда приходит запрос, на который ваша компания может ответить, мы передаём его вам с уже упорядоченными объёмом, количествами, условиями и критериями приёмки.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">03</span>
+        <h3>Отправьте предложение</h3>
+        <p>Вы отвечаете своими спецификациями, документами, ценами, сроками и условиями оплаты — в том формате, в котором уже работаете.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">04</span>
+        <h3>Двигайтесь к сделке</h3>
+        <p>Мы ведём переговоры, образцы, приёмку, подписание и поставку, сопровождая вас лично на всём пути.</p>
+      </li>
+    </ol>
+    <div class="pista-barra" aria-hidden="true"></div>
+  </div>
+</section>
+
+<section class="ac-sec">
+  <div class="ac-reco">
+    <h3>Регистрация и участие без оплаты до первой состоявшейся продажи</h3>
+    <p>Представить компанию, получать возможности и отправлять предложения ничего не стоит. Плата появляется, когда операция состоялась, а не раньше.</p>
+    <a class="boton" href="#alta" data-contactar>Представить мою компанию</a>
+  </div>
+</section>
+
+<!-- QUE EVALUAMOS · los nueve criterios del documento, textuales -->
+<section class="ac-sec ac-sec-alt" id="evaluamos">
+  <p class="ac-et">Как идёт сравнение</p>
+  <h2 class="ac-h2">Все предложения мерятся одной линейкой.</h2>
+  <p class="ac-bajada">Мы сопоставляем спецификации, документы, количества, цены, оплату, мощности, сроки, логистику и полную стоимость на одной основе. Цена сама по себе редко отражает операцию целиком.</p>
+  <ol class="ac-pasos">
+    <li><span>01</span>Спецификации</li>
+    <li><span>02</span>Документы</li>
+    <li><span>03</span>Количества</li>
+    <li><span>04</span>Цены</li>
+    <li><span>05</span>Условия оплаты</li>
+    <li><span>06</span>Мощности</li>
+    <li><span>07</span>Сроки</li>
+    <li><span>08</span>Логистика</li>
+    <li><span>09</span>Полная стоимость</li>
+  </ol>
+  <div class="ac-resultado">
+    <p class="ac-q">Что это значит для вас</p>
+    <p>Что предложение не отбрасывают за то, что оно пришло в другом формате, другой валюте или с другим объёмом. Его приводят к той же основе, что и остальные, и оценивают по тому, что оно действительно даёт.</p>
+  </div>
+</section>
+
+<!-- QUE CONOCEMOS · los cinco datos que el documento nombra -->
+<section class="ac-sec">
+  <p class="ac-et">Что нужно нам рассказать</p>
+  <h2 class="ac-h2">Шесть сведений о вас и зачем нужно каждое.</h2>
+  <p class="ac-bajada">С ними возможность приходит к вам, а не к другому. Ничего из этого не публикуется: мы используем это, чтобы знать, кому звонить, когда приходит заказ, который вы можете выполнить.</p>
+  <!-- BARAJA · cada tarjeta se pega y la siguiente la tapa; la de
+       abajo se encoge. El `--z` --cuantas la cubren-- lo cuenta el JS:
+       una tarjeta pegada no se mueve, asi que su `view()` se congela. -->
+  <div class="apila">
+    <article class="apila-t">
+      <span class="gr-n">01</span>
+      <h3>Продукты</h3>
+      <p>Что вы производите, что распространяете или какой бренд представляете — с той детализацией, которая нужна, чтобы сопоставить это со спецификацией.</p>
+    </article>
+    <article class="apila-t">
+      <span class="gr-n">02</span>
+      <h3>Услуги</h3>
+      <p>Что вы можете, помимо продажи: монтаж, пусконаладка, поддержка, запчасти или то, что входит в вашу деятельность.</p>
+    </article>
+    <article class="apila-t">
+      <span class="gr-n">03</span>
+      <h3>Мощности</h3>
+      <p>Какой объём вы можете взять и на каких условиях, чтобы мы не предлагали вам возможность, которую вы не сможете выполнить.</p>
+    </article>
+    <article class="apila-t">
+      <span class="gr-n">04</span>
+      <h3>Расположение</h3>
+      <p>Откуда вы отгружаете. Это определяет сроки, логистику и полную стоимость — три из девяти критериев сравнения.</p>
+    </article>
+    <article class="apila-t">
+      <span class="gr-n">05</span>
+      <h3>Условия работы</h3>
+      <p>Валюты, способы оплаты, минимальные партии, сроки и базисы поставки, с которыми вы обычно работаете.</p>
+    </article>
+    <article class="apila-t">
+      <span class="gr-n">06</span>
+      <h3>Конфиденциальность</h3>
+      <p>Мы защищаем личности, запросы, бюджеты, поставщиков и условия договоров. Результаты сообщаются с разрешения или в обезличенном виде.</p>
+    </article>
+  </div>
+
+  <p class="ac-fortalece"><b>Каждая операция укрепляет следующую.</b> Коммерческие данные, зафиксированные возможности и выстроенные связи остаются упорядоченными, чтобы точнее отвечать на новые возможности.</p>
+</section>
+
+<div class="paso paso-claro" aria-hidden="true"></div>
+
+<!-- LA RED EN LA QUE ENTRA · cifras medidas, con su fecha. Son las
+     mismas de la home: no se inventa ninguna para esta pagina. -->
+<section class="ac-sec claro" id="red">
+  <p class="ac-et">С кем вы соперничаете</p>
+  <h2 class="ac-h2">В базе уже есть другие, и это вам на пользу.</h2>
+  <p class="ac-bajada">Когда ваше предложение приходит, оно попадает в уже существующую базу. Именно это позволяет сказать покупателю, в рынке ли то, что вы даёте, и благодаря этому ваше предложение читается в контексте, а не в одиночку.</p>
+  <dl class="cifras-claro">
+    <div><dt>компаний зарегистрировано в системе</dt><dd data-cifra="1989">1.989</dd></div>
+    <div><dt>юрисдикций в реестре</dt><dd data-cifra="16">16</dd></div>
+    <div><dt>отслеживаемых коммерческих записей</dt><dd data-cifra="3010">3.010</dd></div>
+  </dl>
+  <p class="corte-claro">Измерено в базе 21 октября 2026 года. Растёт с каждым поступившим предложением.</p>
+</section>
+
+<div class="paso paso-oscuro" aria-hidden="true"></div>
+
+<!-- LO QUE PROTEGEMOS · es el texto de confidencialidad del documento,
+     el mismo que esta en «Conozcanos». Aqui importa mas: a un proveedor
+     lo primero que le preocupa es a donde van sus precios. -->
+<section class="ac-sec ac-sec-alt" id="protegemos">
+  <p class="ac-et">Что мы защищаем</p>
+  <h2 class="ac-h2">Ваши цены никуда не уходят.</h2>
+  <p class="ac-bajada">Мы защищаем личности, запросы, бюджеты, поставщиков и условия договоров. Результаты сообщаются с разрешения или в обезличенном виде.</p>
+  <ul class="ac-garantias">
+    <li><span class="gr-n">01</span><h3>Вашу цену не показывают другому поставщику</h3>
+        <p>Предложение сравнивают с другими, чтобы дать покупателю рекомендацию, а не чтобы кто-то улучшил своё, узнав чужое.</p></li>
+    <li><span class="gr-n">02</span><h3>Ваше имя не появляется без разрешения</h3>
+        <p>Когда об операции рассказывают, это делают обезличенно, если вы не разрешите иначе.</p></li>
+    <li><span class="gr-n">03</span><h3>Вы можете уйти в любой момент</h3>
+        <p>Напишите нам, и мы уберём вас из базы. Нет портала, с которого надо отписываться, и нет подписки, которую надо отменять.</p></li>
+  </ul>
+</section>
+
+<!-- CIERRE -->
+<section id="alta" class="cierre resplandor">
+  <h2>Представьте свою компанию.</h2>
+  <p class="cierre-bajada">Отрасли, страны и того, что вы производите или распространяете, достаточно для начала. Регистрация и участие без оплаты до первой состоявшейся продажи.</p>
+
+  <div class="acciones">
+    <a class="boton boton-claro" href="mailto:Orinocogp.pi@gmail.com?subject=Presentaci%C3%B3n%20de%20proveedor&amp;body=Empresa%3A%0APa%C3%ADs%20y%20ciudad%3A%0APersona%20de%20contacto%3A%0A%0AQu%C3%A9%20fabricamos%2C%20distribuimos%20o%20representamos%3A%0A">Написать письмо</a>
+    <a class="enlace enlace-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20presentar%20mi%20empresa%20como%20proveedor.">Написать в WhatsApp</a>
+  </div>
+</section>
+
+</main>
+
+<!-- SELECTOR DE CONTACTO · lo abre cualquier enlace `data-contactar`.
+     <dialog> nativo y no un div: el navegador ya da el cierre con Escape,
+     el foco atrapado dentro y el devolverlo al boton al cerrar. Sin
+     JavaScript el enlace lleva al cierre de la pagina, que ofrece lo mismo. -->
+<dialog class="elegir" id="elegir" aria-labelledby="elegir-t">
+  <form method="dialog" class="elegir-x"><button aria-label="Cerrar">&times;</button></form>
+  <p class="ac-et" id="elegir-t">Представить мою компанию</p>
+  <p class="elegir-d">Как вам удобнее представиться? Оба канала ведут к одному человеку.</p>
+  <div class="elegir-o">
+    <a class="boton" href="mailto:Orinocogp.pi@gmail.com?subject=Presentaci%C3%B3n%20de%20proveedor&amp;body=Empresa%3A%0APa%C3%ADs%20y%20ciudad%3A%0APersona%20de%20contacto%3A%0A%0AQu%C3%A9%20fabricamos%2C%20distribuimos%20o%20representamos%3A%0A">Письмо</a>
+    <a class="boton boton-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20presentar%20mi%20empresa%20como%20proveedor.">WhatsApp</a>
+  </div>
+  <p class="elegir-p">Orinocogp.pi@gmail.com · +58 414 444 3327</p>
+</dialog>
+
+<footer class="pie">
+  <div class="pie-r">
+    <div class="pie-col">
+      <p class="pie-marca"><b>Cordenza Intelligence</b> · Управляется и обеспечивается компанией Orinoco Global Partners.</p>
+      <p>Мы строим базу цен промышленных закупок в Венесуэле, предложение за предложением, с источником каждой цифры.</p>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">Если вы покупаете</p>
+      <a href="index.html">Как это работает</a>
+      <a href="index.html#red">Сеть поставщиков</a>
+      <a href="index.html#solucion">Решение</a>
+      <a href="index.html#enviar">Отправить запрос</a>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">Если вы продаёте</p>
+      <a href="proveedores.html#participar">Как участвовать</a>
+      <a href="proveedores.html#evaluamos">Что мы оцениваем</a>
+      <a href="proveedores.html#alta">Представить мою компанию</a>
+      <a href="conocenos.html">О нас</a>
+    </div>
+  </div>
+  <p class="pie-chico">То, что мы берём, открыто указано в каждом предложении. Если хотите выйти из нашей базы, напишите на Orinocogp.pi@gmail.com, и мы это сделаем.</p>
+  <p class="lema">Координация. Сила. Исполнение.</p>
+</footer>
+
+<script src="../mundo-puntos.js" defer></script>
+<script src="../movimiento.js?v=20261021a" defer></script>
+</body>
+</html>

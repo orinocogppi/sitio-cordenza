@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About us · Cordenza Intelligence</title>
+<meta name="description" content="Cordenza Intelligence surge de una necesidad que conocimos trabajando con contratistas. Qué somos, con qué trabajamos y hacia dónde va la empresa. Operado y respaldado por Orinoco Global Partners.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../estilo.css?v=20261021a">
+<script>document.documentElement.classList.remove("sin-js")</script>
+<link rel="alternate" hreflang="es" href="../conocenos.html"><link rel="alternate" hreflang="en" href="../en/conocenos.html"><link rel="alternate" hreflang="fr" href="../fr/conocenos.html"><link rel="alternate" hreflang="pt" href="../pt/conocenos.html"><link rel="alternate" hreflang="zh" href="../zh/conocenos.html"><link rel="alternate" hreflang="ru" href="../ru/conocenos.html"><link rel="alternate" hreflang="ar" href="../ar/conocenos.html"></head>
+<body><nav class="idiomas" aria-label="Idioma"><select onchange="location.href=this.value" aria-label="Idioma"><option value="../conocenos.html">Español</option><option value="../en/conocenos.html" selected>English</option><option value="../fr/conocenos.html">Français</option><option value="../pt/conocenos.html">Português</option><option value="../zh/conocenos.html">中文</option><option value="../ru/conocenos.html">Русский</option><option value="../ar/conocenos.html">العربية</option></select><noscript><ul><li><a href="../conocenos.html" hreflang="es">Español</a></li><li><a href="../en/conocenos.html" hreflang="en">English</a></li><li><a href="../fr/conocenos.html" hreflang="fr">Français</a></li><li><a href="../pt/conocenos.html" hreflang="pt">Português</a></li><li><a href="../zh/conocenos.html" hreflang="zh">中文</a></li><li><a href="../ru/conocenos.html" hreflang="ru">Русский</a></li><li><a href="../ar/conocenos.html" hreflang="ar">العربية</a></li></ul></noscript></nav><script>(function(){try{var G="cordenza.idioma";var s=document.querySelector(".idiomas select");if(s)s.addEventListener("change",function(){try{localStorage.setItem(G,s.options[s.selectedIndex].text)}catch(e){}});if(document.documentElement.lang!=="es")return;if(localStorage.getItem(G))return;var l=(navigator.languages||[navigator.language||""]);var c=["en","fr","pt","zh","ru","ar"];for(var i=0;i<l.length;i++){var t=String(l[i]).toLowerCase();if(t.indexOf("es")===0)return;for(var j=0;j<c.length;j++)if(t.indexOf(c[j])===0){location.replace(c[j]+"/conocenos.html");return}}}catch(e){}})();</script>
+
+<!-- PANTALLA DE CARGA · el signo se arma solo -->
+<div class="carga" id="carga" role="status" aria-label="Cargando">
+  <!-- PRELOADER · copiado de unitedcarriers.com con SUS medidas, leidas
+       de su CSS computado a 1024x768 el 8-oct-2026:
+         tipografia  Helvetica Neue 9,48px / 12,33px, sin letter-spacing
+         lista izq   68px de ancho, items de 10px, blanco al 24 por ciento
+         mapa        359 x 184, centrado en la pantalla
+         lista der   140px de ancho, arrancando en x=798
+         contador    9,48px, blanco, pegado al borde derecho
+       Sin logo. Lo unico que cambia es el CONTENIDO: sus plazas por las
+       nuestras y sus servicios por nuestros pasos. -->
+  <div class="cg-reja">
+    <ul class="cg-lista cg-izq" aria-hidden="true">
+        <li style="--k:0">VENEZUELA</li>
+        <li style="--k:1">COLOMBIA</li>
+        <li style="--k:2">MEXICO</li>
+        <li style="--k:3">U.S.</li>
+        <li style="--k:4">EUROPE</li>
+        <li style="--k:5">TURKEY</li>
+        <li style="--k:6">CHINA</li>
+        <li style="--k:7">SINGAPORE</li>
+    </ul>
+
+    <div class="cg-centro">
+      <div class="cg-mapa">
+        <canvas id="cg-tierra" aria-hidden="true"></canvas>
+        <i class="cg-punto cg-punto-ve" style="left:32.03%; top:50.65%; --k:0"></i>
+        <i class="cg-punto" style="left:29.42%; top:54.70%; --k:1"></i>
+        <i class="cg-punto" style="left:22.47%; top:43.47%; --k:2"></i>
+        <i class="cg-punto" style="left:27.72%; top:38.58%; --k:3"></i>
+        <i class="cg-punto" style="left:52.78%; top:17.42%; --k:4"></i>
+        <i class="cg-punto" style="left:58.05%; top:26.97%; --k:5"></i>
+        <i class="cg-punto" style="left:83.75%; top:35.45%; --k:6"></i>
+        <i class="cg-punto" style="left:78.83%; top:57.26%; --k:7"></i>
+      </div>
+    </div>
+
+    <div class="cg-der">
+      <ul class="cg-lista" aria-hidden="true">
+        <li style="--k:0">REQUEST</li>
+        <li style="--k:1">SPECIFICATION</li>
+        <li style="--k:2">SEARCH</li>
+        <li style="--k:3">COMPARISON TABLE</li>
+        <li style="--k:4">SAMPLES</li>
+        <li style="--k:5">ORDER AND DELIVERY</li>
+      </ul>
+      <p class="cg-contador"><span id="cg-n">00</span></p>
+    </div>
+  </div>
+</div>
+
+<a class="saltar" href="#contenido">Skip to content</a>
+
+<header class="cabecera">
+  <a class="marca" href="index.html" aria-label="Cordenza Intelligence, inicio">
+    <svg class="signo" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="s-c" d="M20 20H63V34H34V66H63V80H20Z"></path>
+      <rect class="s-pt" x="66" y="20" width="14" height="14"></rect>
+      <rect class="s-i" x="66" y="37" width="14" height="43"></rect>
+    </svg>
+    <span>Cordenza <b>Intelligence</b></span>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html">I buy</a>
+    <a href="proveedores.html">I sell</a>
+    <a href="conocenos.html" class="on" aria-current="page">About us</a>
+  </nav>
+  <a class="boton boton-chico" href="#hablar" data-contactar>Contact us</a>
+</header>
+
+<main id="contenido">
+
+<section class="ac-cabeza ac-cabeza-foto velo-medio">
+  <img class="foto" src="../medios/almacen.jpg" alt="Dos trabajadoras conversan mientras caminan por un pasillo de almacén entre estanterías azules." fetchpriority="high" decoding="async" width="1600" height="1000">
+  <p class="ac-et">Get to know us</p>
+  <h1>Built from real operations.</h1>
+  <p class="ac-bajada">Cordenza came out of a need we met working with contractors: finding supply was only the beginning. After that came checking it, comparing terms, coordinating the parties and carrying the process through to the execution of a contract.</p>
+  <div class="acciones">
+    <a class="boton" href="#hablar" data-contactar>Contact us</a>
+    <a class="enlace" href="index.html#como">See how it works</a>
+  </div>
+  <p class="foto-fuente"><a href="https://unsplash.com/photos/women-walking-through-warehouse-aisle-ZlOlRnWk8zU" rel="noopener">Photo: Centre for Ageing Better · Unsplash</a></p>
+</section>
+
+<!-- CON QUE TRABAJAMOS · las seis tarjetas del documento.
+     La sexta del documento original nombraba entidades del Estado
+     venezolano, que `marketing/02` §2 veta y el generador de la
+     presentacion bloquea con un assert, por la exposicion OFAC de
+     Nex AI. Va la misma idea sin nombrarlas. -->
+<!-- PISTA HORIZONTAL · seis tarjetas que corren de lado mientras se
+     scrollea vertical. La altura la mide el JS: depende del ancho real
+     del tren, que CSS no conoce. -->
+<section class="ac-sec ac-sec-alt pista" id="capacidades">
+  <div class="pista-fijo">
+    <div class="pista-cab">
+      <p class="ac-et">What we work with</p>
+      <h2 class="ac-h2">Six things it takes to close an operation.</h2>
+      <p class="ac-bajada">Each one solves a problem that really does come up between the order and the signature. Without them, someone has to trust blindly.</p>
+    </div>
+    <ol class="pista-tren">
+      <li class="pista-t">
+        <span class="ac-tar-n">01</span>
+        <h3>Technology and commercial data</h3>
+        <p>The system organises requests and offers, keeps the source of every figure and extends a commercial base that grows with each operation.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">02</span>
+        <h3>Strategic relationships</h3>
+        <p>We work with manufacturers, suppliers, representatives, contractors and specialised operators through partnerships of international reach.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">03</span>
+        <h3>Experience in formal processes</h3>
+        <p>We have taken part in purchasing processes with requirements for documentation, technical validation and accountability.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">04</span>
+        <h3>Confidentiality</h3>
+        <p>We protect identities, requests, budgets, suppliers and contractual terms. Results are communicated with authorisation or anonymised.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">05</span>
+        <h3>Financial structure</h3>
+        <p>We have banking and financial relationships to structure solutions applicable to operations that meet the corresponding conditions.</p>
+      </li>
+      <li class="pista-t">
+        <span class="ac-tar-n">06</span>
+        <h3>Insurance and risk management</h3>
+        <p>We work with specialised partners when an operation requires cover, compliance or risk mitigation.</p>
+      </li>
+    </ol>
+    <div class="pista-barra" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- LA VISION · la familia de marcas. Tres de las cinco TODAVIA NO
+     EXISTEN, y van marcadas como tales: publicarlas como si operaran
+     seria exactamente la afirmacion sin respaldo que este sistema
+     existe para impedir. -->
+<section class="ac-sec" id="vision">
+  <p class="ac-et">Where it is going</p>
+  <h2 class="ac-h2">Each operation leaves data. The data improves the next one.</h2>
+  <p class="ac-bajada">Our vision is that the data generated by real operations forms an infrastructure that is ever more useful for Venezuela: organised demand and supply, better contracting decisions and commercial relationships able to sustain new operations.</p>
+  <dl class="ac-familia">
+    <div class="on"><dt>Cordenza Intelligence</dt><dd>Data, market and decisions.</dd><em>today</em></div>
+    <div class="on"><dt>Cordenza Network</dt><dd>Business and commercial ecosystem.</dd><em>today</em></div>
+    <div><dt>Cordenza Trade</dt><dd>Operations and contracts.</dd><em>in progress</em></div>
+    <div><dt>Cordenza Distribution</dt><dd>Sourcing and logistics.</dd><em>in progress</em></div>
+    <div><dt>Cordenza Capital</dt><dd>Financial structuring for selected contracts.</dd><em>in progress</em></div>
+  </dl>
+  <p class="ac-alc-n">The three marked “in progress” are where the company is heading and
+     <b>cannot be contracted yet</b>. The day one of them can be, this line changes.</p>
+</section>
+
+<!-- QUIEN RESPONDE · la titularidad, que no es un detalle legal: es
+     quien queda del otro lado si algo sale mal. -->
+<section class="ac-sec ac-sec-alt">
+  <p class="ac-et">Who answers</p>
+  <h2 class="ac-h2">Orinoco Global Partners.</h2>
+  <p class="ac-bajada">Cordenza Intelligence is operated and backed by Orinoco Global Partners, the company registered in Venezuela that owns the system. It is the party you contract with and the one that answers for every operation.</p>
+</section>
+
+<div class="paso paso-claro" aria-hidden="true"></div>
+
+<!-- COMO SE MIDE UN DATO · los cinco grados del sistema. Es el nucleo
+     de lo que hace Cordenza y no estaba contado en ninguna pagina. -->
+<section class="ac-sec claro" id="grados">
+  <p class="ac-et">Where each number comes from</p>
+  <h2 class="ac-h2">Every number says where it came from.</h2>
+  <p class="ac-bajada">Beside every figure you will see a bar of five marks. Five marks: the document exists and can be opened. One mark: someone said it and nobody checked it. And if a figure is missing to build a total, we do not give you the total: we tell you what is missing.</p>
+  <!-- BARAJA · se apilan y la de abajo se encoge. `--z` lo cuenta el
+       JS porque una tarjeta pegada no mueve su propia `view()`. -->
+  <!-- BARAJA · se apilan y la de abajo se encoge. `--z` lo cuenta el
+       JS porque una tarjeta pegada no mueve su propia `view()`.
+       El titulo es lo que PASA; la etiqueta tecnica --Verificado,
+       Autoreportado...-- va de chip porque es la que el lector vera
+       luego en su cotizacion y tiene que reconocerla. Antes la etiqueta
+       era el titulo y no se entendia nada. -->
+  <ol class="apila grados-apila">
+    <li class="apila-t g-5">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <h3>There is a document</h3>
+      <p class="gr-et">5 of 5 · <b>Verified</b></p>
+      <p>The invoice, the bill of lading or the customs declaration. The paper is there and it can be opened.</p>
+    </li>
+    <li class="apila-t g-4">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="off"></i></span>
+      <h3>We checked it ourselves</h3>
+      <p class="gr-et">4 of 5 · <b>Measured</b></p>
+      <p>There is no paper from the supplier, but we went to the source and contrasted it. We say against what.</p>
+    </li>
+    <li class="apila-t g-3">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span>
+      <h3>It is a calculation</h3>
+      <p class="gr-et">3 of 5 · <b>Estimated</b></p>
+      <p>It is not a number picked at random: it comes with the arithmetic in plain sight for you to check.</p>
+    </li>
+    <li class="apila-t g-2">
+      <span class="g-b" aria-hidden="true"><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i></span>
+      <h3>The supplier says so</h3>
+      <p class="gr-et">2 of 5 · <b>Self-reported</b></p>
+      <p>They passed it to us and we have not checked it yet. It is useful to get your bearings, not to sign.</p>
+    </li>
+    <li class="apila-t g-1">
+      <span class="g-b" aria-hidden="true"><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i></span>
+      <h3>No backing</h3>
+      <p class="gr-et">1 of 5 · <b>Unverified</b></p>
+      <p>It came in with nothing behind it. It is marked as such and is not used to decide anything.</p>
+    </li>
+  </ol>
+</section>
+
+<div class="paso paso-oscuro" aria-hidden="true"></div>
+
+<!-- DONDE OPERAMOS · las plazas del padron, las mismas del preloader y
+     de la red de la home. Medidas en pi.entidad el 1-oct-2026. -->
+<section class="ac-sec ac-sec-alt" id="plazas">
+  <p class="ac-et">Where we search</p>
+  <h2 class="ac-h2">This is where we search when an order comes in.</h2>
+  <p class="ac-bajada">Companies already registered in the base, each with its own record. The search starts here and not from zero. These are registered companies; not all of them have quoted yet.</p>
+  <ul class="plazas">
+    <li class="pz-ve"><span class="pz-n">1.204</span><span class="pz-l">Venezuela</span></li>
+    <li><span class="pz-n">604</span><span class="pz-l">Colombia</span></li>
+    <li><span class="pz-n">15</span><span class="pz-l">China</span></li>
+    <li><span class="pz-n">10</span><span class="pz-l">U.S.</span></li>
+    <li><span class="pz-n">8</span><span class="pz-l">Europe</span></li>
+    <li><span class="pz-n">5</span><span class="pz-l">Turkey</span></li>
+    <li><span class="pz-n">4</span><span class="pz-l">Mexico</span></li>
+    <li><span class="pz-n">2</span><span class="pz-l">Singapore</span></li>
+  </ul>
+  <p class="corte">Measured in the database on 21 October 2026, with duplicate names already removed. Another 135 companies have no declared jurisdiction and are not included in this breakdown.</p>
+</section>
+
+<!-- CIERRE -->
+<section id="hablar" class="cierre resplandor">
+  <h2>Coordination. Strength. Execution.</h2>
+  <p class="cierre-bajada">Send us a real need, or tell us what you manufacture. Both conversations start the same way: with someone on the other side reading what you wrote.</p>
+  <div class="acciones">
+    <a class="boton boton-claro" href="mailto:Orinocogp.pi@gmail.com?subject=Contacto%20desde%20el%20sitio">Write by email</a>
+    <a class="enlace enlace-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20hablar%20con%20Cordenza">Write on WhatsApp</a>
+  </div>
+  <p class="cierre-pie">Or if you already know what you need:
+    <a href="index.html#enviar">request a quote</a> ·
+    <a href="proveedores.html#alta">present your company</a></p>
+</section>
+
+</main>
+
+<!-- SELECTOR DE CONTACTO · se abre desde cualquier enlace `data-contactar`.
+     Es un <dialog> nativo y no un div: trae gratis el cierre con Escape, el
+     foco atrapado dentro y el fondo que apaga lo de detras. Si el
+     JavaScript no corre, el enlace sigue valiendo y lleva al cierre de la
+     pagina, que ofrece lo mismo. -->
+<dialog class="elegir" id="elegir" aria-labelledby="elegir-t">
+  <form method="dialog" class="elegir-x"><button aria-label="Cerrar">&times;</button></form>
+  <p class="ac-et" id="elegir-t">Contact us</p>
+  <p class="elegir-d">Which would you prefer? Both reach the same person.</p>
+  <div class="elegir-o">
+    <a class="boton" href="mailto:Orinocogp.pi@gmail.com?subject=Contacto%20desde%20el%20sitio">Email</a>
+    <a class="boton boton-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20hablar%20con%20Cordenza">WhatsApp</a>
+  </div>
+  <p class="elegir-p">Orinocogp.pi@gmail.com · +58 414 444 3327</p>
+</dialog>
+
+<footer class="pie">
+  <div class="pie-r">
+    <div class="pie-col">
+      <p class="pie-marca"><b>Cordenza Intelligence</b> · Operated and backed by Orinoco Global Partners.</p>
+      <p>We are building the price base of industrial procurement in Venezuela, quote by quote, with the source of every figure.</p>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">If you buy</p>
+      <a href="index.html">How it works</a>
+      <a href="index.html#red">The supplier network</a>
+      <a href="index.html#solucion">The solution</a>
+      <a href="index.html#enviar">Send a request</a>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">If you sell</p>
+      <a href="proveedores.html#participar">How to take part</a>
+      <a href="proveedores.html#evaluamos">What we assess</a>
+      <a href="proveedores.html#alta">Present my company</a>
+      <a href="conocenos.html">About us</a>
+    </div>
+  </div>
+  <p class="pie-chico">What we charge is in plain sight on every quote. If you want out of our base, write to us at Orinocogp.pi@gmail.com and we will do it.</p>
+  <p class="lema">Coordination. Strength. Execution.</p>
+</footer>
+
+<script src="../mundo-puntos.js" defer></script>
+<script src="../movimiento.js?v=20261021a" defer></script>
+</body>
+</html>

@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordenza Intelligence · Orinoco Global Partners</title>
+<meta name="description" content="Procura industrial con inteligencia artificial para Venezuela. Envíenos su requerimiento: buscamos proveedores en todo el mundo, llevamos cada oferta a precio puesto en su planta y le mostramos de dónde sale cada número. La primera cotización no cuesta nada.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../estilo.css?v=20261021a">
+<script>document.documentElement.classList.remove("sin-js")</script>
+<link rel="alternate" hreflang="es" href="../index.html"><link rel="alternate" hreflang="en" href="../en/index.html"><link rel="alternate" hreflang="fr" href="../fr/index.html"><link rel="alternate" hreflang="pt" href="../pt/index.html"><link rel="alternate" hreflang="zh" href="../zh/index.html"><link rel="alternate" hreflang="ru" href="../ru/index.html"><link rel="alternate" hreflang="ar" href="../ar/index.html"></head>
+<body><nav class="idiomas" aria-label="Idioma"><select onchange="location.href=this.value" aria-label="Idioma"><option value="../index.html">Español</option><option value="../en/index.html">English</option><option value="../fr/index.html">Français</option><option value="../pt/index.html" selected>Português</option><option value="../zh/index.html">中文</option><option value="../ru/index.html">Русский</option><option value="../ar/index.html">العربية</option></select><noscript><ul><li><a href="../index.html" hreflang="es">Español</a></li><li><a href="../en/index.html" hreflang="en">English</a></li><li><a href="../fr/index.html" hreflang="fr">Français</a></li><li><a href="../pt/index.html" hreflang="pt">Português</a></li><li><a href="../zh/index.html" hreflang="zh">中文</a></li><li><a href="../ru/index.html" hreflang="ru">Русский</a></li><li><a href="../ar/index.html" hreflang="ar">العربية</a></li></ul></noscript></nav><script>(function(){try{var G="cordenza.idioma";var s=document.querySelector(".idiomas select");if(s)s.addEventListener("change",function(){try{localStorage.setItem(G,s.options[s.selectedIndex].text)}catch(e){}});if(document.documentElement.lang!=="es")return;if(localStorage.getItem(G))return;var l=(navigator.languages||[navigator.language||""]);var c=["en","fr","pt","zh","ru","ar"];for(var i=0;i<l.length;i++){var t=String(l[i]).toLowerCase();if(t.indexOf("es")===0)return;for(var j=0;j<c.length;j++)if(t.indexOf(c[j])===0){location.replace(c[j]+"/index.html");return}}}catch(e){}})();</script>
+
+<!-- PANTALLA DE CARGA · el signo se dibuja pieza a pieza -->
+<div class="carga" id="carga" role="status" aria-label="Cargando">
+  <!-- PRELOADER · copiado de unitedcarriers.com con SUS medidas, leidas
+       de su CSS computado a 1024x768 el 8-oct-2026:
+         tipografia  Helvetica Neue 9,48px / 12,33px, sin letter-spacing
+         lista izq   68px de ancho, items de 10px, blanco al 24 por ciento
+         mapa        359 x 184, centrado en la pantalla
+         lista der   140px de ancho, arrancando en x=798
+         contador    9,48px, blanco, pegado al borde derecho
+       Sin logo. Lo unico que cambia es el CONTENIDO: sus plazas por las
+       nuestras y sus servicios por nuestros pasos. -->
+  <div class="cg-reja">
+    <ul class="cg-lista cg-izq" aria-hidden="true">
+        <li style="--k:0">VENEZUELA</li>
+        <li style="--k:1">COLÔMBIA</li>
+        <li style="--k:2">MÉXICO</li>
+        <li style="--k:3">EUA</li>
+        <li style="--k:4">EUROPA</li>
+        <li style="--k:5">TURQUIA</li>
+        <li style="--k:6">CHINA</li>
+        <li style="--k:7">CINGAPURA</li>
+    </ul>
+
+    <div class="cg-centro">
+      <div class="cg-mapa">
+        <canvas id="cg-tierra" aria-hidden="true"></canvas>
+        <i class="cg-punto cg-punto-ve" style="left:32.03%; top:50.65%; --k:0"></i>
+        <i class="cg-punto" style="left:29.42%; top:54.70%; --k:1"></i>
+        <i class="cg-punto" style="left:22.47%; top:43.47%; --k:2"></i>
+        <i class="cg-punto" style="left:27.72%; top:38.58%; --k:3"></i>
+        <i class="cg-punto" style="left:52.78%; top:17.42%; --k:4"></i>
+        <i class="cg-punto" style="left:58.05%; top:26.97%; --k:5"></i>
+        <i class="cg-punto" style="left:83.75%; top:35.45%; --k:6"></i>
+        <i class="cg-punto" style="left:78.83%; top:57.26%; --k:7"></i>
+      </div>
+    </div>
+
+    <div class="cg-der">
+      <ul class="cg-lista" aria-hidden="true">
+        <li style="--k:0">PEDIDO</li>
+        <li style="--k:1">ESPECIFICAÇÃO</li>
+        <li style="--k:2">BUSCA</li>
+        <li style="--k:3">QUADRO COMPARÁVEL</li>
+        <li style="--k:4">AMOSTRAS</li>
+        <li style="--k:5">ORDEM E ENTREGA</li>
+      </ul>
+      <p class="cg-contador"><span id="cg-n">00</span></p>
+    </div>
+  </div>
+</div>
+
+<a class="saltar" href="#contenido">Ir para o conteúdo</a>
+
+<header class="cabecera">
+  <a class="marca" href="index.html" aria-label="Cordenza Intelligence, inicio">
+    <svg class="signo" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="s-c" d="M20 20H63V34H34V66H63V80H20Z"></path>
+      <rect class="s-pt" x="66" y="20" width="14" height="14"></rect>
+      <rect class="s-i" x="66" y="37" width="14" height="43"></rect>
+    </svg>
+    <span>Cordenza <b>Intelligence</b></span>
+  </a>
+  <nav class="menu" aria-label="Páginas">
+    <a href="index.html" class="on" aria-current="page">Eu compro</a>
+    <a href="proveedores.html">Eu vendo</a>
+    <a href="conocenos.html">Quem somos</a>
+  </nav>
+  <a class="boton boton-chico" href="#enviar" data-contactar>Solicitar cotação</a>
+</header>
+
+<main id="contenido">
+
+<!-- PORTADA · seccion de 3 pantallas con un hijo clavado: primero se ve
+     la escena sola y el texto va apareciendo al bajar. La escena es la
+     red del padron, con Venezuela anclada a la derecha. -->
+<section class="portada" id="portada">
+  <div class="portada-fija">
+    <canvas class="escena-red" id="neuronal" aria-hidden="true"></canvas>
+    <div class="portada-vel" aria-hidden="true"></div>
+    <div class="portada-texto">
+      <p class="ac-et" data-sube="0" style="margin-bottom:18px">Infraestrutura comercial · Venezuela</p>
+      <h1 class="tit" data-sube="0">O sistema de coordenação para operações empresariais e industriais.</h1>
+      <p class="bajada" data-sube="1">Recebemos o seu pedido, ativamos o mercado, estruturamos as ofertas e coordenamos todo o processo até transformá-lo numa compra, numa venda ou num contrato pronto para avançar.</p>
+      <div class="acciones" data-sube="2">
+        <a class="boton" href="#enviar" data-contactar>Solicitar cotação</a>
+        <a class="enlace" href="proveedores.html">Torne-se fornecedor</a>
+      </div>
+    </div>
+
+    <div class="portada-pie">
+      <dl class="hechos" data-sube="3">
+        <div><dt>A rede</dt><dd>A Venezuela, a região, a Europa e a Ásia</dd></div>
+        <div><dt>O que fazemos</dt><dd>Pedido, busca, quadro comparável e ordem</dd></div>
+        <div><dt>A regra</dt><dd>Cada número com o documento de onde saiu</dd></div>
+      </dl>
+    </div>
+
+    <p class="baja" aria-hidden="true"><span class="baja-f"></span>Descer</p>
+  </div>
+</section>
+
+<!-- LA BASE: cifras medidas, con su fecha -->
+<section class="base" aria-labelledby="base-t">
+  <h2 id="base-t" class="oculto">A base de dados</h2>
+  <dl class="cifras">
+    <div><dt>empresas registradas no sistema</dt><dd data-cifra="1989">1.989</dd></div>
+    <div><dt>jurisdições no cadastro</dt><dd data-cifra="16">16</dd></div>
+    <div><dt>registros comerciais rastreáveis</dt><dd data-cifra="3010">3.010</dd></div>
+  </dl>
+  <p class="corte">Medido na base em 21 de outubro de 2026. Cresce com cada cotação que entra.</p>
+</section>
+
+<!-- EL MOMENTO · los cuatro problemas del documento consolidado del
+     5-oct. Antes habia tres distintos («sin memoria / sin comparacion /
+     sin procedencia»): se sustituyen, no se acumulan. -->
+<!-- EL AMANECER · el fondo pasa de negro a blanco al entrar aqui, y
+     vuelve a negro al salir. Las bandas son propias para que el claro
+     de la seccion sea un color plano y sus contrastes se puedan medir. -->
+<div class="paso paso-claro" aria-hidden="true"></div>
+
+<section class="problema claro" id="problema">
+  <div class="pr-c">
+  <p class="pr-et">01 / O momento</p>
+  <h2 class="pr-t">
+    <span class="ln"><i style="--l:0">A Venezuela está</i></span>
+    <span class="ln"><i style="--l:1">num momento</i></span>
+    <span class="ln"><i style="--l:2">crucial.</i></span>
+  </h2>
+  <span class="pr-regla" aria-hidden="true"></span>
+  <div class="pr-cuerpo">
+    <p>A sua atividade empresarial e industrial precisa de uma infraestrutura moderna para coordenar pedidos, oferta, informação e execução com mais velocidade, confiança e clareza.</p>
+  </div>
+  </div>
+
+  <ol class="ac-reto ac-reto-4">
+    <li class="ac-cel">
+      <span class="ac-n">01</span>
+      <h3>Processos fora de registro</h3>
+      <p>Solicitações, cotações, documentos e decisões circulam entre arquivos, e-mails, chamadas e conversas que não compartilham uma visão completa.</p>
+    </li>
+    <li class="ac-cel">
+      <span class="ac-n">02</span>
+      <h3>Informação difícil de comparar</h3>
+      <p>Cada fornecedor apresenta escopos, moedas, condições, prazos e custos diferentes. O preço isolado raramente representa a operação completa.</p>
+    </li>
+    <li class="ac-cel">
+      <span class="ac-n">03</span>
+      <h3>Capacidade comercial dispersa</h3>
+      <p>Existem compradores, fabricantes, distribuidores, empreiteiras e operadores com capacidade real, mas encontrá-los e coordená-los exige relações e conhecimento do mercado.</p>
+    </li>
+    <li class="ac-cel">
+      <span class="ac-n">04</span>
+      <h3>Execução que exige acompanhamento</h3>
+      <p>Conferir especificações, negociar documentação e coordenar a contratação requer atenção comercial e operacional permanente.</p>
+    </li>
+  </ol>
+</section>
+
+<div class="paso paso-oscuro" aria-hidden="true"></div>
+
+<!-- EL MANIFIESTO · palabra por palabra, como el de Andercore -->
+<section class="ac-manif" id="manifiesto">
+  <p class="ac-manif-p" data-palabras>
+    Vimos do comércio. Sabemos em primeira mão o quanto pode ser difícil encontrar fornecimento confiável, negociar condições competitivas e coordenar uma entrega. A Cordenza nasce para transformar essa complexidade numa operação organizada.
+  </p>
+</section>
+
+<!-- DE LA NECESIDAD A UNA OPERACION · los cuatro pasos del documento.
+     Es el resumen; el detalle de ocho pasos vive mas abajo, en «Como
+     funciona», y no se repite aqui. -->
+<div class="paso paso-claro" aria-hidden="true"></div>
+
+<section class="ac-sol claro" id="solucion">
+  <p class="ac-et">Um único sistema de coordenação</p>
+  <h2 class="ac-h2">Da necessidade a uma operação executável.</h2>
+  <p class="ac-bajada">A Cordenza recebe pedidos de qualquer nível de complexidade, ativa o mercado, estrutura as ofertas e coordena cada processo até transformá-lo numa compra, venda ou contrato pronto para avançar.</p>
+  <ol class="ac-tar">
+    <li>
+      <span class="ac-tar-n">01</span>
+      <h3>Entendemos a sua necessidade</h3>
+      <p>Recebemos descrições, listas, arquivos, fotografias, referências ou especificações técnicas. Organizamos produtos, quantidades, condições e critérios de validação.</p>
+    </li>
+    <li>
+      <span class="ac-tar-n">02</span>
+      <h3>Encontramos oferta aplicável</h3>
+      <p>Ativamos fabricantes, distribuidores, fornecedores, empreiteiras e parceiros com capacidade para responder ao pedido.</p>
+    </li>
+    <li>
+      <span class="ac-tar-n">03</span>
+      <h3>Comparamos as alternativas</h3>
+      <p>Confrontamos especificações, documentação, quantidades, preços, pagamentos, capacidade, prazos, logística e custo total sobre uma mesma base.</p>
+    </li>
+    <li>
+      <span class="ac-tar-n">04</span>
+      <h3>Coordenamos a operação</h3>
+      <p>Cuidamos da negociação, amostras, validações, contratação e entrega, com atendimento personalizado durante todo o processo.</p>
+    </li>
+  </ol>
+
+  <div class="ac-reco">
+    <h3>Taxa de gestão fixa e custos transparentes</h3>
+    <p>Cada alternativa mostra o que o fornecedor oferece, como responde ao pedido, quanto custaria a operação nas condições avaliadas, que riscos existem e o que deve ser confirmado antes de contratar. O cliente recebe opções principais e de reserva com a documentação disponível.</p>
+    <a class="boton" href="#enviar" data-contactar>Solicitar cotação</a>
+  </div>
+</section>
+
+<div class="paso paso-oscuro" aria-hidden="true"></div>
+
+<!-- DOS LADOS DEL MISMO MERCADO · comprador y proveedor en la MISMA
+     pagina, como en el documento. La pagina de proveedores sigue
+     existiendo para el detalle, y se enlaza desde aqui. -->
+<section class="ac-lados" id="lados">
+  <p class="ac-et">Dois lados do mesmo mercado</p>
+  <h2 class="ac-h2">Demanda organizada. Oferta aplicável.</h2>
+  <p class="ac-bajada">A Cordenza coordena compradores e fornecedores dentro de um mesmo fluxo comercial, com informação estruturada e responsabilidades claras para cada operação.</p>
+
+  <div class="ac-dos">
+    <article class="ac-lado">
+      <p class="ac-q">Para compradores</p>
+      <h3>Uma operação coordenada</h3>
+      <p>Centralizamos fornecedores, propostas, documentação e condições para que o cliente receba uma recomendação baseada na sua necessidade real.</p>
+      <h4>O resultado</h4>
+      <p>O que comprar, de quem, quanto custa, quando pode ser entregue, o que deve ser validado e qual documentação sustenta a seleção.</p>
+      <a class="boton" href="#enviar" data-contactar>Solicitar cotação</a>
+    </article>
+    <article class="ac-lado">
+      <p class="ac-q">Para fornecedores</p>
+      <h3>Acesso a demanda empresarial real</h3>
+      <p>Conhecemos produtos, serviços, capacidade, localização e condições de atendimento para apresentar oportunidades relacionadas a cada oferta.</p>
+      <h4>Como participar</h4>
+      <p>Apresente a sua empresa. Receba oportunidades aplicáveis. Envie a sua proposta. Avance para a venda. <b>Registro e participação sem custo até concretizar a primeira venda.</b></p>
+      <a class="boton boton-claro" href="proveedores.html">Torne-se fornecedor</a>
+    </article>
+  </div>
+
+  <p class="ac-fortalece"><b>Cada operação fortalece a seguinte.</b> Os dados comerciais, as capacidades registradas e as relações construídas permanecem organizadas para responder com mais precisão a novas oportunidades.</p>
+</section>
+
+<!-- PUENTE A LA PAGINA DE PROVEEDORES -->
+<section class="puente">
+  <p class="puente-t">Vende, fabrica ou representa uma marca?</p>
+  <p class="puente-d">Enviamos as oportunidades de venda que coincidem com o que você vende, cada uma com a sua fonte. Sem portal, sem cadastro e sem custo para você.</p>
+  <a class="boton boton-claro" href="proveedores.html">Ver a página de fornecedores</a>
+</section>
+
+<!-- LA RED · globo de puntos girando, al estilo del hero de
+     weevolveit.com. La tierra son 3.710 puntos sacados de mundo.json,
+     el mismo archivo que usa el mapa de la aplicacion. Las plazas y los
+     arcos hacia Anzoategui son los mismos trece de antes. -->
+<section id="red" class="red">
+  <div class="red-cab">
+    <p class="ojo">A rede</p>
+    <h2>As relações são criadas antes de o seu pedido chegar.</h2>
+    <p class="red-bajada">Por isso uma rodada não depende dos três fornecedores de sempre. Quando entra um pedido, já há com quem falar em catorze praças, e o contato prévio é o que coloca a sua cotação no topo da pilha deles.</p>
+    
+    <p class="red-pregunta">1.989 empresas não é o dado. O dado é <b>que parte dessa rede pode responder ao seu pedido</b>, classificada por setor, capacidade e localização.</p>
+  </div>
+
+  <div class="red-tablero">
+    <figure class="globo-caja">
+      <canvas id="globo" class="globo" aria-label="Globo con las plazas de proveedores y sus rutas hacia una planta en Anzoátegui, Venezuela"></canvas>
+      <figcaption>Ilustrativo. As rotas são esquemáticas: mostram de onde parte uma rodada, não o trajeto real de um embarque.</figcaption>
+    </figure>
+
+    <aside class="red-panel" aria-label="Actividad de ejemplo">
+      <header class="panel-cab">
+        <span class="panel-t">Atividade</span>
+        <span class="panel-vivo"><i aria-hidden="true"></i>exemplo</span>
+      </header>
+      <ol class="sucesos" id="sucesos"></ol>
+      <p class="panel-pie">Exemplo ilustrativo do tipo de aviso que você recebe. Na sua operação, cada linha leva o documento de onde saiu.</p>
+    </aside>
+  </div>
+
+</section>
+
+<!-- CÓMO FUNCIONA · formato orchid.security: una linea en zigzag que
+     va bajando y llega a cada paso. La tarjeta a un lado, su dibujo al
+     otro. El contenido y las escenas son los mismos de antes. -->
+<section id="como" class="como">
+  <div class="como-cab">
+    <p class="ojo">Como funciona</p>
+    <h2>Do seu pedido à sua planta, em oito passos que você pode ver.</h2>
+    <p class="como-bajada">Nenhum é uma caixa-preta. Em qualquer um deles você pode perguntar em que pé está, e a resposta é um documento, não uma promessa.</p>
+  </div>
+
+  <div class="serpiente">
+    <div class="hilo" aria-hidden="true"><span class="hilo-lleno"></span><span class="hilo-punta"></span></div>
+    <ol class="nodos-l">
+      <li class="eslabon izq" style="--i:0">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">01</span>
+          <h3>Recebemos o pedido</h3>
+          <p>E-mail, WhatsApp, um PDF, um Excel ou a foto de uma ordem de compra. Você não precisa preencher nenhum formulário nem aprender nenhum portal. O sistema lê, converte e reúne tudo num único dossiê.</p>
+          <ul class="paso-marcas"><li>qualquer canal</li><li>qualquer formato</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">Entrada</p>
+   <div class="zona">
+     <div class="zona-caja">
+       <span class="zona-t">e-mail · WhatsApp · PDF · Excel · foto</span>
+     </div>
+     <div class="ficha f-a"><span class="ficha-ext">PDF</span><span class="ficha-n">pedido.pdf</span></div>
+     <div class="ficha f-b"><span class="ficha-ext">XLS</span><span class="ficha-n">itens.xlsx</span></div>
+     <div class="ficha f-c"><span class="ficha-ext">JPG</span><span class="ficha-n">ordem.jpg</span></div>
+   </div>
+   <div class="lineas">
+     <div class="lin"><span>Item 01 · Filtro plissado 24×24×12 pol</span><i class="tic"></i></div>
+     <div class="lin"><span>Item 02 · Classe H13 · EN 1822</span><i class="tic"></i></div>
+     <div class="lin"><span>Item 03 · 120 unidades</span><i class="tic"></i></div>
+     <div class="lin"><span>Destino · Anzoátegui, Venezuela</span><i class="tic"></i></div>
+   </div>
+   <p class="escena-pie">8 itens lidos e reunidos · um único dossiê</p>
+          </div>
+        </div>
+      </li>
+      <li class="eslabon der" style="--i:1">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">02</span>
+          <h3>Fechamos a especificação</h3>
+          <p>Agentes treinados em produtos e especificações técnicas revisam cada item e não apenas investigam o que falta: confirmam. É o que evita perder semanas com fornecedores que nunca iriam cumprir, e gastar em amostras desnecessárias.</p>
+          <ul class="paso-marcas"><li>item por item</li><li>o que falta é confirmado</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">Controle de especificação</p>
+   <div class="lineas">
+     <div class="lin"><span><b>01</b> Medida 24×24×12 pol</span><i class="tic"></i></div>
+     <div class="lin"><span><b>02</b> Classe H13 · EN 1822</span><i class="tic"></i></div>
+     <div class="lin l-duda"><span><b>03</b> Espessura da moldura</span><i class="duda">?</i></div>
+     <div class="lin"><span><b>04</b> Quantidade 120 u</span><i class="tic"></i></div>
+     <div class="lin"><span><b>05</b> Sentido do fluxo</span><i class="tic"></i></div>
+   </div>
+   <div class="pregunta">
+     <p class="pregunta-t">Pergunta-se antes de pedir preço</p>
+     <p class="pregunta-c">«O item 03 pede 1/2 pol de espessura numa moldura de 12 pol. Confirma a medida?»</p>
+   </div>
+   <p class="escena-pie">Um item mal fechado são semanas e amostras perdidas</p>
+          </div>
+        </div>
+      </li>
+      <li class="eslabon izq" style="--i:2">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">03</span>
+          <h3>Buscamos e negociamos</h3>
+          <p>A busca parte de relações que já existem, dentro e fora da Venezuela. Contacta muitos ao mesmo tempo, mantém as conversas e o agente negociador busca o melhor preço com a melhor aderência técnica e o menor prazo. Ele propõe; uma pessoa aprova antes de qualquer coisa sair no seu nome.</p>
+          <ul class="paso-marcas"><li>14 praças</li><li>contato prévio</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">Saída para a rede</p>
+   <div class="neuro">
+     <svg viewBox="0 0 360 250" aria-hidden="true">
+       <defs>
+         <radialGradient id="brillo"><stop offset="0" stop-color="#2F6FDE" stop-opacity=".55"/><stop offset="1" stop-color="#2F6FDE" stop-opacity="0"/></radialGradient>
+       </defs>
+       <circle cx="180" cy="125" r="62" fill="url(#brillo)"/>
+       <g class="n-l" fill="none" stroke-width="1" pathLength="100">
+         <path d="M180 125 Q120 76 58 46"/><path d="M180 125 Q235 70 302 44"/>
+         <path d="M180 125 Q108 118 26 108"/><path d="M180 125 Q262 116 338 104"/>
+         <path d="M180 125 Q118 178 48 214"/><path d="M180 125 Q248 180 312 212"/>
+         <path d="M180 125 Q160 70 168 18"/><path d="M180 125 Q196 186 188 238"/>
+         <path d="M180 125 Q96 92 34 62"/><path d="M180 125 Q268 92 326 66"/>
+         <path d="M180 125 Q112 148 40 166"/><path d="M180 125 Q252 150 322 162"/>
+         <path d="M58 46 Q42 78 26 108"/><path d="M302 44 Q322 76 338 104"/>
+         <path d="M26 108 Q34 164 48 214"/><path d="M338 104 Q330 160 312 212"/>
+       </g>
+       <g class="n-p">
+         <circle cx="58" cy="46" r="5"/><circle cx="302" cy="44" r="5"/><circle cx="26" cy="108" r="4"/>
+         <circle cx="338" cy="104" r="4"/><circle cx="48" cy="214" r="5"/><circle cx="312" cy="212" r="5"/>
+         <circle cx="168" cy="18" r="4"/><circle cx="188" cy="238" r="4"/><circle cx="34" cy="62" r="3"/>
+         <circle cx="326" cy="66" r="3"/><circle cx="40" cy="166" r="3"/><circle cx="322" cy="162" r="3"/>
+       </g>
+       <g class="n-pulso">
+         <circle r="2.6"><animateMotion dur="1.4s" repeatCount="indefinite" path="M180 125 Q120 76 58 46"/></circle>
+         <circle r="2.6"><animateMotion dur="1.6s" begin=".3s" repeatCount="indefinite" path="M180 125 Q235 70 302 44"/></circle>
+         <circle r="2.6"><animateMotion dur="1.5s" begin=".6s" repeatCount="indefinite" path="M180 125 Q118 178 48 214"/></circle>
+         <circle r="2.6"><animateMotion dur="1.7s" begin=".15s" repeatCount="indefinite" path="M180 125 Q262 116 338 104"/></circle>
+         <circle r="2.6"><animateMotion dur="1.5s" begin=".8s" repeatCount="indefinite" path="M180 125 Q248 180 312 212"/></circle>
+       </g>
+       <circle class="n-c" cx="180" cy="125" r="11"/>
+     </svg>
+   </div>
+   <div class="chat">
+     <span class="burb">preço por 120 u?</span>
+     <span class="burb b-r">USD 104,90 · 6 semanas</span>
+     <span class="burb">e por 200?</span>
+     <span class="burb b-r">USD 98,40</span>
+   </div>
+   <p class="escena-pie">Contacta muitos ao mesmo tempo · uma pessoa aprova</p>
+          </div>
+        </div>
+      </li>
+      <li class="eslabon der" style="--i:3">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">04</span>
+          <h3>Comparamos sobre uma mesma base</h3>
+          <p>Chegam em moedas, incoterms e formatos diferentes, e são reestruturadas num único quadro. Não se compara só preço e prazo: também o cumprimento técnico item por item e o histórico de entrega de cada fornecedor.</p>
+          <ul class="paso-marcas"><li>mesma base</li><li>histórico de entrega</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">Tudo na mesma base</p>
+   <div class="sueltos">
+     <span class="doc d1">PDF</span><span class="doc d2">XLS</span><span class="doc d3">e-mail</span><span class="doc d4">PDF</span><span class="doc d5">foto</span>
+   </div>
+   <div class="lineas">
+     <div class="lin"><span><b>DE</b> Fabricante</span><em>104,90</em><i class="tic"></i></div>
+     <div class="lin"><span><b>TR</b> Fabricante</span><em>118,40</em><i class="tic"></i></div>
+     <div class="lin"><span><b>US</b> Distribuidor</span><em>131,75</em><i class="tic"></i></div>
+     <div class="lin l-mal"><span><b>CN</b> Trading</span><em>71,20</em><i class="mal">✕</i></div>
+   </div>
+   <p class="nota-roja">A mais barata oferece outra classe: não cumpre</p>
+   <p class="escena-pie">Cinco formatos diferentes · um único quadro comparável</p>
+          </div>
+        </div>
+      </li>
+      <li class="eslabon izq" style="--i:4">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">05</span>
+          <h3>Calculamos o custo posto na planta</h3>
+          <p>Cada trecho do custo em separado: mercadoria, frete, seguro, imposto de importação, desembaraço e transporte interno. Nada escondido dentro do preço do produto. O honorário vai explícito e diz o que inclui. E ao lado, a mediana do que encontramos e do que se pagou em ordens anteriores, para você saber se está pagando acima.</p>
+          <ul class="paso-marcas"><li>sem surpresas</li><li>mediana do mercado</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">Posto na sua planta · item 01</p>
+   <div class="lineas lineas-j">
+     <div class="lin"><span>Mercadoria na fábrica</span><em>104,90</em></div>
+     <div class="lin"><span>Frete internacional</span><em>18,10</em></div>
+     <div class="lin"><span>Seguro</span><em>1,40</em></div>
+     <div class="lin"><span>Imposto e desembaraço</span><em>22,60</em></div>
+     <div class="lin"><span>Transporte até a sua planta</span><em>4,80</em></div>
+     <div class="lin l-hon"><span>Nosso honorário</span><em>9,70</em></div>
+   </div>
+   <div class="total">
+     <span>Total posto na planta</span><em>161,50</em>
+   </div>
+   <p class="nota-verde">A mediana desta rodada foi 174,30 · você está abaixo</p>
+   <p class="escena-pie">Cada trecho em separado · nada escondido no produto</p>
+          </div>
+        </div>
+      </li>
+      <li class="eslabon der" style="--i:5">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">06</span>
+          <h3>Coordenamos as amostras</h3>
+          <p>Aprovado o quadro, as amostras são pedidas e acompanhadas até chegarem, com a data estimada sempre à vista. Quem as aprova é a sua planta, não nós, e isso acontece antes da ordem.</p>
+          <ul class="paso-marcas"><li>a sua planta aprova</li><li>antes da ordem</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">Amostra, antes da ordem</p>
+   <div class="ruta-m">
+     <div class="hito h1"><i></i><span>Fábrica</span></div>
+     <div class="hito h2"><i></i><span>Courier</span></div>
+     <div class="hito h3"><i></i><span>Aduana</span></div>
+     <div class="hito h4"><i></i><span>Sua planta</span></div>
+     <div class="ruta-l"><span class="ruta-av"></span></div>
+     <div class="caja"></div>
+   </div>
+   <div class="sello">
+     <div class="sello-c"><i class="tic tic-g"></i><span>APROVADA PELA SUA PLANTA</span></div>
+     <p class="sello-p">Filtro H13 · 1 unidade · revisada pela sua equipe</p>
+   </div>
+   <div class="libera"><span>Ordem liberada</span><i class="tic"></i></div>
+   <p class="escena-pie">Quem aprova é a sua equipe, não a nossa</p>
+          </div>
+        </div>
+      </li>
+      <li class="eslabon izq" style="--i:6">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">07</span>
+          <h3>Emitimos a ordem e acompanhamos a entrega</h3>
+          <p>Trâmite, embarque, desembaraço e transporte até a sua planta. Você recebe avisos de cada movimento, como quando espera uma encomenda: o que aconteceu, onde está e quando chega.</p>
+          <ul class="paso-marcas"><li>avisos em cada trecho</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">Pedido PI-2026-0418</p>
+   <div class="traq">
+     <div class="traq-l"><span class="traq-av"></span></div>
+     <div class="paradas">
+       <div class="parada"><i></i><span>Ordem</span></div>
+       <div class="parada"><i></i><span>Embarque</span></div>
+       <div class="parada"><i></i><span>Aduana</span></div>
+       <div class="parada"><i></i><span>Sua planta</span></div>
+     </div>
+   </div>
+   <p class="eta">Chega em <b>14 de outubro</b> · na aduana há 2 dias</p>
+   <div class="pedido">
+     <div class="ped-f"><span class="ped-c">120</span><span>Filtro plissado 24×24×12 pol · H13</span><i class="et-v">em trânsito</i></div>
+     <div class="ped-f"><span class="ped-c">40</span><span>Pré-filtro G4 · moldura metálica</span><i class="et-v">em trânsito</i></div>
+     <div class="ped-f"><span class="ped-c">8</span><span>Junta de vedação · 12 m</span><i class="et-g">entregue</i></div>
+   </div>
+   <p class="escena-pie">Um aviso em cada trecho · como esperar uma encomenda</p>
+          </div>
+        </div>
+      </li>
+      <li class="eslabon der" style="--i:7">
+        <span class="eslabon-p" aria-hidden="true"></span>
+        <article class="nodo-t">
+          <span class="nodo-n">08</span>
+          <h3>Conferimos e registramos</h3>
+          <p>Os documentos da entrega são conferidos contra a ordem. O preço, o prazo, o fornecedor e a base de entrega ficam guardados com a sua procedência. Na próxima vez que você pedir algo parecido, a rodada não começa do zero.</p>
+          <ul class="paso-marcas"><li>a segunda vez é mais rápida</li></ul>
+        </article>
+        <div class="nodo-e">
+          <div class="escena">
+            <p class="esc-t">O que fica na sua base</p>
+   <div class="lineas">
+     <div class="lin"><span>Preço real · item 01</span><i class="et">fatura</i></div>
+     <div class="lin"><span>Prazo de entrega cumprido</span><i class="et">conhecimento de embarque</i></div>
+     <div class="lin"><span>Fornecedor · Hamburgo, DE</span><i class="et">registro</i></div>
+     <div class="lin"><span>Base de entrega · CFR</span><i class="et">cotação</i></div>
+     <div class="lin"><span>Imposto aplicado</span><i class="et">declaração</i></div>
+   </div>
+   <div class="deposito">
+     <span class="dep-t">sua base</span>
+     <span class="dep-c">1.989 empresas · 16 jurisdições</span>
+   </div>
+   <p class="escena-pie">A próxima rodada do mesmo não começa do zero</p>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <p class="humano">A inteligência artificial busca, lê, compara e negocia. Uma pessoa revisa e aprova tudo o que sai no seu nome.</p>
+</section>
+
+<!-- EL CASO · los siete pasos del documento. Es la misma operacion de
+     filtros que ya estaba en la presentacion, contada como alli. -->
+<section class="ac-caso" id="caso">
+<!-- La seccion de casos, con la estructura de heronaiapp.com medida en
+     su DOM el 8-oct-2026: `.home-usecase-img` ocupa la mitad izquierda a
+     toda la altura y cambia de imagen; a la derecha el titular arriba y
+     un acordeon abajo. No son tarjetas: es UN panel de imagen que sigue
+     al item abierto. -->
+  <div class="uc">
+    <div class="uc-panel">
+      <div class="uc-pila">
+        <svg class="uc-img on" viewBox="0 0 380 260" role="img" aria-label="Plano acotado de un filtro con su cantidad."><g class="lm-reja"><line x1="20" y1="0" x2="20" y2="260"/><line x1="40" y1="0" x2="40" y2="260"/><line x1="60" y1="0" x2="60" y2="260"/><line x1="80" y1="0" x2="80" y2="260"/><line x1="100" y1="0" x2="100" y2="260"/><line x1="120" y1="0" x2="120" y2="260"/><line x1="140" y1="0" x2="140" y2="260"/><line x1="160" y1="0" x2="160" y2="260"/><line x1="180" y1="0" x2="180" y2="260"/><line x1="200" y1="0" x2="200" y2="260"/><line x1="220" y1="0" x2="220" y2="260"/><line x1="240" y1="0" x2="240" y2="260"/><line x1="260" y1="0" x2="260" y2="260"/><line x1="280" y1="0" x2="280" y2="260"/><line x1="300" y1="0" x2="300" y2="260"/><line x1="320" y1="0" x2="320" y2="260"/><line x1="340" y1="0" x2="340" y2="260"/><line x1="360" y1="0" x2="360" y2="260"/><line x1="0" y1="20" x2="380" y2="20"/><line x1="0" y1="40" x2="380" y2="40"/><line x1="0" y1="60" x2="380" y2="60"/><line x1="0" y1="80" x2="380" y2="80"/><line x1="0" y1="100" x2="380" y2="100"/><line x1="0" y1="120" x2="380" y2="120"/><line x1="0" y1="140" x2="380" y2="140"/><line x1="0" y1="160" x2="380" y2="160"/><line x1="0" y1="180" x2="380" y2="180"/><line x1="0" y1="200" x2="380" y2="200"/><line x1="0" y1="220" x2="380" y2="220"/><line x1="0" y1="240" x2="380" y2="240"/></g>
+<g class="lm-tr">
+  <rect x="96" y="70" width="188" height="120"/>
+  <rect x="110" y="84" width="160" height="92"/>
+  <path d="M110 84 l16 92 M142 84 l16 92 M174 84 l16 92 M206 84 l16 92 M238 84 l16 92"/>
+</g>
+<g class="lm-cota">
+  <path d="M96 52 h188"/><path d="M96 46 v12"/><path d="M284 46 v12"/>
+  <path d="M302 70 v120"/><path d="M296 70 h12"/><path d="M296 190 h12"/>
+</g>
+<g class="lm-eje"><rect x="96" y="206" width="52" height="16" rx="2"/></g>
+<text class="lm-tx" x="122" y="217" text-anchor="middle">120 u</text></svg>
+        <svg class="uc-img" viewBox="0 0 380 260" role="img" aria-label="Silueta de una planta con ondas de busqueda saliendo de un punto."><g class="lm-reja"><line x1="20" y1="0" x2="20" y2="260"/><line x1="40" y1="0" x2="40" y2="260"/><line x1="60" y1="0" x2="60" y2="260"/><line x1="80" y1="0" x2="80" y2="260"/><line x1="100" y1="0" x2="100" y2="260"/><line x1="120" y1="0" x2="120" y2="260"/><line x1="140" y1="0" x2="140" y2="260"/><line x1="160" y1="0" x2="160" y2="260"/><line x1="180" y1="0" x2="180" y2="260"/><line x1="200" y1="0" x2="200" y2="260"/><line x1="220" y1="0" x2="220" y2="260"/><line x1="240" y1="0" x2="240" y2="260"/><line x1="260" y1="0" x2="260" y2="260"/><line x1="280" y1="0" x2="280" y2="260"/><line x1="300" y1="0" x2="300" y2="260"/><line x1="320" y1="0" x2="320" y2="260"/><line x1="340" y1="0" x2="340" y2="260"/><line x1="360" y1="0" x2="360" y2="260"/><line x1="0" y1="20" x2="380" y2="20"/><line x1="0" y1="40" x2="380" y2="40"/><line x1="0" y1="60" x2="380" y2="60"/><line x1="0" y1="80" x2="380" y2="80"/><line x1="0" y1="100" x2="380" y2="100"/><line x1="0" y1="120" x2="380" y2="120"/><line x1="0" y1="140" x2="380" y2="140"/><line x1="0" y1="160" x2="380" y2="160"/><line x1="0" y1="180" x2="380" y2="180"/><line x1="0" y1="200" x2="380" y2="200"/><line x1="0" y1="220" x2="380" y2="220"/><line x1="0" y1="240" x2="380" y2="240"/></g>
+<g class="lm-tr">
+  <path d="M74 190 h232"/>
+  <rect x="96" y="128" width="46" height="62"/>
+  <rect x="150" y="104" width="30" height="86"/>
+  <path d="M188 190 v-54 l26 -18 v72"/>
+  <rect x="226" y="146" width="54" height="44"/>
+  <path d="M226 146 l27 -20 l27 20"/>
+  <circle cx="165" cy="86" r="4"/>
+</g>
+<g class="lm-onda">
+  <circle cx="165" cy="86" r="26"/><circle cx="165" cy="86" r="48"/><circle cx="165" cy="86" r="70"/>
+</g>
+<g class="lm-eje"><circle cx="165" cy="86" r="4.5"/></g></svg>
+        <svg class="uc-img" viewBox="0 0 380 260" role="img" aria-label="Tres fichas tecnicas apiladas con sus renglones."><g class="lm-reja"><line x1="20" y1="0" x2="20" y2="260"/><line x1="40" y1="0" x2="40" y2="260"/><line x1="60" y1="0" x2="60" y2="260"/><line x1="80" y1="0" x2="80" y2="260"/><line x1="100" y1="0" x2="100" y2="260"/><line x1="120" y1="0" x2="120" y2="260"/><line x1="140" y1="0" x2="140" y2="260"/><line x1="160" y1="0" x2="160" y2="260"/><line x1="180" y1="0" x2="180" y2="260"/><line x1="200" y1="0" x2="200" y2="260"/><line x1="220" y1="0" x2="220" y2="260"/><line x1="240" y1="0" x2="240" y2="260"/><line x1="260" y1="0" x2="260" y2="260"/><line x1="280" y1="0" x2="280" y2="260"/><line x1="300" y1="0" x2="300" y2="260"/><line x1="320" y1="0" x2="320" y2="260"/><line x1="340" y1="0" x2="340" y2="260"/><line x1="360" y1="0" x2="360" y2="260"/><line x1="0" y1="20" x2="380" y2="20"/><line x1="0" y1="40" x2="380" y2="40"/><line x1="0" y1="60" x2="380" y2="60"/><line x1="0" y1="80" x2="380" y2="80"/><line x1="0" y1="100" x2="380" y2="100"/><line x1="0" y1="120" x2="380" y2="120"/><line x1="0" y1="140" x2="380" y2="140"/><line x1="0" y1="160" x2="380" y2="160"/><line x1="0" y1="180" x2="380" y2="180"/><line x1="0" y1="200" x2="380" y2="200"/><line x1="0" y1="220" x2="380" y2="220"/><line x1="0" y1="240" x2="380" y2="240"/></g>
+<g class="lm-tr">
+  <rect x="78" y="92" width="150" height="112" rx="2"/>
+  <rect x="104" y="76" width="150" height="112" rx="2"/>
+  <rect x="130" y="60" width="150" height="112" rx="2"/>
+  <path d="M146 86 h78 M146 100 h118 M146 114 h96 M146 128 h118 M146 142 h64"/>
+</g>
+<g class="lm-eje"><rect x="130" y="60" width="26" height="26"/></g></svg>
+        <svg class="uc-img" viewBox="0 0 380 260" role="img" aria-label="Un calibre midiendo una pieza circular, con la cota debajo."><g class="lm-reja"><line x1="20" y1="0" x2="20" y2="260"/><line x1="40" y1="0" x2="40" y2="260"/><line x1="60" y1="0" x2="60" y2="260"/><line x1="80" y1="0" x2="80" y2="260"/><line x1="100" y1="0" x2="100" y2="260"/><line x1="120" y1="0" x2="120" y2="260"/><line x1="140" y1="0" x2="140" y2="260"/><line x1="160" y1="0" x2="160" y2="260"/><line x1="180" y1="0" x2="180" y2="260"/><line x1="200" y1="0" x2="200" y2="260"/><line x1="220" y1="0" x2="220" y2="260"/><line x1="240" y1="0" x2="240" y2="260"/><line x1="260" y1="0" x2="260" y2="260"/><line x1="280" y1="0" x2="280" y2="260"/><line x1="300" y1="0" x2="300" y2="260"/><line x1="320" y1="0" x2="320" y2="260"/><line x1="340" y1="0" x2="340" y2="260"/><line x1="360" y1="0" x2="360" y2="260"/><line x1="0" y1="20" x2="380" y2="20"/><line x1="0" y1="40" x2="380" y2="40"/><line x1="0" y1="60" x2="380" y2="60"/><line x1="0" y1="80" x2="380" y2="80"/><line x1="0" y1="100" x2="380" y2="100"/><line x1="0" y1="120" x2="380" y2="120"/><line x1="0" y1="140" x2="380" y2="140"/><line x1="0" y1="160" x2="380" y2="160"/><line x1="0" y1="180" x2="380" y2="180"/><line x1="0" y1="200" x2="380" y2="200"/><line x1="0" y1="220" x2="380" y2="220"/><line x1="0" y1="240" x2="380" y2="240"/></g>
+<g class="lm-tr">
+  <circle cx="190" cy="132" r="42"/><circle cx="190" cy="132" r="18"/>
+  <path d="M70 108 h240" />
+  <path d="M118 108 v52 h14 v-52" />
+  <path d="M248 108 v52 h14 v-52" />
+  <path d="M70 96 h240 M70 96 v24 M310 96 v24"/>
+</g>
+<g class="lm-cota"><path d="M132 186 h116"/><path d="M132 180 v12"/><path d="M248 180 v12"/></g>
+<g class="lm-eje"><rect x="156" y="202" width="68" height="16" rx="2"/></g>
+<text class="lm-tx" x="190" y="213" text-anchor="middle">24,00 pol</text></svg>
+        <svg class="uc-img" viewBox="0 0 380 260" role="img" aria-label="Cuatro barras de precio sobre una misma linea de base."><g class="lm-reja"><line x1="20" y1="0" x2="20" y2="260"/><line x1="40" y1="0" x2="40" y2="260"/><line x1="60" y1="0" x2="60" y2="260"/><line x1="80" y1="0" x2="80" y2="260"/><line x1="100" y1="0" x2="100" y2="260"/><line x1="120" y1="0" x2="120" y2="260"/><line x1="140" y1="0" x2="140" y2="260"/><line x1="160" y1="0" x2="160" y2="260"/><line x1="180" y1="0" x2="180" y2="260"/><line x1="200" y1="0" x2="200" y2="260"/><line x1="220" y1="0" x2="220" y2="260"/><line x1="240" y1="0" x2="240" y2="260"/><line x1="260" y1="0" x2="260" y2="260"/><line x1="280" y1="0" x2="280" y2="260"/><line x1="300" y1="0" x2="300" y2="260"/><line x1="320" y1="0" x2="320" y2="260"/><line x1="340" y1="0" x2="340" y2="260"/><line x1="360" y1="0" x2="360" y2="260"/><line x1="0" y1="20" x2="380" y2="20"/><line x1="0" y1="40" x2="380" y2="40"/><line x1="0" y1="60" x2="380" y2="60"/><line x1="0" y1="80" x2="380" y2="80"/><line x1="0" y1="100" x2="380" y2="100"/><line x1="0" y1="120" x2="380" y2="120"/><line x1="0" y1="140" x2="380" y2="140"/><line x1="0" y1="160" x2="380" y2="160"/><line x1="0" y1="180" x2="380" y2="180"/><line x1="0" y1="200" x2="380" y2="200"/><line x1="0" y1="220" x2="380" y2="220"/><line x1="0" y1="240" x2="380" y2="240"/></g>
+<g class="lm-tr">
+  <rect x="88" y="96" width="38" height="78"/>
+  <rect x="142" y="68" width="38" height="106"/>
+  <rect x="250" y="112" width="38" height="62"/>
+</g>
+<g class="lm-eje"><rect x="196" y="120" width="38" height="54"/></g>
+<g class="lm-base"><path d="M70 174 h240"/></g>
+<g class="lm-cota"><path d="M70 192 h240"/><path d="M70 186 v12"/><path d="M310 186 v12"/></g>
+<text class="lm-tx" x="190" y="214" text-anchor="middle">mesma base</text></svg>
+        <svg class="uc-img" viewBox="0 0 380 260" role="img" aria-label="Contenedores apilados bajo una grua y los tramos del costo."><g class="lm-reja"><line x1="20" y1="0" x2="20" y2="260"/><line x1="40" y1="0" x2="40" y2="260"/><line x1="60" y1="0" x2="60" y2="260"/><line x1="80" y1="0" x2="80" y2="260"/><line x1="100" y1="0" x2="100" y2="260"/><line x1="120" y1="0" x2="120" y2="260"/><line x1="140" y1="0" x2="140" y2="260"/><line x1="160" y1="0" x2="160" y2="260"/><line x1="180" y1="0" x2="180" y2="260"/><line x1="200" y1="0" x2="200" y2="260"/><line x1="220" y1="0" x2="220" y2="260"/><line x1="240" y1="0" x2="240" y2="260"/><line x1="260" y1="0" x2="260" y2="260"/><line x1="280" y1="0" x2="280" y2="260"/><line x1="300" y1="0" x2="300" y2="260"/><line x1="320" y1="0" x2="320" y2="260"/><line x1="340" y1="0" x2="340" y2="260"/><line x1="360" y1="0" x2="360" y2="260"/><line x1="0" y1="20" x2="380" y2="20"/><line x1="0" y1="40" x2="380" y2="40"/><line x1="0" y1="60" x2="380" y2="60"/><line x1="0" y1="80" x2="380" y2="80"/><line x1="0" y1="100" x2="380" y2="100"/><line x1="0" y1="120" x2="380" y2="120"/><line x1="0" y1="140" x2="380" y2="140"/><line x1="0" y1="160" x2="380" y2="160"/><line x1="0" y1="180" x2="380" y2="180"/><line x1="0" y1="200" x2="380" y2="200"/><line x1="0" y1="220" x2="380" y2="220"/><line x1="0" y1="240" x2="380" y2="240"/></g>
+<g class="lm-tr">
+  <rect x="96" y="112" width="58" height="34"/><rect x="158" y="112" width="58" height="34"/>
+  <rect x="220" y="112" width="58" height="34"/>
+  <rect x="127" y="150" width="58" height="34"/><rect x="189" y="150" width="58" height="34"/>
+  <path d="M187 112 v-44 M160 68 h54"/>
+  <path d="M187 68 v-12"/>
+</g>
+<g class="lm-base"><path d="M80 198 h220"/></g>
+<g class="lm-tr"><path d="M80 206 v-16 M134 206 v-16 M188 206 v-16 M242 206 v-16 M300 206 v-16"/></g>
+<g class="lm-eje"><rect x="242" y="192" width="58" height="12"/></g></svg>
+        <svg class="uc-img" viewBox="0 0 380 260" role="img" aria-label="Una ruta principal y una de respaldo desde el mismo origen."><g class="lm-reja"><line x1="20" y1="0" x2="20" y2="260"/><line x1="40" y1="0" x2="40" y2="260"/><line x1="60" y1="0" x2="60" y2="260"/><line x1="80" y1="0" x2="80" y2="260"/><line x1="100" y1="0" x2="100" y2="260"/><line x1="120" y1="0" x2="120" y2="260"/><line x1="140" y1="0" x2="140" y2="260"/><line x1="160" y1="0" x2="160" y2="260"/><line x1="180" y1="0" x2="180" y2="260"/><line x1="200" y1="0" x2="200" y2="260"/><line x1="220" y1="0" x2="220" y2="260"/><line x1="240" y1="0" x2="240" y2="260"/><line x1="260" y1="0" x2="260" y2="260"/><line x1="280" y1="0" x2="280" y2="260"/><line x1="300" y1="0" x2="300" y2="260"/><line x1="320" y1="0" x2="320" y2="260"/><line x1="340" y1="0" x2="340" y2="260"/><line x1="360" y1="0" x2="360" y2="260"/><line x1="0" y1="20" x2="380" y2="20"/><line x1="0" y1="40" x2="380" y2="40"/><line x1="0" y1="60" x2="380" y2="60"/><line x1="0" y1="80" x2="380" y2="80"/><line x1="0" y1="100" x2="380" y2="100"/><line x1="0" y1="120" x2="380" y2="120"/><line x1="0" y1="140" x2="380" y2="140"/><line x1="0" y1="160" x2="380" y2="160"/><line x1="0" y1="180" x2="380" y2="180"/><line x1="0" y1="200" x2="380" y2="200"/><line x1="0" y1="220" x2="380" y2="220"/><line x1="0" y1="240" x2="380" y2="240"/></g>
+<g class="lm-tr">
+  <circle cx="80" cy="130" r="9"/>
+  <rect x="282" y="112" width="34" height="34"/>
+  <path class="lm-pun" d="M89 130 C150 44 230 54 282 118"/>
+</g>
+<g class="lm-eje"><path d="M89 130 C148 184 226 190 282 140"/></g>
+<g class="lm-eje"><circle cx="80" cy="130" r="4"/></g>
+<g class="lm-tr"><circle cx="186" cy="170" r="5"/><circle cx="186" cy="78" r="5"/></g></svg>
+      </div>
+    </div>
+
+    <div class="uc-lado">
+      <p class="ac-et">Operação documentada</p>
+      <h2 class="ac-h2">Filtros industriais: de ofertas dispersas a uma estratégia de contratação.</h2>
+      <p class="ac-bajada">Um pedido de alto volume reunia produtos com especificações diferentes e propostas que não compartilhavam o mesmo escopo técnico, comercial nem logístico.</p>
+      <ol class="uc-lista">
+      <li class="uc-item on">
+        <button class="uc-cab" type="button" aria-expanded="true">
+          <span class="uc-n">01</span><span class="uc-t">Especificações e quantidades</span>
+        </button>
+        <div class="uc-cuerpo"><p>Organizou as especificações e quantidades.</p></div>
+      </li>
+      <li class="uc-item">
+        <button class="uc-cab" type="button" aria-expanded="false">
+          <span class="uc-n">02</span><span class="uc-t">Busca de fabricantes</span>
+        </button>
+        <div class="uc-cuerpo"><p>Ampliou a busca de fabricantes e alternativas.</p></div>
+      </li>
+      <li class="uc-item">
+        <button class="uc-cab" type="button" aria-expanded="false">
+          <span class="uc-n">03</span><span class="uc-t">Fichas técnicas</span>
+        </button>
+        <div class="uc-cuerpo"><p>Confrontou ofertas com fichas técnicas e documentação disponível.</p></div>
+      </li>
+      <li class="uc-item">
+        <button class="uc-cab" type="button" aria-expanded="false">
+          <span class="uc-n">04</span><span class="uc-t">Validações e amostras</span>
+        </button>
+        <div class="uc-cuerpo"><p>Coordenou as validações e amostras necessárias.</p></div>
+      </li>
+      <li class="uc-item">
+        <button class="uc-cab" type="button" aria-expanded="false">
+          <span class="uc-n">05</span><span class="uc-t">Preços e condições</span>
+        </button>
+        <div class="uc-cuerpo"><p>Comparou preços e condições sobre uma mesma base.</p></div>
+      </li>
+      <li class="uc-item">
+        <button class="uc-cab" type="button" aria-expanded="false">
+          <span class="uc-n">06</span><span class="uc-t">Custos de entrega</span>
+        </button>
+        <div class="uc-cuerpo"><p>Estruturou os custos necessários para a entrega.</p></div>
+      </li>
+      <li class="uc-item">
+        <button class="uc-cab" type="button" aria-expanded="false">
+          <span class="uc-n">07</span><span class="uc-t">Opções e reserva</span>
+        </button>
+        <div class="uc-cuerpo"><p>Identificou opções principais e de reserva.</p></div>
+      </li>
+      </ol>
+    </div>
+  </div>
+  <div class="ac-resultado">
+    <p class="ac-q">Resultado</p>
+    <p>Uma estratégia de abastecimento com alternativas comparáveis, aspectos técnicos identificados e uma base documentada para negociar e avançar para o contrato.</p>
+  </div>
+</section>
+
+<!-- CONOZCANOS · las seis tarjetas del documento, menos una.
+     La del documento nombraba entidades del Estado venezolano, que
+     `marketing/02` veta y el generador de la presentacion bloquea con un
+     assert, por la exposicion OFAC de Nex AI. Va la misma idea sin
+     nombrarlas. El porque completo esta en marketing/02 §2. -->
+<section class="ac-quienes" id="quienes">
+  <p class="ac-et">Conheça-nos</p>
+  <h2 class="ac-h2">Construído a partir de operações reais.</h2>
+  <p class="ac-bajada">A Cordenza surge de uma necessidade que conhecemos trabalhando com empreiteiras: encontrar oferta era apenas o começo. Depois era preciso conferi-la, comparar condições, coordenar as partes e levar o processo até a execução de um contrato.</p>
+  <div class="acciones" style="margin-top:28px">
+    <a class="boton boton-claro" href="conocenos.html">Conheça-nos</a>
+  </div>
+</section>
+
+<!-- CIERRE Y LLAMADO -->
+<!-- CIERRE · el boton «Solicitar cotizacion» de arriba apunta aqui, y
+     aqui hay un formulario de verdad, no otro boton. -->
+<section id="enviar" class="cierre resplandor">
+  <h2>Coordenação. Fortaleza. Execução.</h2>
+  <p class="cierre-bajada">Envie-nos uma necessidade real. A Cordenza estruturará o pedido, ativará o mercado disponível e coordenará o processo necessário para transformá-lo numa operação executável.</p>
+
+  <div class="acciones">
+    <a class="boton boton-claro" href="mailto:Orinocogp.pi@gmail.com?subject=Solicitud%20de%20cotizaci%C3%B3n&amp;body=Empresa%3A%0APersona%20de%20contacto%3A%0AD%C3%B3nde%20se%20entrega%3A%0A%0AQu%C3%A9%20necesito%3A%0A">Escrever por e-mail</a>
+    <a class="enlace enlace-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20solicitar%20una%20cotizaci%C3%B3n.">Escrever por WhatsApp</a>
+  </div>
+</section>
+
+</main>
+
+<!-- SELECTOR DE CONTACTO · lo abre cualquier enlace `data-contactar`.
+     <dialog> nativo y no un div: el navegador ya da el cierre con Escape,
+     el foco atrapado dentro y el devolverlo al boton al cerrar. Sin
+     JavaScript el enlace lleva al cierre de la pagina, que ofrece lo mismo. -->
+<dialog class="elegir" id="elegir" aria-labelledby="elegir-t">
+  <form method="dialog" class="elegir-x"><button aria-label="Cerrar">&times;</button></form>
+  <p class="ac-et" id="elegir-t">Solicitar cotação</p>
+  <p class="elegir-d">Por onde prefere nos enviar o pedido? Os dois chegam à mesma pessoa.</p>
+  <div class="elegir-o">
+    <a class="boton" href="mailto:Orinocogp.pi@gmail.com?subject=Solicitud%20de%20cotizaci%C3%B3n&amp;body=Empresa%3A%0APersona%20de%20contacto%3A%0AD%C3%B3nde%20se%20entrega%3A%0A%0AQu%C3%A9%20necesito%3A%0A">E-mail</a>
+    <a class="boton boton-claro" href="https://wa.me/584144443327?text=Hola%2C%20quiero%20solicitar%20una%20cotizaci%C3%B3n.">WhatsApp</a>
+  </div>
+  <p class="elegir-p">Orinocogp.pi@gmail.com · +58 414 444 3327</p>
+</dialog>
+
+<footer class="pie">
+  <div class="pie-r">
+    <div class="pie-col">
+      <p class="pie-marca"><b>Cordenza Intelligence</b> · Operado e respaldado pela Orinoco Global Partners.</p>
+      <p>Construímos a base de preços das compras industriais na Venezuela, cotação por cotação, com a procedência de cada número.</p>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">Se você compra</p>
+      <a href="index.html">Como funciona</a>
+      <a href="index.html#red">A rede de fornecedores</a>
+      <a href="index.html#solucion">A solução</a>
+      <a href="index.html#enviar">Enviar um pedido</a>
+    </div>
+    <div class="pie-col">
+      <p class="pie-t">Se você vende</p>
+      <a href="proveedores.html#participar">Como participar</a>
+      <a href="proveedores.html#evaluamos">O que avaliamos</a>
+      <a href="proveedores.html#alta">Apresentar minha empresa</a>
+      <a href="conocenos.html">Quem somos</a>
+    </div>
+  </div>
+  <p class="pie-chico">O que cobramos fica à vista em cada cotação. Se quiser sair da nossa base, escreva para Orinocogp.pi@gmail.com e nós fazemos.</p>
+  <p class="lema">Coordenação. Fortaleza. Execução.</p>
+</footer>
+
+<script src="../mundo-puntos.js" defer></script>
+<script src="../red-neuronal.js?v=20261021a" defer></script>
+<script src="../movimiento.js?v=20261021a" defer></script>
+</body>
+</html>
