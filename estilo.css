@@ -2580,24 +2580,34 @@ html.cargando body{overflow:hidden}
    =================================================================== */
 .idi-sprite{position:absolute; width:0; height:0; overflow:hidden}
 
-.idi{position:relative; flex:none; margin-inline-start:12px}
+/* EL BOTON HABLA EL IDIOMA DEL HEADER, y eso es lo que fallaba.
+   Medido el 23-oct: el header usa Archivo a 14,4-14,7 px --el boton
+   «Solicitar cotizacion» a 32 px de alto y radio 4, los enlaces del menu a
+   30-- y el selector estaba en IBM Plex Mono a 12,48 px con letter-spacing.
+   Era un TERCER lenguaje tipografico en una cabecera de dos, y de ahi venia
+   que no pareciera del sitio. Ahora comparte fuente, alto y radio; el mono se
+   queda solo para el codigo de dos letras, que es un dato y no una palabra. */
+.idi{position:relative; flex:none; margin-inline-start:4px}
 .idi > summary{
-  display:flex; align-items:center; gap:7px; cursor:pointer;
-  padding:7px 10px; border:1px solid var(--linea); border-radius:4px;
-  background:var(--realce); color:var(--tinta);
-  font:500 .78rem/1 var(--mono); letter-spacing:.06em;
+  display:flex; align-items:center; gap:8px; cursor:pointer;
+  height:32px; padding:0 11px; box-sizing:border-box;
+  border:1px solid var(--linea); border-radius:4px;
+  background:transparent; color:var(--tinta);
+  font:500 .92rem/1 var(--disp);
   list-style:none; user-select:none;
   transition:border-color .2s var(--sale), background .2s var(--sale);
 }
+.idi-nombre{white-space:nowrap}
+/* el codigo de dos letras solo sale cuando el nombre no cabe */
+.idi-cod{display:none; font:500 .76rem/1 var(--mono); letter-spacing:.07em}
 /* el triangulito de serie del `<details>`, fuera: hay una flecha propia */
 .idi > summary::-webkit-details-marker{display:none}
 .idi > summary::marker{content:""}
-.idi > summary:hover{border-color:var(--indice); background:var(--papel)}
+.idi > summary:hover{border-color:var(--indice); background:var(--realce)}
 .idi > summary:focus-visible{outline:2px solid var(--indice-txt); outline-offset:2px}
 
 .idi-b{width:20px; height:14px; flex:none; border-radius:1px;
        box-shadow:0 0 0 1px rgba(255,255,255,.14)}
-.idi-cod{color:var(--tinta)}
 .idi-flecha{
   width:7px; height:7px; flex:none; margin-inline-start:1px;
   border-right:1.5px solid var(--niebla); border-bottom:1.5px solid var(--niebla);
@@ -2646,8 +2656,12 @@ html.cargando body{overflow:hidden}
 /* en pantalla angosta el boton se queda en bandera + codigo, que es lo que
    cabe: el header ya lleva marca, menu y boton */
 @media (max-width:620px){
-  .idi{margin-inline-start:8px}
-  .idi > summary{padding:6px 8px; gap:5px}
+  .idi{margin-inline-start:2px}
+  .idi > summary{height:30px; padding:0 8px; gap:6px}
+  /* «Português» y «Русский» no caben aqui: se cambia por el codigo, que dice
+     lo mismo en dos letras. El nombre completo sigue en el panel. */
+  .idi-nombre{display:none}
+  .idi-cod{display:inline}
   .idi-panel{min-width:12rem}
 }
 @media (prefers-reduced-motion:reduce){
