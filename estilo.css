@@ -2563,3 +2563,94 @@ html.cargando body{overflow:hidden}
 .grados-apila .gr-et b{font-weight:500; color:var(--indice-txt)}
 .claro .grados-apila .gr-et{color:var(--claro-tenue)}
 .claro .grados-apila .gr-et b{color:var(--indice-osc)}
+
+/* ===================================================================
+   SELECTOR DE IDIOMA
+   -------------------------------------------------------------------
+   Era un `<select>` nativo. El menu de un `<select>` lo pinta el sistema
+   operativo y no admite CSS: por eso «no se veia». Ahora es un
+   `<details>`, que se abre sin JavaScript y cuyo panel es HTML propio.
+
+   Las medidas estan ancladas con propiedades LOGICAS --`inset-inline-end`,
+   `padding-inline`, `margin-inline-start`-- y no con `right`/`left`. Asi la
+   version arabe, que lleva `dir="rtl"`, se espeja sola: el panel se abre
+   hacia dentro de la pantalla en los dos sentidos sin una sola regla
+   aparte. Con `right:0` habria que escribir el caso rtl a mano y es donde
+   se olvida.
+   =================================================================== */
+.idi-sprite{position:absolute; width:0; height:0; overflow:hidden}
+
+.idi{position:relative; flex:none; margin-inline-start:12px}
+.idi > summary{
+  display:flex; align-items:center; gap:7px; cursor:pointer;
+  padding:7px 10px; border:1px solid var(--linea); border-radius:4px;
+  background:var(--realce); color:var(--tinta);
+  font:500 .78rem/1 var(--mono); letter-spacing:.06em;
+  list-style:none; user-select:none;
+  transition:border-color .2s var(--sale), background .2s var(--sale);
+}
+/* el triangulito de serie del `<details>`, fuera: hay una flecha propia */
+.idi > summary::-webkit-details-marker{display:none}
+.idi > summary::marker{content:""}
+.idi > summary:hover{border-color:var(--indice); background:var(--papel)}
+.idi > summary:focus-visible{outline:2px solid var(--indice-txt); outline-offset:2px}
+
+.idi-b{width:20px; height:14px; flex:none; border-radius:1px;
+       box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.idi-cod{color:var(--tinta)}
+.idi-flecha{
+  width:7px; height:7px; flex:none; margin-inline-start:1px;
+  border-right:1.5px solid var(--niebla); border-bottom:1.5px solid var(--niebla);
+  transform:rotate(45deg) translateY(-1px);
+  transition:transform .22s var(--sale);
+}
+.idi[open] > summary{border-color:var(--indice)}
+.idi[open] .idi-flecha{transform:rotate(-135deg) translateY(-2px)}
+
+/* Un `<details>` cerrado oculta sus hijos de serie, PERO medido el 22-oct
+   con el panel en `position:absolute` seguia pintandose: `display:block` y
+   267 px de alto con el `<details>` cerrado. Se dice explicito en vez de
+   confiar en el comportamiento nativo, que ademas varia entre navegadores. */
+.idi:not([open]) .idi-panel{display:none}
+
+/* EL PANEL. `inset-inline-end:0` lo pega al borde final del boton, que en
+   rtl es el izquierdo: por eso en arabe no se sale de la pantalla. */
+.idi-panel{
+  position:absolute; inset-inline-end:0; top:calc(100% + 7px); z-index:60;
+  min-width:13.5rem; padding:7px;
+  background:var(--realce); border:1px solid var(--linea); border-radius:5px;
+  box-shadow:0 14px 40px rgba(0,0,0,.44);
+  animation:idi-abre .2s var(--sale) both;
+}
+@keyframes idi-abre{from{opacity:0; transform:translateY(-6px)} to{opacity:1; transform:none}}
+.idi-t{
+  margin:2px 8px 6px; font:500 .62rem/1 var(--mono);
+  letter-spacing:.18em; text-transform:uppercase; color:var(--niebla);
+}
+.idi-panel ul{list-style:none; margin:0; padding:0}
+.idi-panel a{
+  display:flex; align-items:center; gap:10px;
+  padding:8px 9px; border-radius:3px; text-decoration:none;
+  color:var(--acero); font:400 .9rem/1.2 var(--disp);
+}
+.idi-panel a:hover{background:var(--papel); color:var(--blanco)}
+.idi-panel a:focus-visible{outline:2px solid var(--indice-txt); outline-offset:-2px}
+/* el idioma en el que estas: no es un enlace mas */
+.idi-panel a[aria-current]{color:var(--blanco); background:rgba(47,111,222,.13)}
+.idi-tic{
+  margin-inline-start:auto; width:11px; height:6px; flex:none;
+  border-left:1.6px solid var(--indice-txt); border-bottom:1.6px solid var(--indice-txt);
+  transform:rotate(-45deg);
+}
+
+/* en pantalla angosta el boton se queda en bandera + codigo, que es lo que
+   cabe: el header ya lleva marca, menu y boton */
+@media (max-width:620px){
+  .idi{margin-inline-start:8px}
+  .idi > summary{padding:6px 8px; gap:5px}
+  .idi-panel{min-width:12rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .idi-panel{animation:none}
+  .idi-flecha{transition:none}
+}

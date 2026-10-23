@@ -743,4 +743,38 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { medir(); pinta(); });
   })();
 
+
+  /* ── 19 · EL SELECTOR DE IDIOMA ───────────────────────────────────
+     Solo dos cortesias. El dropdown es un `<details>` y YA FUNCIONA SIN
+     ESTO: se abre al pulsar y se cierra pulsando otra vez. Lo que falta
+     a `<details>` de serie es cerrarse al pulsar fuera y con Escape, que
+     es lo que la gente espera de un menu y lo unico que se añade aqui.
+
+     Nada de `role="listbox"` ni de gestionar el foco con flechas: el
+     panel son enlaces y el Tab ya los recorre. Un dropdown con ARIA
+     hecho a mano se rompe por ahi, y aqui no hay nada que ganar. */
+  (function idiomas() {
+    const cajas = [...document.querySelectorAll("details[data-idiomas]")];
+    if (!cajas.length) return;
+    const cerrar = (menos) => cajas.forEach((d) => { if (d !== menos) d.open = false; });
+
+    addEventListener("pointerdown", (e) => {
+      // `composedPath` y no `contains`: el clic puede venir del <use> de
+      // una bandera, que es shadow DOM y a `contains` se le escapa.
+      const dentro = e.composedPath().some((n) => cajas.includes(n));
+      if (!dentro) cerrar(null);
+    }, { passive: true });
+
+    addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const abierta = cajas.find((d) => d.open);
+      if (!abierta) return;
+      abierta.open = false;
+      abierta.querySelector("summary")?.focus();   // el foco vuelve al boton
+    });
+
+    // abrir una cierra las demas, por si algun dia hay dos en la pagina
+    cajas.forEach((d) => d.addEventListener("toggle", () => { if (d.open) cerrar(d); }));
+  })();
+
 })();
