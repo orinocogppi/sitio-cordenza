@@ -20,7 +20,18 @@
 <meta property="og:title" content="Cordenza Intelligence">
 <meta property="og:description" content="Coordinación y destreza en un solo sistema. Estudio de mercado, red de proveedores y evaluación técnica y comercial para coordinar suministros y servicios hasta su entrega o ejecución.">
 <meta property="og:url" content="https://cordenzaintelligence.com/zh/index.html">
-<meta property="og:image" content="https://cordenzaintelligence.com/medios/tarjeta.png">
+<!-- JPEG y no PNG, y ligera. El 25-oct la tarjeta salia SIN IMAGEN en
+     WhatsApp con un PNG de 155 KB, y lo medido descartaba lo demas: las
+     etiquetas se leian bien con el user-agent de WhatsApp, la imagen daba 200
+     en 0,31 s, el PNG era RGB de 8 bits sin alfa ni entrelazar, y el ratio y
+     el ancho cumplian la spec. La spec de Meta dice «menos de 600 KB», pero
+     varias guias independientes coinciden en que el limite real ronda los
+     300 KB y que por encima la imagen se cae en silencio. 98 KB en JPEG deja
+     margen de sobra y de paso cambia el nombre del archivo, que es lo unico
+     que invalida la cache de la imagen. -->
+<meta property="og:image" content="https://cordenzaintelligence.com/medios/tarjeta.jpg">
+<meta property="og:image:secure_url" content="https://cordenzaintelligence.com/medios/tarjeta.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cordenza Intelligence">
@@ -29,7 +40,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cordenza Intelligence">
 <meta name="twitter:description" content="Coordinación y destreza en un solo sistema. Estudio de mercado, red de proveedores y evaluación técnica y comercial para coordinar suministros y servicios hasta su entrega o ejecución.">
-<meta name="twitter:image" content="https://cordenzaintelligence.com/medios/tarjeta.png">
+<meta name="twitter:image" content="https://cordenzaintelligence.com/medios/tarjeta.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
